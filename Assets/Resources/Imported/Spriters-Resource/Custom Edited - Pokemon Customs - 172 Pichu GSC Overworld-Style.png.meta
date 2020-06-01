@@ -1,0 +1,499 @@
+fileFormatVersion: 2
+guid: 6d7b4eea245818246b0fe22b41f86d7f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1523302509556409599
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_0
+  - first:
+      213: 1964658718287927632
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_1
+  - first:
+      213: -7719143830501963940
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_2
+  - first:
+      213: 8466475367171461011
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_3
+  - first:
+      213: -5352986783412128854
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_4
+  - first:
+      213: 7050746876616340990
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_5
+  - first:
+      213: -3876530532181906332
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_6
+  - first:
+      213: -5973023804517793713
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_7
+  - first:
+      213: -753410978095685585
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_8
+  - first:
+      213: 8053817782058239469
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_9
+  - first:
+      213: -5194142423470408591
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_10
+  - first:
+      213: -7131374255468730637
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_11
+  - first:
+      213: 7551420709984414960
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_12
+  - first:
+      213: 5659202191325188481
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_13
+  - first:
+      213: -7941383830186796922
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_14
+  - first:
+      213: 7771226785257384415
+    second: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_15
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 20
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_0
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 57
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d738ea7fb04cbf2419cef9fc0b3293e0
+      internalID: 1523302509556409599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_1
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 57
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96960db508c58224f8313a66090705f0
+      internalID: 1964658718287927632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_2
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 57
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0147f4a1ea8c9c04abe1224b96a01965
+      internalID: -7719143830501963940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_3
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 57
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f3cc3f8c640e8944941b8f9030699ce
+      internalID: 8466475367171461011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_4
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 39
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5451d7f0666a4b64d864da0286de8fac
+      internalID: -5352986783412128854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_5
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 39
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9df700a483187745844c4f89bbc210f
+      internalID: 7050746876616340990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_6
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 39
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b11e97f2a8789bb4cb92f6790869ab0e
+      internalID: -3876530532181906332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_7
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 39
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 398c76d7ebc5cc5478c028a1067ee718
+      internalID: -5973023804517793713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_8
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 21
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5eab295a4b893124e885401c5260f512
+      internalID: -753410978095685585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_9
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 21
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0eb54ed1da088174992f57ec35767578
+      internalID: 8053817782058239469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_10
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 21
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94ee755f8b87be641a8b5379c45cc9b0
+      internalID: -5194142423470408591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_11
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 21
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08103338bf2f8d740ae0973597740b16
+      internalID: -7131374255468730637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_12
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 3
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5127714c3360b88428caca9c26bbc3a0
+      internalID: 7551420709984414960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_13
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 3
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 189fe480eca7716459dd333c5b26ea1f
+      internalID: 5659202191325188481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_14
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 3
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e997ac4b994e844f814e3b343f35687
+      internalID: -7941383830186796922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Custom Edited - Pokemon Customs - 172 Pichu GSC Overworld-Style_15
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 3
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e769dd0d2446b0a4a95249ae3eb2961e
+      internalID: 7771226785257384415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
