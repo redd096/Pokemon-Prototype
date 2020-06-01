@@ -33,6 +33,7 @@ public class MovingManager : MonoBehaviour
         {
             int random = Random.Range(0, 100);
 
+            //check percentage find pokemon
             if(random < percentageFindPokemon)
             {
                 FoundPokemon();
@@ -45,8 +46,6 @@ public class MovingManager : MonoBehaviour
 
     void FoundPokemon()
     {
-        //start fight
-        GameManager.instance.fightManager.gameObject.SetActive(true);
-        gameObject.SetActive(false);
+        GameManager.instance.levelManager.StartFight();
     }
 }

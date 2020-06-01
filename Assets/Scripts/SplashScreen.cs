@@ -58,7 +58,7 @@ public class SplashScreen : MonoBehaviour
             float delta = 0;
             while (delta < 1)
             {
-                delta = Fade(0, 1, delta, timeToFadeIn);
+                image.FadeIn(ref delta, timeToFadeIn);
 
                 yield return null;
             }
@@ -73,7 +73,7 @@ public class SplashScreen : MonoBehaviour
             delta = 0;
             while (delta < 1)
             {
-                delta = Fade(1, 0, delta, timeToFadeOut);
+                image.FadeOut(ref delta, timeToFadeOut);
 
                 yield return null;
             }
@@ -85,17 +85,5 @@ public class SplashScreen : MonoBehaviour
 
         //load new scene
         SceneLoader.instance.LoadNewScene(nextSceneName);
-    }
-
-    float Fade(float from, float to, float delta, float duration)
-    {
-        //speed based to duration
-        delta += Time.deltaTime / duration;
-
-        //set alpha from to
-        float alpha = Mathf.Lerp(from, to, delta);
-        image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
-
-        return delta;
     }
 }

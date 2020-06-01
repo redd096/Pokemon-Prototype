@@ -6,6 +6,7 @@ public class Player : StateMachine
 {
     [SerializeField] float durationMovement = 1;
 
+
     public Animator Anim { get; private set; }
     public float DurationMovement { get { return durationMovement; } }
 
@@ -13,13 +14,26 @@ public class Player : StateMachine
     {
         //get animator
         Anim = GetComponentInChildren<Animator>();
-
-        //start state machine for moving
-        SetState(new IdlePLayer(this));
     }
 
     void Update()
     {
-        state.Execution();
+        state?.Execution();
     }
+
+    #region public API
+
+    public void StartMovingPhase()
+    {
+        //start state machine for moving
+        SetState(new IdlePLayer(this));
+    }
+
+    public void StartFightPhase()
+    {
+        //start state machine for fight
+        SetState(new FightPlayer(this));
+    }
+
+    #endregion
 }
