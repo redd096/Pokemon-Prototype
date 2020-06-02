@@ -36,8 +36,8 @@ public class TransitionState : StateMachineBehaviour
     void SetManagers()
     {
         //active and deactive, based on startFight
-        GameManager.instance.fightManager.gameObject.SetActive(startFight);
-        GameManager.instance.movingManager.gameObject.SetActive(!startFight);
+        levelManager.FightManager.gameObject.SetActive(startFight);
+        levelManager.MovingManager.gameObject.SetActive(!startFight);
     }
 
     void StartFadeOut()

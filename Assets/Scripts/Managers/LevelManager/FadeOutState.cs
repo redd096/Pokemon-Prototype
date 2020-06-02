@@ -26,7 +26,7 @@ public class FadeOutState : StateMachineBehaviour
         //do fade out and start game
         if(delta < 1)
         {
-            levelManager.transitionImage.FadeOut(ref delta, timeToFadeOut);
+            levelManager.TransitionImage.FadeOut(ref delta, timeToFadeOut);
         }
         else
         {
@@ -37,16 +37,16 @@ public class FadeOutState : StateMachineBehaviour
     void SetManagers()
     {
         //deactive fight manager and active moving manager
-        GameManager.instance.fightManager.gameObject.SetActive(false);
-        GameManager.instance.movingManager.gameObject.SetActive(true);
+        levelManager.FightManager.gameObject.SetActive(false);
+        levelManager.MovingManager.gameObject.SetActive(true);
     }
 
     void StartGame()
     {
         //reset alpha but remove fill amount, so player can't see image
-        levelManager.transitionImage.fillAmount = 0;
-        Color imageColor = levelManager.transitionImage.color;
-        levelManager.transitionImage.color = new Color(imageColor.r, imageColor.g, imageColor.b, 1);
+        levelManager.TransitionImage.fillAmount = 0;
+        Color imageColor = levelManager.TransitionImage.color;
+        levelManager.TransitionImage.color = new Color(imageColor.r, imageColor.g, imageColor.b, 1);
 
         //start game
         levelManager.StartMoving();

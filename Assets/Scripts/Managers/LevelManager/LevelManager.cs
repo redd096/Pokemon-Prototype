@@ -5,12 +5,23 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    public Image transitionImage;
+    [Header("Image used for transitions")]
+    [SerializeField] Image transitionImage = default;
+
+    [Header("Managers")]
+    [SerializeField] MovingManager movingManager = default;
+    [SerializeField] FightManager fightManager = default;
+
+    public Image TransitionImage { get { return transitionImage; } }
+    public MovingManager MovingManager { get { return movingManager; } }
+    public FightManager FightManager { get { return fightManager; } }
 
     Animator anim;
 
     private void Start()
     {
+        transitionImage.gameObject.SetActive(true);
+
         anim = GetComponent<Animator>();
     }
 

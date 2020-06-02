@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : StateMachine
 {
+    [Header("Moving Phase")]
     [SerializeField] float durationMovement = 1;
 
 

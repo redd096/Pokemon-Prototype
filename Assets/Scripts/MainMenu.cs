@@ -13,6 +13,8 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        imageTransition.gameObject.SetActive(true);
+
         fade = StartCoroutine(FadeOut());
     }
 

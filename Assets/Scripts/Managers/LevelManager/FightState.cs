@@ -32,8 +32,8 @@ public class FightState : StateMachineBehaviour
     void SetManagers()
     {
         //deactive moving manager and active fight manager
-        gm.movingManager.gameObject.SetActive(false);
-        gm.fightManager.gameObject.SetActive(true);
+        levelManager.MovingManager.gameObject.SetActive(false);
+        levelManager.FightManager.gameObject.SetActive(true);
     }
 
     void SetPlayer()

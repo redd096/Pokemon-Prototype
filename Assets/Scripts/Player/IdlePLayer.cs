@@ -42,7 +42,7 @@ public class IdlePLayer : State
         newPosition = stateMachine.transform.position + direction;
 
         //check if path is free or there is a collision
-        return GameManager.instance.movingManager.CheckPath(newPosition);
+        return GameManager.instance.levelManager.MovingManager.CheckPath(newPosition);
     }
 
     void Move(Vector3 newPosition, string direction)
