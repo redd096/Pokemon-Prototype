@@ -13,25 +13,28 @@ public class MovingManager : MonoBehaviour
     [SerializeField] Tilemap grass = default;
     [SerializeField] Tilemap collision = default;
 
-    public Tilemap Grass { get { return grass; } }
-    public Tilemap Collision { get { return collision; } }
-
+    /// <summary>
+    /// Before moving, check if there is path or there is a collision
+    /// </summary>
     public bool CheckPath(Vector3 playerDestination)
     {
         //world to cell position
-        Vector3Int cellPosition = Collision.WorldToCell(playerDestination);
+        Vector3Int cellPosition = collision.WorldToCell(playerDestination);
 
         //check if there is not collision tile
-        return Collision.GetTile(cellPosition) == null;
+        return collision.GetTile(cellPosition) == null;
     }
 
+    /// <summary>
+    /// After moving, check if the player found a pokemon
+    /// </summary>
     public bool CheckPokemon(Vector3 playerPosition)
     {
         //world to cell position
-        Vector3Int cellPosition = Grass.WorldToCell(playerPosition);
+        Vector3Int cellPosition = grass.WorldToCell(playerPosition);
 
         //check if there is grass
-        if(Grass.GetTile(cellPosition) != null)
+        if(grass.GetTile(cellPosition) != null)
         {
             int random = Random.Range(0, 100);
 
