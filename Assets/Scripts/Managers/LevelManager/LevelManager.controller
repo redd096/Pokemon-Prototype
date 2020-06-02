@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToFadeIn: 1
+  delayBetweenFade: 0.5
   timeToFadeOut: 1
   startFight: 1
 --- !u!1102 &1541810708310667487
@@ -423,5 +424,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToFadeIn: 1
+  delayBetweenFade: 0.5
   timeToFadeOut: 1
   startFight: 0
