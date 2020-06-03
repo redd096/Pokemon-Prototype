@@ -7,7 +7,6 @@ public class Player : StateMachine
     [Header("Moving Phase")]
     [SerializeField] float durationMovement = 1;
 
-
     public Animator Anim { get; private set; }
     public float DurationMovement { get { return durationMovement; } }
 
@@ -33,7 +32,7 @@ public class Player : StateMachine
     public void StartFightPhase()
     {
         //start state machine for fight
-        SetState(new FightPlayer(this));
+        SetState(null);
     }
 
     #endregion

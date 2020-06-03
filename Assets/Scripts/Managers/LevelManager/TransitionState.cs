@@ -20,7 +20,7 @@ public class TransitionState : StateMachineBehaviour
         if(levelManager == null)
             levelManager = animator.GetComponent<LevelManager>();
 
-        //do fade in
+        //do fade in, then call EndFadeIn
         levelManager.FadeIn(timeToFadeIn, EndFadeIn);
     }
 
@@ -29,20 +29,20 @@ public class TransitionState : StateMachineBehaviour
         //change scene behind transition image
         SetManagers();
 
-        //wait then call fade out
+        //wait, then call fade out
         levelManager.Wait(delayBetweenFade, StartFadeOut);
     }
 
     void SetManagers()
     {
-        //active and deactive, based on startFight
+        //active and deactive based on startFight
         levelManager.FightManager.gameObject.SetActive(startFight);
         levelManager.MovingManager.gameObject.SetActive(!startFight);
     }
 
     void StartFadeOut()
     {
-        //do fade out
+        //do fade out, then call StartGame
         levelManager.FadeOut(timeToFadeOut, StartGame);
     }
 

@@ -17,4 +17,9 @@ public class StateMachine : MonoBehaviour
         if(state != null)
             StartCoroutine(state.Enter());
     }
+
+    //void Update()
+    //{
+    //    state?.Execution();
+    //}
 }
