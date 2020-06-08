@@ -15,8 +15,8 @@ MonoBehaviour:
   pokemonName: "DoDoD\xF2DoDoKi"
   pokemonType: 0
   speedExperience: 1
-  pokemonFront: {fileID: 21300000, guid: 016ca5f490f65e44bb54f3bdc3b38fb1, type: 3}
-  pokemonBack: {fileID: 21300000, guid: 88b83ba043ceaf34db8377afb22d0fe0, type: 3}
+  pokemonFront: {fileID: 21300000, guid: 9d43f548b481d4f4e91f77440745b98b, type: 3}
+  pokemonBack: {fileID: 21300000, guid: 58bb6d8acbb006f45a93fe625da6b3d0, type: 3}
   health: 100
   speed: 45
   physicsAttack: 10

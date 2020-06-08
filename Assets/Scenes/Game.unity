@@ -1342,7 +1342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPokemonsData:
-  - {fileID: 11400000, guid: 4e65cb8b7a8f16f4383bc3746b1e63e5, type: 2}
+  - {fileID: 11400000, guid: 2b0e17dc0de30814da41c0b0c981bc19, type: 2}
   enemyPokemons: []
   baseSkill: {fileID: 11400000, guid: 96c17c6e4457ac94b939f1f401fd5d73, type: 2}
 --- !u!4 &401553864
