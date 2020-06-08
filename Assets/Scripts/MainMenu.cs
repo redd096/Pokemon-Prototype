@@ -8,13 +8,16 @@ public class MainMenu : MonoBehaviour
     [SerializeField] Image imageTransition = default;
     [SerializeField] float timeFadeOut = 1;
     [SerializeField] float timeFadeIn = 1;
+    [SerializeField] string nameNewScene = "Game";
 
     Coroutine fade;
 
     private void Start()
     {
+        //set active
         imageTransition.gameObject.SetActive(true);
 
+        //then start fade out
         fade = StartCoroutine(FadeOut());
     }
 
@@ -31,6 +34,13 @@ public class MainMenu : MonoBehaviour
         fade = null;
     }
 
+    public void StartGame()
+    {
+        //check is finished coroutine
+        if (fade == null)
+            fade = StartCoroutine(FadeIn());
+    }
+
     IEnumerator FadeIn()
     {
         float delta = 0;
@@ -41,12 +51,7 @@ public class MainMenu : MonoBehaviour
             yield return null;
         }
 
-        SceneLoader.instance.LoadNewScene("Game");
-    }
-
-    public void StartGame()
-    {
-        if(fade == null)
-            fade = StartCoroutine(FadeIn());
+        //load new scene
+        SceneLoader.instance.LoadNewScene(nameNewScene);
     }
 }

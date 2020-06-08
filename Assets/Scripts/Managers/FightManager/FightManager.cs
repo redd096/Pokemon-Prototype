@@ -5,24 +5,27 @@ using UnityEngine.UI;
 
 public class FightManager : MonoBehaviour
 {
+    public FightUIManager FightUIManager { get; private set; }
+
+    [Header("TODO")]
+    public PokemonData[] enemyPokemonsData;
+    public PokemonModel[] enemyPokemons;
+
+    [Header("Skill when everything at 0 PP")]
+    public SkillData baseSkill;
+
     Animator anim;
-
-    [Header("Arena")]
-    public Transform playerPokemon = default;
-    public Transform enemyPokemon = default;
-
-    [Header("InfoBox")]
-    public Text description = default;
-    public GameObject playerMenu = default;
-    public GameObject fightMenu = default;
-
-    [Header("Menu")]
-    public GameObject pokemonMenu = default;
-    public GameObject bagMenu = default;
 
     void Start()
     {
         anim = GetComponent<Animator>();
+        FightUIManager = GetComponent<FightUIManager>();
+
+        //foreach data, create a pokemon model
+        enemyPokemons = new PokemonModel[enemyPokemonsData.Length];
+
+        for (int i = 0; i < enemyPokemonsData.Length; i++)
+            enemyPokemons[i] = new PokemonModel(enemyPokemonsData[i], 5);
     }
 
     public void StartFightPhase()
@@ -34,25 +37,22 @@ public class FightManager : MonoBehaviour
 
     public void FightClick()
     {
-        playerMenu.SetActive(false);
-        fightMenu.SetActive(true);
+        FightUIManager.FightClick();
     }
 
     public void PokemonClick()
     {
-        playerMenu.SetActive(false);
-        pokemonMenu.SetActive(true);
+        FightUIManager.PokemonClick();
     }
 
     public void BagClick()
     {
-        playerMenu.SetActive(false);
-        bagMenu.SetActive(true);
+        FightUIManager.BagClick();
     }
 
     public void RunClick()
     {
-        playerMenu.SetActive(false);
+        FightUIManager.RunClick();
         GameManager.instance.levelManager.StartMoving();
     }
 
@@ -60,10 +60,6 @@ public class FightManager : MonoBehaviour
 
     public void BackToPlayerMenu()
     {
-        fightMenu.SetActive(false);
-        pokemonMenu.SetActive(false);
-        bagMenu.SetActive(false);
-
-        playerMenu.SetActive(true);
+        FightUIManager.BackToPlayerMenu();
     }
 }

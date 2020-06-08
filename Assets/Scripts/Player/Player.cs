@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class Player : StateMachine
 {
+    [Header("Pokemon")]
+    [SerializeField] PokemonData[] playerPokemonsData = default;
+    [SerializeField] PokemonModel[] playerPokemons = default;
+
+    [Header("Items")]
+    [SerializeField] ItemData[] playerItemsData = default;
+
     [Header("Moving Phase")]
     [SerializeField] float durationMovement = 1;
 
-    public Animator Anim { get; private set; }
+    public PokemonModel[] PlayerPokemon { get { return playerPokemons; } }
+    public ItemData[] PlayerItems { get { return playerItemsData; } }
     public float DurationMovement { get { return durationMovement; } }
 
-    void Start()
+    private void Start()
     {
-        //get animator
-        Anim = GetComponentInChildren<Animator>();
+        //foreach data, create a pokemon model
+        playerPokemons = new PokemonModel[playerPokemonsData.Length];
+
+        for (int i = 0; i < playerPokemonsData.Length; i++)
+            playerPokemons[i] = new PokemonModel(playerPokemonsData[i], 5);
     }
 
     void Update()

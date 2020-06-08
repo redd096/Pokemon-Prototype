@@ -12,17 +12,34 @@ public class SetupFightManager : FightManagerState
 
         DeactiveEverything();
 
-        //TODO set every menu (skill, lista pokemon, lista oggetti)
+        //set arena
+        SetArena();
+
+        //set lists of pokemons and items
+        SetPokemonList();
+        SetItemsList();
     }
 
     void DeactiveEverything()
     {
-        //deactive everything
-        fightManager.playerPokemon.gameObject.SetActive(false);
-        fightManager.description.gameObject.SetActive(false);
-        fightManager.playerMenu.SetActive(false);
-        fightManager.fightMenu.SetActive(false);
-        fightManager.pokemonMenu?.SetActive(false);
-        fightManager.bagMenu?.SetActive(false);
+        fightManager.FightUIManager.DeactiveEverything();
+    }
+
+    void SetArena()
+    {
+        PokemonModel playerPokemon = GameManager.instance.player.PlayerPokemon[0];
+        PokemonModel enemyPokemon = fightManager.enemyPokemons[0];
+
+        fightManager.FightUIManager.SetArena(playerPokemon, enemyPokemon);
+    }
+
+    void SetPokemonList()
+    {
+        fightManager.FightUIManager.SetPokemonList();
+    }
+
+    void SetItemsList()
+    {
+        fightManager.FightUIManager.SetItemsList();
     }
 }

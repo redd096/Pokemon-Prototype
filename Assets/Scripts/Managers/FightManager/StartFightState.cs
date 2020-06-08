@@ -5,9 +5,9 @@ using UnityEngine;
 public class StartFightState : FightManagerState
 {
     [Header("Description")]
-    [SerializeField] string description = "Trovato pokemon selvatico";
+    [SerializeField] string description = "Trovato {0} selvatico";
     [SerializeField] float timeBetweenChar = 0.05f;
-    [SerializeField] float skip = 0.01f;
+    [SerializeField] float skipSpeed = 0.01f;
 
     [Header("Player Pokemon")]
     [SerializeField] float durationAnimation = 1.5f;
@@ -50,23 +50,20 @@ public class StartFightState : FightManagerState
         //set to 0
         delta = 0;
 
-        fightManager.playerPokemon.localScale = Vector3.zero;
-        fightManager.description.text = string.Empty;
+        fightManager.FightUIManager.ResetElements();
     }
 
     void ActiveElements()
     {
         //active pokemon
-        fightManager.playerPokemon.gameObject.SetActive(true);
-
-        //active description
-        fightManager.description.gameObject.SetActive(true);
+        fightManager.FightUIManager.ActiveElements();
     }
 
     void SetDescription()
     {
-        //write description letter by letter. Then press a button and call OnEndDescription
-        UtilityMonoBehaviour.instance.WriteLetterByLetter(fightManager.description, description, timeBetweenChar, skip, OnEndDescription);
+        //select description args and Set Description letter by letter, then call OnEndDescription
+        string[] args = new string[] { fightManager.enemyPokemons[0].pokemonData.PokemonName };
+        fightManager.FightUIManager.SetDescription(description, args, timeBetweenChar, skipSpeed, OnEndDescription);
     }
 
     #endregion
@@ -80,7 +77,7 @@ public class StartFightState : FightManagerState
             delta += Time.deltaTime / durationAnimation;
 
             //increase size
-            fightManager.playerPokemon.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, delta);
+            fightManager.FightUIManager.PokemonAnimation(delta);
         }
     }
 
@@ -88,8 +85,8 @@ public class StartFightState : FightManagerState
 
     void OnEndDescription()
     {
-        //be sure to comlete animation
-        fightManager.playerPokemon.localScale = Vector3.one;
+        //be sure to complete animation
+        fightManager.FightUIManager.OnEndDescription();
 
         //change state
         anim.SetTrigger("PlayerRound");

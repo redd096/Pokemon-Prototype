@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea905b527f96d44daf84fa39e9f3aaa, type: 3}
+  m_Name: Giantuiotto
+  m_EditorClassIdentifier: 
+  pokemonName: Giantuiotto
+  pokemonType: 0
+  speedExperience: 1
+  pokemonFront: {fileID: 21300000, guid: c23bc204844129647b09ff8ec36b2129, type: 3}
+  pokemonBack: {fileID: 21300000, guid: e1b3f41d3d547164fbb5122011911fef, type: 3}
+  health: 100
+  speed: 45
+  physicsAttack: 10
+  physicsDefense: 10
+  specialAttack: 10
+  specialDefense: 10
+  possibleSkills: []
+  experienceOnDeath: 64
+  catchRate: 45
+  evolutionLevel: 30
+  pokemonEvolution: {fileID: 0}

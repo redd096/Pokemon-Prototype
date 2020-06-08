@@ -179,9 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572b8ef8b0bf3434a864573bff9a2fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Trovato pokemon selvatico
+  description: Trovato {0} selvatico
   timeBetweenChar: 0.05
-  skip: 0.01
+  skipSpeed: 0.01
   durationAnimation: 1.5
 --- !u!114 &1958415519828615227
 MonoBehaviour:

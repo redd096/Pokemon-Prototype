@@ -15,11 +15,11 @@ public class PlayerRound : FightManagerState
 
     void DeactiveDescription()
     {
-        fightManager.description.gameObject.SetActive(false);
+        fightManager.FightUIManager.DeactiveDescription();
     }
 
     void ActivePlayerMenu()
     {
-        fightManager.playerMenu.SetActive(true);
+        fightManager.FightUIManager.ActivePlayerMenu();
     }
 }

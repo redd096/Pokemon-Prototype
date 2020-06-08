@@ -18,7 +18,7 @@ public class MovingPlayer : State
         //get references from player
         Player player = stateMachine as Player;
         Transform transform = player.transform;
-        Animator anim = player.Anim;
+        Animator anim = player.GetComponentInChildren<Animator>();
         float durationMovement = player.DurationMovement;
 
         //start variables
