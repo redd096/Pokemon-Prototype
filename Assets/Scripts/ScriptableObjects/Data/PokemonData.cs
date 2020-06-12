@@ -5,6 +5,7 @@ public enum EType
     normal,
     fire,
     water,
+    grass,
 }
 
 public enum ESpeedExperience
