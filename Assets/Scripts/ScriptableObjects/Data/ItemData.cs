@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item", menuName = "PokemonPrototype/Item")]
-public class ItemData : ScriptableObject
+public class ItemData : ScriptableObject, IGetButtonName
 {
     [Header("Important")]
     [SerializeField] string itemName = "Life Potion";
@@ -18,4 +18,9 @@ public class ItemData : ScriptableObject
     public EEffect Effect => effect;
     public float Value => value;
     public int Duration => duration;
+
+    public string GetButtonName()
+    {
+        return ItemName;
+    }
 }

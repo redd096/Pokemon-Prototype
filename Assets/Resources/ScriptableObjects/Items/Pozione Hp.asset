@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 789fd712b9f2c044984eb26b889fd13e, type: 3}
-  m_Name: Life Potion
+  m_Name: Pozione Hp
   m_EditorClassIdentifier: 
-  itemName: Life Potion
+  itemName: Pozione Hp
   effect: 1
   value: 30
   duration: 0

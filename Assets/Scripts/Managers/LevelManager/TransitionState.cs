@@ -38,6 +38,10 @@ public class TransitionState : StateMachineBehaviour
         //active and deactive based on startFight
         levelManager.FightManager.gameObject.SetActive(startFight);
         levelManager.MovingManager.gameObject.SetActive(!startFight);
+
+        //start setup waiting the fade out
+        if (startFight)
+            levelManager.FightManager.SetupState();
     }
 
     void StartFadeOut()

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class SkillModel
+public class SkillModel : IGetButtonName
 {
     public SkillData skillData;// { get; private set; }
 
@@ -14,6 +14,11 @@ public class SkillModel
 
         //set full pp
         RestorePP();
+    }
+
+    public string GetButtonName()
+    {
+        return skillData.SkillName + " - PP: " + CurrentPP;
     }
 
     public void RestorePP()

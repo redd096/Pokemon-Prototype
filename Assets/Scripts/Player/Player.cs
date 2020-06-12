@@ -14,7 +14,7 @@ public class Player : StateMachine
     [Header("Moving Phase")]
     [SerializeField] float durationMovement = 1;
 
-    public PokemonModel[] PlayerPokemon { get { return playerPokemons; } }
+    public PokemonModel[] PlayerPokemons { get { return playerPokemons; } }
     public ItemData[] PlayerItems { get { return playerItemsData; } }
     public float DurationMovement { get { return durationMovement; } }
 

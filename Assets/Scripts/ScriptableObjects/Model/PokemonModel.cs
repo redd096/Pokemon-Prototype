@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PokemonModel
+public class PokemonModel : IGetButtonName
 {
     #region variables
 
@@ -46,6 +46,11 @@ public class PokemonModel
         RandomSkills();
 
         Restore();
+    }
+
+    public string GetButtonName()
+    {
+        return pokemonData.PokemonName;
     }
 
     /// <summary>
