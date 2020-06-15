@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
 {
+    Coroutine isWriting;
+
     #region private API
 
     /// <summary>
@@ -11,6 +13,8 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     /// </summary>
     IEnumerator WriteLetterByLetter_Coroutine(Text textToSet, string value, float timeBetweenChar, float skipSpeed, System.Action onEndWrite, bool canSkip, bool wait)
     {
+        textToSet.text = string.Empty;
+
         //foreach char in value
         for (int i = 0; i < value.Length; i++)
         {
@@ -46,6 +50,8 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
 
         //call a function on end write
         onEndWrite?.Invoke();
+
+        isWriting = null;
     }
 
     /// <summary>
@@ -54,6 +60,7 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     IEnumerator WriteLetterByLetter_Coroutine(Text textToSet, string value, float timeBetweenChar, System.Action onEndWrite, bool canSkip, bool wait)
     {
         bool skipped = false;
+        textToSet.text = string.Empty;
 
         //foreach char in value
         for (int i = 0; i < value.Length; i++)
@@ -92,6 +99,8 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
 
         //call a function on end write
         onEndWrite?.Invoke();
+
+        isWriting = null;
     }
 
     #endregion
@@ -101,7 +110,10 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     /// </summary>
     public void WriteLetterByLetterAndWait(Text textToSet, string value, float timeBetweenChar, float skipSpeed, System.Action onEndWrite = null, bool canSkip = true)
     {
-        StartCoroutine(WriteLetterByLetter_Coroutine(textToSet, value, timeBetweenChar, skipSpeed, onEndWrite, canSkip, true));
+        if (isWriting != null)
+            StopCoroutine(isWriting);
+
+        isWriting = StartCoroutine(WriteLetterByLetter_Coroutine(textToSet, value, timeBetweenChar, skipSpeed, onEndWrite, canSkip, true));
     }
 
     /// <summary>
@@ -109,7 +121,10 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     /// </summary>
     public void WriteLetterByLetterAndWait(Text textToSet, string value, float timeBetweenChar, System.Action onEndWrite = null, bool canSkip = true)
     {
-        StartCoroutine(WriteLetterByLetter_Coroutine(textToSet, value, timeBetweenChar, onEndWrite, canSkip, true));
+        if (isWriting != null)
+            StopCoroutine(isWriting);
+
+        isWriting = StartCoroutine(WriteLetterByLetter_Coroutine(textToSet, value, timeBetweenChar, onEndWrite, canSkip, true));
     }
 
     /// <summary>
@@ -117,7 +132,10 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     /// </summary>
     public void WriteLetterByLetter(Text textToSet, string value, float timeBetweenChar, float skipSpeed, System.Action onEndWrite = null, bool canSkip = true)
     {
-        StartCoroutine(WriteLetterByLetter_Coroutine(textToSet, value, timeBetweenChar, skipSpeed, onEndWrite, canSkip, false));
+        if (isWriting != null)
+            StopCoroutine(isWriting);
+
+        isWriting = StartCoroutine(WriteLetterByLetter_Coroutine(textToSet, value, timeBetweenChar, skipSpeed, onEndWrite, canSkip, false));
     }
 
     /// <summary>
@@ -125,6 +143,9 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     /// </summary>
     public void WriteLetterByLetter(Text textToSet, string value, float timeBetweenChar, System.Action onEndWrite = null, bool canSkip = true)
     {
-        StartCoroutine(WriteLetterByLetter_Coroutine(textToSet, value, timeBetweenChar, onEndWrite, canSkip, false));
+        if (isWriting != null)
+            StopCoroutine(isWriting);
+
+        isWriting = StartCoroutine(WriteLetterByLetter_Coroutine(textToSet, value, timeBetweenChar, onEndWrite, canSkip, false));
     }
 }

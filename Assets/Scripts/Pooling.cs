@@ -102,6 +102,14 @@ public class Pooling
             pooledObjects[i].SetActive(false);
         }
     }
+
+    /// <summary>
+    /// Simple deactive function
+    /// </summary>
+    public static void Destroy(GameObject objToDestroy)
+    {
+        objToDestroy.SetActive(false);
+    }
 }
 
 /// <summary>
@@ -204,5 +212,13 @@ public class Pooling<T> where T : Component
         {
             pooledObjects[i].gameObject.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// Simple deactive function
+    /// </summary>
+    public static void Destroy(GameObject objToDestroy)
+    {
+        objToDestroy.SetActive(false);
     }
 }

@@ -16,6 +16,14 @@ public class FightManager : MonoBehaviour
     public PokemonModel currentPlayerPokemon { get; private set; }
     public PokemonModel currentEnemyPokemon { get; private set; }
 
+    #region for states
+    
+    public SkillModel skillUsed { get; private set; }
+    public PokemonModel pokemonSelected { get; private set; }
+    public ItemData itemUsed { get; private set; }
+
+    #endregion
+
     Animator anim;
 
     void Start()
@@ -88,41 +96,26 @@ public class FightManager : MonoBehaviour
 
     public void UseSkill(SkillModel skill)
     {
+        //remove PP
         skill.CurrentPP--;
 
-        //TODO
-        //hide fight menu
-        //show description what skill is used
-        //make animation attack
-        //damage enemy based on skill (animation health slider)
-        //apply possible effects
-        //start enemy turn
+        //set skill and change state
+        skillUsed = skill;
+        anim.SetTrigger("Skill");
     }
 
     public void ChangePokemon(PokemonModel pokemon)
     {
-        if (pokemon == currentPlayerPokemon)
-        {
-            //dovrà esserci una infobox pure in fondo alla lista pokemon
-            //che mi dirà che questo è già il pokemon selezionato e tanti saluti
-        }
-        //TODO
-        //hide pokemon menu
-        //show description from which pokemon to new one
-        //show animation spawn new pokemon
-        //set new skills pooling
-        //start enemy turn
-        SetCurrentPlayerPokemon(pokemon);
+        //set pokemon and change state
+        pokemonSelected = pokemon;
+        anim.SetTrigger("Pokemon");
     }
 
     public void UseItem(ItemData item)
     {
-        //TODO
-        //hide bag menu
-        //show descrition which item is used
-        //apply effect
-        //start enemy turn
-
+        //set item and change state
+        itemUsed = item;
+        anim.SetTrigger("Item");
     }
 
     #endregion

@@ -88,7 +88,7 @@ public class FightUIManager : MonoBehaviour
         GameManager.instance.levelManager.FightManager.UseItem(item);
 
         //deactive this button item
-        button.gameObject.SetActive(false);
+        Pooling.Destroy(button.gameObject);
     }
 
     void SetList<T>(Pooling<Button> poolingList, T[] valueArray, Transform parent, System.Action<Button, T> function) where T : IGetButtonName
