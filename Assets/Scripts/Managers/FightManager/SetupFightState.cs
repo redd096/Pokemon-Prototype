@@ -10,14 +10,14 @@ public class SetupFightState : FightManagerState
 
         //set lists of skills, pokemons and items
         SetSkillsList();
-        SetItemsList();
         SetPokemonList();
+        SetItemsList();
     }
 
     void SetSkillsList()
     {
         //set skills first pokemon
-        fightManager.FightUIManager.SetSkillsList(GameManager.instance.player.PlayerPokemons[0]);
+        fightManager.FightUIManager.SetSkillsList(fightManager.currentPlayerPokemon);
     }
 
     void SetPokemonList()

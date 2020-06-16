@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerItemState : FightManagerState
+public class ItemState : FightManagerState
 {
+    [Header("Is Player Turn")]
+    [SerializeField] bool isPlayer = true;
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         //TODO
-        //hide bag menu
-        //show descrition which item is used
-        //apply effect
+        //apply possible effect to player pokemon
+        //description effect attivo?
         //start enemy turn
     }
 }

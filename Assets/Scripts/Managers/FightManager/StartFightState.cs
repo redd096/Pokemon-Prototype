@@ -5,6 +5,7 @@ using UnityEngine;
 public class StartFightState : FightManagerState
 {
     [Header("Description")]
+    [TextArea()]
     [SerializeField] string description = "Trovato {0} selvatico";
     [SerializeField] float timeBetweenChar = 0.05f;
     [SerializeField] float skipSpeed = 0.01f;
@@ -20,7 +21,8 @@ public class StartFightState : FightManagerState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        ResetElements();
+        //set to 0
+        delta = 0;
 
         ActiveElements();
 
@@ -45,18 +47,10 @@ public class StartFightState : FightManagerState
 
     #region enter
 
-    void ResetElements()
-    {
-        //set to 0
-        delta = 0;
-
-        fightManager.FightUIManager.ResetElements();
-    }
-
     void ActiveElements()
     {
         //active pokemon
-        fightManager.FightUIManager.ActiveElements();
+        fightManager.FightUIManager.ActivePokemonImage();
     }
 
     void SetDescription()
@@ -77,7 +71,7 @@ public class StartFightState : FightManagerState
             delta += Time.deltaTime / durationAnimation;
 
             //increase size
-            fightManager.FightUIManager.PokemonAnimation(delta);
+            fightManager.FightUIManager.PokemonSpawnAnimation(true, delta);
         }
     }
 

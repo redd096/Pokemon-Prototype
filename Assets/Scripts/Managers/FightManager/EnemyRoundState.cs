@@ -8,14 +8,7 @@ public class EnemyRoundState : FightManagerState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        DeactiveDescription();
-
         ActivePlayerMenu();
-    }
-
-    void DeactiveDescription()
-    {
-        fightManager.FightUIManager.DeactiveDescription();
     }
 
     void ActivePlayerMenu()

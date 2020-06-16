@@ -3174,6 +3174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPokemonsData:
   - {fileID: 11400000, guid: 4e65cb8b7a8f16f4383bc3746b1e63e5, type: 2}
+  - {fileID: 11400000, guid: f235e15cc06e31641b442b229d9009b2, type: 2}
   playerPokemons: []
   playerItemsData:
   - {fileID: 11400000, guid: e98284c276d5f3f4c8e5c1d1095ae128, type: 2}

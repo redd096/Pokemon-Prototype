@@ -16,7 +16,7 @@ MonoBehaviour:
   skillType: 0
   pp: 0
   isSpecial: 0
-  power: 10
+  power: 100
   accuracy: 50
   effect: 0
   value: 0

@@ -54,6 +54,19 @@ public class PokemonModel : IGetButtonName
     }
 
     /// <summary>
+    /// get damage and check if dead
+    /// </summary>
+    public void GetDamage(float damage)
+    {
+        CurrentHealth -= damage;
+
+        if(CurrentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    /// <summary>
     /// get experience and check level up
     /// </summary>
     public void GetExperience(float experience)
@@ -86,6 +99,11 @@ public class PokemonModel : IGetButtonName
     }
 
     #region private API
+
+    void Die()
+    {
+
+    }
 
     void LevelUp()
     {
