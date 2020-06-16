@@ -23,7 +23,7 @@ public struct SPokemonSkill
     public int level;
 }
 
-[CreateAssetMenu(fileName = "Pokemon", menuName = "PokemonPrototype/Pokemon")]
+[CreateAssetMenu(fileName = "Pokemon", menuName = "Pokemon Prototype/Pokemon")]
 public class PokemonData : ScriptableObject
 {
     [Header("Important")]

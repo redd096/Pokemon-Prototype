@@ -58,8 +58,8 @@ public class SkillState : FightManagerState
         float defense = fightManager.skillUsed.skillData.IsSpecial ? otherPokemon.SpecialDefense : otherPokemon.PhysicsDefense;
 
         //get multipliers
-        float efficiencyMultiplier = skill.EfficiencyMultiplier(skill.skillData.SkillType, otherPokemon.pokemonData.PokemonType);
-        float stab = skill.STAB(skill.skillData.SkillType, thisPokemon.pokemonData.PokemonType);
+        float efficiencyMultiplier = skill.EfficiencyMultiplier(otherPokemon.pokemonData.PokemonType);
+        float stab = skill.STAB(thisPokemon.pokemonData.PokemonType);
         float nRandom = skill.NRandom();
 
         //((( (2 * Livello Pokemon + 10) * Attacco Pokemon * Potenza Mossa ) / (250 * Difesa Fisica o Difesa Speciale del Nemico)) +2 ) * Efficacia * STAB * N

@@ -10,7 +10,7 @@ public enum EEffect
     paralyzed,
 }
 
-[CreateAssetMenu(fileName = "Skill", menuName = "PokemonPrototype/Skill")]
+[CreateAssetMenu(fileName = "Skill", menuName = "Pokemon Prototype/Skill")]
 public class SkillData : ScriptableObject
 {
     [Header("Important")]

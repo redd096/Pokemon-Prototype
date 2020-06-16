@@ -29,32 +29,19 @@ public class SkillModel : IGetButtonName
     /// <summary>
     /// Get Efficiency Multiplier
     /// </summary>
-    public float EfficiencyMultiplier(EType skillType, EType pokemonToAttackType)
+    public float EfficiencyMultiplier(EType pokemonToAttackType)
     {
-        switch (pokemonToAttackType)
-        {
-            case EType.normal:
-                break;
-            case EType.fire:
-                break;
-            case EType.water:
-                break;
-            case EType.grass:
-                break;
-            default:
-                break;
-        }
-
-        return 1;
+        //get from the matrix in fight manager
+        return GameManager.instance.levelManager.FightManager.efficiencyTAB.PokemonArray[(int)pokemonToAttackType].SkillArray[(int)skillData.SkillType];
     }
 
     /// <summary>
     /// Same Type Attack Bonus (skill same type as pokemon)
     /// </summary>
-    public float STAB(EType skillType, EType pokemonType)
+    public float STAB(EType pokemonType)
     {
         //if same type of skill and pokemon, x1.5
-        if (skillType == pokemonType)
+        if (skillData.SkillType == pokemonType)
             return 1.5f;
 
         //else x1

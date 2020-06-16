@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item", menuName = "PokemonPrototype/Item")]
+[CreateAssetMenu(fileName = "Item", menuName = "Pokemon Prototype/Item")]
 public class ItemData : ScriptableObject, IGetButtonName
 {
     [Header("Important")]

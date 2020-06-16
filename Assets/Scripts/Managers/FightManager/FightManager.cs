@@ -11,7 +11,10 @@ public class FightManager : MonoBehaviour
     public PokemonModel[] enemyPokemons;
 
     [Header("Skill when everything at 0 PP")]
-    public SkillData baseSkill;
+    [SerializeField] SkillData baseSkill = default;
+
+    [Header("Efficiency TAB")]
+    public EfficiencyTAB efficiencyTAB;
 
     public PokemonModel currentPlayerPokemon { get; private set; }
     public PokemonModel currentEnemyPokemon { get; private set; }
