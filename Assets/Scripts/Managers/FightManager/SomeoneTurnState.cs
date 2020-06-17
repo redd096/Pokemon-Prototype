@@ -12,7 +12,8 @@ public class SomeoneTurnState : FightManagerState
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         //check if there are effects
-        //check if dead, then show player menu or do enemy attack
+        //check if dead
+        //then show player menu or do enemy attack
 
         //TODO se ha qualche effetto attivo, deve mostrarlo
 

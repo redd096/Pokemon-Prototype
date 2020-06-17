@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokemonDead : FightManagerState
+public class PokemonDeadState : FightManagerState
 {
     [Header("Is Player Pokemon Who is Dead")]
     [SerializeField] bool isPlayerPokemon = true;
@@ -13,7 +13,7 @@ public class PokemonDead : FightManagerState
 
         //check if there are pokemon alives, else call NoMorePokemons
 
-        //if there are pokemon alives, show player menu or change enemy pokemon
+        //if there are pokemon alives, show player menu or select new enemy pokemon
 
         CheckPokemons(animator);
     }

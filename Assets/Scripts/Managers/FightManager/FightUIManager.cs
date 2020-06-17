@@ -74,30 +74,27 @@ public class FightUIManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        //set start position for pokemon images
-        playerPosition = playerImage.transform.position;
-        enemyPosition = enemyImage.transform.position;
-
         //TODO
-        //VANNO AGGIUNTI GLI EFFETTI - SIA DELLE SKILL CHE DEGLI ITEMS (ITEM STATE PER ORA NON FA UN CAZZO)
-        //VA CONTROLLATO IL FINE BATTAGLIA - DARE EXP, ECC...
-        //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC...
+        //VANNO AGGIUNTI GLI EFFETTI - SIA DELLE SKILL CHE DEGLI ITEMS (ITEM STATE PER ORA NON FA UN CAZZO) [Skill State + Item State + Someone Turn State]
+        //VA CONTROLLATO IL FINE BATTAGLIA - DARE EXP, ECC... [End Fight State]
+        //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC... [End Fight State + Pokemon Model]
+        //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
+
+        //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player]
+        //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer]
 
         //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
-
-        //VA AGGIUNTO UN MENU DI PAUSA DURANTE LA FASE MOVING (PER USCIRE DAL GIOCO)
-
         //VANNO AGGIUNTO LE POKEBALL
 
         /*
             da fare se rimane tempo:
-            - in base alla zona appaiono pokemon diversi e hanno % di apparizione
-            - % di apparizione basata su un valore rarità nella scheda del pokemon
+            - in base alla zona appaiono pokemon diversi e hanno % di apparizione - vengono settati da moving manager. Si può rendere array grass Tile con % e pokemon diversi
+            NB. si potrebbe fare anche FightManager singleton e MovingManager differente per ogni scena, così da poter creare anche scene differenti con questo metodo
+            - % di apparizione basata su un valore rarità nella scheda del pokemon - o questa o la % nel grass tile
             - suoni
             - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta)
-            - menù di pausa durante la fase di Fight
-            - salvataggio all'uscita dal gioco
-            - se si vuole esagerare, i pokemon mantengono i danni subiti e PP e bisogna farli curare, quindi aggiungere ospedali
+            - salvataggio all'uscita dal gioco (o alla peggio, nel fade out quando finisce un combattimento, o quando si rigenerano i pokemon all'ospedale)
+            - se si vuole esagerare, i pokemon mantengono i danni subiti e PP e bisogna farli curare, quindi aggiungere ospedali e rimuovere il Restore da RunClick()
          */
     }
 
@@ -125,7 +122,7 @@ public class FightUIManager : MonoBehaviour
         GameManager.instance.levelManager.FightManager.ChangePokemon(pokemon);
 
         //move current pokemon in arena to the list of pokemons
-        button.GetComponentInChildren<Text>().text = GameManager.instance.levelManager.FightManager.currentPlayerPokemon.GetButtonName();
+        SetButton(button, GameManager.instance.levelManager.FightManager.currentPlayerPokemon, ChangePokemon);
     }
 
     void UseItem(Button button, ItemModel item)
@@ -153,11 +150,11 @@ public class FightUIManager : MonoBehaviour
             button.transform.SetParent(parent, false);
 
             //and set it
-            SetButton(button, value, function, value.GetButtonName());
+            SetButton(button, value, function);
         }
     }
 
-    void SetButton<T>(Button button, T value, System.Action<Button, T> function, string text)
+    void SetButton<T>(Button button, T value, System.Action<Button, T> function) where T : IGetName
     {
         //be sure to not have listeners
         button.onClick.RemoveAllListeners();
@@ -166,7 +163,7 @@ public class FightUIManager : MonoBehaviour
         button.onClick.AddListener(() => function(button, value));
 
         //set text
-        button.GetComponentInChildren<Text>().text = text;
+        button.GetComponentInChildren<Text>().text = value.GetButtonName();
     }
 
     #endregion
@@ -189,6 +186,10 @@ public class FightUIManager : MonoBehaviour
     {
         SetPokemonInArena(true);
         SetPokemonInArena(false);
+
+        //set default position (in set arena, because when player moves, can move camera too)
+        playerPosition = playerImage.transform.position;
+        enemyPosition = enemyImage.transform.position;
     }
 
     #endregion

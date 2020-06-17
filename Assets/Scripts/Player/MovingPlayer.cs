@@ -32,16 +32,25 @@ public class MovingPlayer : State
             delta += Time.deltaTime / durationMovement;
 
             transform.position = Vector2.Lerp(startPosition, targetPosition, delta);
+            MoveCamera(player, transform);
 
             yield return null;
         }
 
         //set final
         transform.position = targetPosition;
+        MoveCamera(player, transform);
         anim.SetTrigger("Idle");
 
         //check destination
         CheckDestination();
+    }
+
+    void MoveCamera(Player player, Transform transform)
+    {
+        //move camera
+        if (player.moveCamera)
+            player.cam.transform.position = transform.position + player.offsetCamera;
     }
 
     void CheckDestination()

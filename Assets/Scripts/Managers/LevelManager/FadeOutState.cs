@@ -36,8 +36,10 @@ public class FadeOutState : StateMachineBehaviour
 
     void SetManagers()
     {
-        //deactive fight manager and active moving manager
+        //deactive fight manager
         levelManager.FightManager.gameObject.SetActive(false);
+
+        //and active moving manager
         levelManager.MovingManager.gameObject.SetActive(true);
     }
 

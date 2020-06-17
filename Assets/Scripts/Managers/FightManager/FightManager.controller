@@ -1,30 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1101 &-9160541367626221080
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: StartFightPhase
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: -1410397768649894222}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
 --- !u!1102 &-7766242422881117682
 AnimatorState:
   serializedVersion: 5
@@ -91,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b9c6b4820ebe741817ef6398e2a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 0
+  isPlayer: 1
   durationDespawn: 0.5
   durationSpawn: 1.5
 --- !u!1102 &-7556670645813989829
@@ -276,7 +251,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Description - Enemy Pokemon
+  m_Name: Description - New Player Pokemon
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -297,6 +272,31 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1101 &-6456826409241565740
+AnimatorStateTransition:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Next
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -2700608918887690042}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!114 &-6423247213176198594
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08dafec5e12d4f84c8a3a9f0ea492698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Torna {EnemyPokemon}. \nVai {Pokemon}! Scelgo te!"
+  description: "Torna {PlayerPokemon}. \nVai {Pokemon}! Scelgo te!"
   timeBetweenChar: 0.05
   skipSpeed: 0.01
 --- !u!114 &-6270227425116522387
@@ -324,7 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08dafec5e12d4f84c8a3a9f0ea492698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "{EnemyPokemon} non pu\xF2 continuare"
+  description: "{PlayerPokemon} \xE8 esausto"
   timeBetweenChar: 0.05
   skipSpeed: 0.01
 --- !u!1101 &-6060701302619080559
@@ -430,31 +430,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1101 &-5507822406158555154
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Pokemon
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: -7556670645813989829}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
 --- !u!1102 &-5274726991294625508
 AnimatorState:
   serializedVersion: 5
@@ -462,7 +437,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy Pokemon
+  m_Name: New Player Pokemon
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -496,6 +471,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 1
+--- !u!1102 &-4321208220694615239
+AnimatorState:
+  serializedVersion: 5
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Description - New Enemy Pokemon
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions:
+  - {fileID: -3182864102281182868}
+  m_StateMachineBehaviours:
+  - {fileID: 6734244032885917023}
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 0}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &-4139152070070450585
 AnimatorState:
   serializedVersion: 5
@@ -524,6 +527,28 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1101 &-3757233544967494544
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions: []
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -6571450876097599654}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &-3465531749334584015
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -549,6 +574,31 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &-3182864102281182868
+AnimatorStateTransition:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Next
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -1364586604008583655}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!114 &-2905053249205032999
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -561,7 +611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08dafec5e12d4f84c8a3a9f0ea492698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "{EnemyPokemon} non pu\xF2 continuare"
+  description: "{EnemyPokemon} \xE8 esausto"
   timeBetweenChar: 0.05
   skipSpeed: 0.01
 --- !u!1101 &-2746658580206001273
@@ -630,9 +680,6 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 7440436355559363026}
-    m_Position: {x: 300, y: 100, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: -1410397768649894222}
     m_Position: {x: 300, y: 200, z: 0}
   - serializedVersion: 1
@@ -640,7 +687,7 @@ AnimatorStateMachine:
     m_Position: {x: 300, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5846549838461869416}
-    m_Position: {x: 300, y: 0, z: 0}
+    m_Position: {x: 300, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5530329774662452488}
     m_Position: {x: 50, y: 400, z: 0}
@@ -676,7 +723,7 @@ AnimatorStateMachine:
     m_Position: {x: 900, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2383998366514748487}
-    m_Position: {x: 300, y: 800, z: 0}
+    m_Position: {x: -300, y: 600, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 398657118672993682}
     m_Position: {x: 600, y: 0, z: 0}
@@ -694,20 +741,52 @@ AnimatorStateMachine:
     m_Position: {x: 900, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5996064802816550485}
-    m_Position: {x: 0, y: 800, z: 0}
+    m_Position: {x: -300, y: 700, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6425824831082069165}
     m_Position: {x: 900, y: 0, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -1364586604008583655}
+    m_Position: {x: 300, y: 800, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -4321208220694615239}
+    m_Position: {x: 0, y: 800, z: 0}
   m_ChildStateMachines: []
-  m_AnyStateTransitions: []
+  m_AnyStateTransitions:
+  - {fileID: -2031845600246318799}
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 40, y: 0, z: 0}
-  m_EntryPosition: {x: 320, y: -100, z: 0}
-  m_ExitPosition: {x: 40, y: 70, z: 0}
+  m_AnyStatePosition: {x: 40, y: 100, z: 0}
+  m_EntryPosition: {x: 320, y: 0, z: 0}
+  m_ExitPosition: {x: 40, y: 170, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 5846549838461869416}
+--- !u!1101 &-2398564781104493551
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Pokemon
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -4321208220694615239}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1102 &-2383998366514748487
 AnimatorState:
   serializedVersion: 5
@@ -750,6 +829,33 @@ MonoBehaviour:
   isPlayer: 0
   durationAnimation: 1
   durationUpdateHealth: 0.7
+  timeBetweenChar: 0.05
+  skipSpeed: 0.01
+--- !u!1101 &-2031845600246318799
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Setup
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 5846549838461869416}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &-1712342436503263005
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -763,31 +869,6 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2027531566037224648}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
---- !u!1101 &-1695989185006720039
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Setup
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 7440436355559363026}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -837,7 +918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08dafec5e12d4f84c8a3a9f0ea492698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Ma serio? Che perdente
+  description: Hai finito i pokemon...
   timeBetweenChar: 0.05
   skipSpeed: 0.01
 --- !u!1102 &-1410397768649894222
@@ -883,6 +964,34 @@ AnimatorState:
   - {fileID: 5754180862996127627}
   m_StateMachineBehaviours:
   - {fileID: 6508110117667471015}
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 0}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &-1364586604008583655
+AnimatorState:
+  serializedVersion: 5
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: New Enemy Pokemon
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions:
+  - {fileID: 8673963855877200128}
+  m_StateMachineBehaviours:
+  - {fileID: 7739089455748969848}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -962,6 +1071,8 @@ MonoBehaviour:
   isPlayer: 1
   durationAnimation: 1
   durationUpdateHealth: 0.7
+  timeBetweenChar: 0.05
+  skipSpeed: 0.01
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -976,55 +1087,55 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StartFightPhase
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PlayerRound
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Skill
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Pokemon
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Item
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Next
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PokemonDead
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: NoMorePokemons
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -1097,7 +1208,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Description - Player Dead
+  m_Name: Description - Enemy Dead
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1156,6 +1267,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 1
+--- !u!1101 &1261854793746403365
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: StartFightPhase
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -1410397768649894222}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &1648631637274597340
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1197,18 +1333,6 @@ MonoBehaviour:
   timeBetweenChar: 0.05
   skipSpeed: 0.01
   durationAnimation: 1.5
---- !u!114 &1958415519828615227
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97ea1e3978ca55c418da98cc90e63c8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1993795942727250260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1221,7 +1345,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22bc5dca15c968248b1ee79687d065e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathPokemon: ScriptableObjects/Pokemons
 --- !u!1102 &2027531566037224648
 AnimatorState:
   serializedVersion: 5
@@ -1257,7 +1380,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Description - Enemy Dead
+  m_Name: Description - Player Dead
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1648,7 +1771,7 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
-  - {fileID: -1695989185006720039}
+  - {fileID: 1261854793746403365}
   m_StateMachineBehaviours:
   - {fileID: 1993795942727250260}
   m_Position: {x: 50, y: 50, z: 0}
@@ -1788,6 +1911,21 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &6734244032885917023
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08dafec5e12d4f84c8a3a9f0ea492698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: "Torna {EnemyPokemon}. \nVai {Pokemon}! Scelgo te!"
+  timeBetweenChar: 0.05
+  skipSpeed: 0.01
 --- !u!114 &6967788652071006014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1891,34 +2029,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1102 &7440436355559363026
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Setup Fight
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: -9160541367626221080}
-  m_StateMachineBehaviours:
-  - {fileID: 1958415519828615227}
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!114 &7712042260228218771
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1931,9 +2041,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08dafec5e12d4f84c8a3a9f0ea492698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Minchia Bravo
+  description: "L'hai asfaltato! Senza piet\xE0!"
   timeBetweenChar: 0.05
   skipSpeed: 0.01
+--- !u!114 &7739089455748969848
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b9c6b4820ebe741817ef6398e2a161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayer: 0
+  durationDespawn: 0.5
+  durationSpawn: 1.5
 --- !u!1101 &7764981437801120413
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2010,8 +2135,8 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
-  - {fileID: -5507822406158555154}
   - {fileID: 1648631637274597340}
+  - {fileID: -2398564781104493551}
   m_StateMachineBehaviours:
   - {fileID: 6967788652071006014}
   m_Position: {x: 50, y: 50, z: 0}
@@ -2041,6 +2166,31 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6571450876097599654}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &8673963855877200128
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Next
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 5971052040281593779}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0

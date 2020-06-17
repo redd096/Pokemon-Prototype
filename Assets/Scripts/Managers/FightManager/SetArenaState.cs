@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class SetArenaState : FightManagerState
 {
-    [SerializeField] string pathPokemon = "ScriptableObjects/Pokemons";
-
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        //deactive every menu, enemy select his pokemons, then set arena
+        //deactive every menu, then set arena and player menu
         DeactiveEverything();
 
-        EnemySelectPokemons();
-
         SetArena();
+
+        SetPlayerMenu();
     }
 
     void DeactiveEverything()
@@ -23,25 +21,12 @@ public class SetArenaState : FightManagerState
         fightManager.FightUIManager.DeactiveEverything();
     }
 
-    void EnemySelectPokemons()
-    {
-        //get list of pokemons and random team quantity
-        PokemonData[] pokemonDatas = Resources.LoadAll<PokemonData>(pathPokemon);
-        int quantity = Random.Range(fightManager.minPokemons, fightManager.maxPokemons);
-
-        fightManager.enemyPokemons = new List<PokemonModel>();
-
-        //fill the quantity with random pokemon
-        for (int i = 0; i < quantity; i++)
-        {
-            int random = Random.Range(0, pokemonDatas.Length);
-
-            fightManager.enemyPokemons.Add( new PokemonModel(pokemonDatas[random], 5) );
-        }
-    }
-
     void SetArena()
     {
+        //set only if there are pokemons
+        if (GameManager.instance.player.PlayerPokemons.Count <= 0 || fightManager.enemyPokemons.Count <= 0)
+            return;
+
         PokemonModel playerPokemon = null;
 
         //find first pokemon alive
@@ -68,5 +53,21 @@ public class SetArenaState : FightManagerState
 
         //and set arena UI
         fightManager.FightUIManager.SetArena();
+    }
+
+    void SetPlayerMenu()
+    {
+        //set only if there is a pokemon in arena
+        if (fightManager.currentPlayerPokemon == null)
+            return;
+
+        //set skills first pokemon
+        fightManager.FightUIManager.SetSkillsList(fightManager.currentPlayerPokemon);
+
+        //set pokemons alive and not in arena
+        fightManager.FightUIManager.SetPokemonList();
+
+        //set list of items
+        fightManager.FightUIManager.SetItemsList();
     }
 }

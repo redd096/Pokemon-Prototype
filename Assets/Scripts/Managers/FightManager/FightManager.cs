@@ -7,8 +7,6 @@ public class FightManager : MonoBehaviour
     public FightUIManager FightUIManager { get; private set; }
 
     [Header("Pokemon")]
-    [Min(1)] public int minPokemons = 1;
-    [Min(1)] public int maxPokemons = 1;
     public List<PokemonModel> enemyPokemons;
 
     [Header("Skill when everything at 0 PP")]
@@ -30,7 +28,7 @@ public class FightManager : MonoBehaviour
 
     Animator anim;
 
-    void Start()
+    private void Start()
     {
         anim = GetComponent<Animator>();
         FightUIManager = GetComponent<FightUIManager>();

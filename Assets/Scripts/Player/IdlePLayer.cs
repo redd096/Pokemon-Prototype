@@ -13,8 +13,23 @@ public class IdlePLayer : State
         base.Execution();
 
         //get inputs
+#if UNITY_ANDROID
+        //only if touch the screen
+        if (Input.touchCount <= 0)
+            return;
+
+        Player player = stateMachine as Player;
+        Touch inputTouch = Input.GetTouch(0);
+
+        //when pressed or keeping pressed
+        if (inputTouch.phase == TouchPhase.Began || inputTouch.phase == TouchPhase.Stationary || inputTouch.phase == TouchPhase.Moved)
+        {
+            //TODO input by touch or mouse
+        }
+#else
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+#endif
         Vector3 newPosition = Vector3.zero;
 
         //try to move if there is path in direction

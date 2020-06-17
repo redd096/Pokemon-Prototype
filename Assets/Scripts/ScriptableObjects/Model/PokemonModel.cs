@@ -50,7 +50,7 @@ public class PokemonModel : IGetName
 
     public string GetButtonName()
     {
-        return pokemonData.PokemonName + " - " + CurrentHealth + "/" + pokemonData.Health;
+        return pokemonData.PokemonName + " - " + CurrentHealth.ToString("F0") + "/" + pokemonData.Health.ToString("F0");
     }
 
     public string GetObjectName()

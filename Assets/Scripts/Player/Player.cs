@@ -14,20 +14,20 @@ public class Player : StateMachine
 
     [Header("Moving Phase")]
     [SerializeField] float durationMovement = 1;
-    [SerializeField] bool moveCamera = false;
+    public bool moveCamera = false;
 
     public List<PokemonModel> PlayerPokemons { get { return playerPokemons; } }
     public List<ItemModel> PlayerItems { get { return playerItems; } }
     public float DurationMovement { get { return durationMovement; } }
 
-    Transform cam;
-    Vector3 offsetCamera;
+    public Camera cam { get; private set; }
+    public Vector3 offsetCamera { get; private set; }
 
     private void Start()
     {
         //find camera and offset
-        cam = Camera.main.transform;
-        offsetCamera = cam.position - transform.position;
+        cam = Camera.main;
+        offsetCamera = cam.transform.position - transform.position;
 
         //foreach data, create a pokemon model
         for (int i = 0; i < playerPokemonsData.Length; i++)
@@ -41,13 +41,12 @@ public class Player : StateMachine
     void Update()
     {
         state?.Execution();
-    }
 
-    private void LateUpdate()
-    {
-        //move camera
-        if(moveCamera)
-            cam.position = transform.position + offsetCamera;
+        //if press back - pause menu
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //TODO pause menu
+        }
     }
 
     #region public API

@@ -34,10 +34,32 @@ public class SkillModel : IGetName
     /// <summary>
     /// Get Efficiency Multiplier
     /// </summary>
-    public float EfficiencyMultiplier(EType pokemonToAttackType)
+    public float EfficiencyMultiplier(EType pokemonToAttackType, out string efficiencyText)
     {
         //get from the matrix in fight manager
-        return GameManager.instance.levelManager.FightManager.efficiencyTAB.PokemonArray[(int)pokemonToAttackType].SkillArray[(int)skillData.SkillType];
+        float efficiency = GameManager.instance.levelManager.FightManager.efficiencyTAB.PokemonArray[(int)pokemonToAttackType].SkillArray[(int)skillData.SkillType];
+
+        efficiencyText = EfficiencyText(efficiency);
+
+        return efficiency;
+    }
+
+    //TEMP
+    string EfficiencyText(float efficiency)
+    {
+        switch (efficiency)
+        {
+            case 0:
+                return "Non è per niente efficace :/";                
+            case 0.5f:
+                return "Non è molto efficace...";
+            case 1:
+                return "È efficace.";
+            case 2:
+                return "È super efficace!";
+            default:
+                return string.Empty;
+        }
     }
 
     /// <summary>
