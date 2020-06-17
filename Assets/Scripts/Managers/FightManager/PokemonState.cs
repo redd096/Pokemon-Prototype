@@ -19,6 +19,8 @@ public class PokemonState : FightManagerState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        //change pokemon and make animation
+
         //start animation
         fightManager.FightUIManager.StartAnimation(RemovePokemon());
     }
@@ -85,7 +87,7 @@ public class PokemonState : FightManagerState
             fightManager.SetCurrentEnemyPokemon(fightManager.pokemonSelected);
 
         //set UI new pokemon
-        fightManager.FightUIManager.SetPokemonInArena(isPlayer, fightManager.pokemonSelected);
+        fightManager.FightUIManager.SetPokemonInArena(isPlayer);
 
         //if is player turn, set new skill
         if(isPlayer)

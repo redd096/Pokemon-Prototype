@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 3665265983580100597, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_Name
-      value: ArenaPlayer (1)
+      value: ArenaEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 3665265983580100596, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
@@ -75,7 +75,7 @@ PrefabInstance:
     - target: {fileID: 3665265983580100596, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 3665265983580100596, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
@@ -95,7 +95,7 @@ PrefabInstance:
     - target: {fileID: 3665265983580100596, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3665265983580100596, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
@@ -105,7 +105,7 @@ PrefabInstance:
     - target: {fileID: 3665265983580100596, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3665265983580100596, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
@@ -115,32 +115,93 @@ PrefabInstance:
     - target: {fileID: 3665265983580100596, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265984193065826, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3665265983236748199, guid: 031160ed1d5db08448af6955223b48a4,
+    - target: {fileID: 3665265984193065826, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_Text
+      value: POKEMON ENEMY
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265984657016135, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -753410978095685585, guid: 6d7b4eea245818246b0fe22b41f86d7f,
+        type: 3}
+    - target: {fileID: 3665265983697646778, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983697646778, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983697646778, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3665265983236748199, guid: 031160ed1d5db08448af6955223b48a4,
+    - target: {fileID: 3665265983697646778, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3665265984293755097, guid: 031160ed1d5db08448af6955223b48a4,
+    - target: {fileID: 3665265983697646778, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -150
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983697646778, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983697646778, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983190173010, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3665265984293755097, guid: 031160ed1d5db08448af6955223b48a4,
+    - target: {fileID: 3665265983190173010, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983190173010, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3665265984293755097, guid: 031160ed1d5db08448af6955223b48a4,
+    - target: {fileID: 3665265983190173010, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983190173010, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983190173010, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_Pivot.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665265983190173010, guid: 031160ed1d5db08448af6955223b48a4,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 031160ed1d5db08448af6955223b48a4, type: 3}

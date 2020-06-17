@@ -16,6 +16,8 @@ public class UpdateDescriptionState : FightManagerState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        //show a description then go to next state
+
         DeactiveMenu();
 
         SetDescription();
@@ -49,13 +51,20 @@ public class UpdateDescriptionState : FightManagerState
         string s = text;
 
         //replace string with data
-        s = s.Replace("{PlayerPokemon}", fightManager.currentPlayerPokemon.pokemonData.PokemonName);
-        s = s.Replace("{EnemyPokemon}", fightManager.currentEnemyPokemon.pokemonData.PokemonName);
-        s = s.Replace("{Skill}", fightManager.skillUsed?.skillData.SkillName);
-        s = s.Replace("{Pokemon}", fightManager.pokemonSelected?.pokemonData.PokemonName);
-        s = s.Replace("{Item}", fightManager.itemUsed?.ItemName);
+        Replace(ref s, "{PlayerPokemon}", fightManager.currentPlayerPokemon);
+        Replace(ref s, "{EnemyPokemon}", fightManager.currentEnemyPokemon);
+        Replace(ref s, "{Skill}", fightManager.skillUsed);
+        Replace(ref s, "{Pokemon}", fightManager.pokemonSelected);
+        Replace(ref s, "{Item}", fightManager.itemUsed);
 
         return s;
+    }
+
+    void Replace(ref string text, string toReplace, IGetName control)
+    {
+        //if control != null -> replace string with object name
+        if (text.Contains(toReplace) && control != null)
+            text = text.Replace(toReplace, control.GetObjectName());
     }
 
     #endregion

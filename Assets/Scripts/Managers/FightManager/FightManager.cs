@@ -6,12 +6,13 @@ public class FightManager : MonoBehaviour
 {
     public FightUIManager FightUIManager { get; private set; }
 
-    [Header("TODO")]
-    public PokemonData[] enemyPokemonsData;
-    public PokemonModel[] enemyPokemons;
+    [Header("Pokemon")]
+    [Min(1)] public int minPokemons = 1;
+    [Min(1)] public int maxPokemons = 1;
+    public List<PokemonModel> enemyPokemons;
 
     [Header("Skill when everything at 0 PP")]
-    [SerializeField] SkillData baseSkill = default;
+    public SkillData baseSkill;
 
     [Header("Efficiency TAB")]
     public EfficiencyTAB efficiencyTAB;
@@ -20,10 +21,10 @@ public class FightManager : MonoBehaviour
     public PokemonModel currentEnemyPokemon { get; private set; }
 
     #region for states
-    
-    public SkillModel skillUsed { get; private set; }
-    public PokemonModel pokemonSelected { get; private set; }
-    public ItemData itemUsed { get; private set; }
+
+    [HideInInspector] public SkillModel skillUsed;
+    [HideInInspector] public PokemonModel pokemonSelected;
+    [HideInInspector] public ItemModel itemUsed;
 
     #endregion
 
@@ -33,12 +34,6 @@ public class FightManager : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         FightUIManager = GetComponent<FightUIManager>();
-
-        //foreach data, create a pokemon model
-        enemyPokemons = new PokemonModel[enemyPokemonsData.Length];
-
-        for (int i = 0; i < enemyPokemonsData.Length; i++)
-            enemyPokemons[i] = new PokemonModel(enemyPokemonsData[i], 5);
     }
 
     #region state machine
@@ -91,6 +86,18 @@ public class FightManager : MonoBehaviour
         //remove player menu, cause the player will try to run away
         FightUIManager.RunClick();
         GameManager.instance.levelManager.StartMoving();
+
+        //TEMP refullo i pokemon del giocatore quando esco dal combattimento
+        foreach (PokemonModel pokemon in GameManager.instance.player.PlayerPokemons)
+        {
+            pokemon.Restore();
+        }
+    }
+
+    public void BackToPlayerMenu()
+    {
+        //deactive other menu and active player menu
+        FightUIManager.BackToPlayerMenu();
     }
 
     #endregion
@@ -114,8 +121,11 @@ public class FightManager : MonoBehaviour
         anim.SetTrigger("Pokemon");
     }
 
-    public void UseItem(ItemData item)
+    public void UseItem(ItemModel item)
     {
+        //remove item
+        item.RemoveItem();
+
         //set item and change state
         itemUsed = item;
         anim.SetTrigger("Item");
@@ -124,12 +134,6 @@ public class FightManager : MonoBehaviour
     #endregion
 
     #region others public API
-
-    public void BackToPlayerMenu()
-    {
-        //deactive other menu and active player menu
-        FightUIManager.BackToPlayerMenu();
-    }
 
     public void SetCurrentPlayerPokemon(PokemonModel pokemon)
     {

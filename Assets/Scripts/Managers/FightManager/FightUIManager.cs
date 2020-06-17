@@ -15,6 +15,7 @@ public class FightUIManager : MonoBehaviour
     [SerializeField] Text playerLevel = default;
     [SerializeField] string playerLevelString = ":L ";
     [SerializeField] Slider playerHealthSlider = default;
+    [SerializeField] Gradient HealthGradient = default;
     [SerializeField] Text playerHealth = default;
     [SerializeField] Slider playerExpSlider = default;
 
@@ -79,14 +80,10 @@ public class FightUIManager : MonoBehaviour
 
         //TODO
         //VANNO AGGIUNTI GLI EFFETTI - SIA DELLE SKILL CHE DEGLI ITEMS (ITEM STATE PER ORA NON FA UN CAZZO)
-        //VA FATTO IL TURNO DEL NEMICO (CHE ATTACCHERà RANDOM)
-        //VA CONTROLLATA LA MORTE DI UN POKEMON, PASSARE A QUELLO SEGUENTE O FINIRE LA BATTAGLIA
         //VA CONTROLLATO IL FINE BATTAGLIA - DARE EXP, ECC...
         //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC...
 
-        //VA AGGIUNTO IL TASTO INDIETRO QUANDO SI SELEZIONA QUALCOSA NEL PLAYER MENU
         //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
-        //IL NEMICO DEVE PRENDERE IL SUO POKEMON A RANDOM TRA QUELLI NEL PROJECT
 
         //VA AGGIUNTO UN MENU DI PAUSA DURANTE LA FASE MOVING (PER USCIRE DAL GIOCO)
 
@@ -108,6 +105,10 @@ public class FightUIManager : MonoBehaviour
 
     void UseSkill(Button button, SkillModel skill)
     {
+        //don't do anything when PP are 0
+        if (skill.CurrentPP <= 0)
+            return;
+
         //call it in fight manager
         GameManager.instance.levelManager.FightManager.UseSkill(skill);
 
@@ -117,6 +118,9 @@ public class FightUIManager : MonoBehaviour
 
     void ChangePokemon(Button button, PokemonModel pokemon)
     {
+        if (pokemon.CurrentHealth <= 0)
+            return;
+
         //call it in fight manager
         GameManager.instance.levelManager.FightManager.ChangePokemon(pokemon);
 
@@ -124,16 +128,19 @@ public class FightUIManager : MonoBehaviour
         button.GetComponentInChildren<Text>().text = GameManager.instance.levelManager.FightManager.currentPlayerPokemon.GetButtonName();
     }
 
-    void UseItem(Button button, ItemData item)
+    void UseItem(Button button, ItemModel item)
     {
         //call it in fight manager
         GameManager.instance.levelManager.FightManager.UseItem(item);
 
-        //deactive this button item
-        Pooling.Destroy(button.gameObject);
+        //update stacks or remove button
+        if(item.stack > 0)
+            button.GetComponentInChildren<Text>().text = item.GetButtonName();
+        else
+            Pooling.Destroy(button.gameObject);
     }
 
-    void SetList<T>(Pooling<Button> poolingList, T[] valueArray, Transform parent, System.Action<Button, T> function) where T : IGetButtonName
+    void SetList<T>(Pooling<Button> poolingList, T[] valueArray, Transform parent, System.Action<Button, T> function) where T : IGetName
     {
         //deactive every button
         poolingList.DeactiveAll();
@@ -178,10 +185,10 @@ public class FightUIManager : MonoBehaviour
         DeactiveMenu();
     }
 
-    public void SetArena(PokemonModel playerPokemon, PokemonModel enemyPokemon)
+    public void SetArena()
     {
-        SetPokemonInArena(true, playerPokemon);
-        SetPokemonInArena(false, enemyPokemon);
+        SetPokemonInArena(true);
+        SetPokemonInArena(false);
     }
 
     #endregion
@@ -190,25 +197,25 @@ public class FightUIManager : MonoBehaviour
 
     public void SetPokemonList()
     {
-        PokemonModel[] playerPokemons = GameManager.instance.player.PlayerPokemons;
+        List<PokemonModel> playerPokemons = GameManager.instance.player.PlayerPokemons;
         PokemonModel pokemonInArena = GameManager.instance.levelManager.FightManager.currentPlayerPokemon;
 
         //foreach pokemon of the player
-        List<PokemonModel> pokemonsNotInArena = new List<PokemonModel>();
-        for(int i = 0; i < playerPokemons.Length; i++)
+        List<PokemonModel> pokemonsUsable = new List<PokemonModel>();
+        for(int i = 0; i < playerPokemons.Count; i++)
         {
-            //check if it isn't the pokemon in arena, add to the list
-            if (playerPokemons[i] != pokemonInArena)
-                pokemonsNotInArena.Add(playerPokemons[i]);
+            //check if it isn't the pokemon in arena && is alive, add to the list
+            if (playerPokemons[i] != pokemonInArena && playerPokemons[i].CurrentHealth > 0)
+                pokemonsUsable.Add(playerPokemons[i]);
         }
 
         //list of pokemons not in arena
-        SetList(pokemonsPooling, pokemonsNotInArena.ToArray(), contentPokemonMenu, ChangePokemon);
+        SetList(pokemonsPooling, pokemonsUsable.ToArray(), contentPokemonMenu, ChangePokemon);
     }
 
     public void SetItemsList()
     {
-        SetList(itemsPooling, GameManager.instance.player.PlayerItems, contentBagMenu, UseItem);
+        SetList(itemsPooling, GameManager.instance.player.PlayerItems.ToArray(), contentBagMenu, UseItem);
     }
 
     #endregion
@@ -269,21 +276,6 @@ public class FightUIManager : MonoBehaviour
         tr.position = Vector3.Lerp(startPosition, endPosition, delta);
     }
 
-    public void UpdateHealth(bool isPlayer, float startHealth, float delta)
-    {
-        //get what to edit (pokemon getting damage)
-        Slider slider = isPlayer ? enemyHealthSlider : playerHealthSlider;
-        Text text = isPlayer ? enemyHealth : playerHealth;
-        PokemonModel pokemon = isPlayer ? GameManager.instance.levelManager.FightManager.currentEnemyPokemon : GameManager.instance.levelManager.FightManager.currentPlayerPokemon;
-
-        //current health based on delta
-        float currentHealth = Mathf.Lerp(startHealth, pokemon.CurrentHealth, delta);
-
-        //set slider and text
-        slider.value = currentHealth / pokemon.pokemonData.Health;
-        text.text = currentHealth.ToString("F0") + " / " + pokemon.pokemonData.Health.ToString("F0");
-    }
-
     #endregion
 
     #region description
@@ -327,6 +319,22 @@ public class FightUIManager : MonoBehaviour
 
     #region generic functions
 
+    public void UpdateHealth(bool isPlayer, float startHealth, float delta)
+    {
+        //get what to edit
+        Slider slider = isPlayer ? playerHealthSlider : enemyHealthSlider;
+        Text text = isPlayer ? playerHealth : enemyHealth;
+        PokemonModel pokemon = isPlayer ? GameManager.instance.levelManager.FightManager.currentPlayerPokemon : GameManager.instance.levelManager.FightManager.currentEnemyPokemon;
+
+        //current health based on delta
+        float currentHealth = Mathf.Lerp(startHealth, pokemon.CurrentHealth, delta);
+
+        //set slider and text
+        slider.value = currentHealth / pokemon.pokemonData.Health;
+        slider.fillRect.GetComponent<Image>().color = HealthGradient.Evaluate(currentHealth / pokemon.pokemonData.Health);
+        text.text = currentHealth.ToString("F0") + " / " + pokemon.pokemonData.Health.ToString("F0");
+    }
+
     public void SetSkillsList(PokemonModel pokemon)
     {
         //set list of player skills
@@ -341,26 +349,27 @@ public class FightUIManager : MonoBehaviour
         tr.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, delta);
     }
 
-    public void SetPokemonInArena(bool isPlayer, PokemonModel pokemon)
+    public void SetPokemonInArena(bool isPlayer)
     {
+        //get player or enemy pokemon
+        PokemonModel pokemon = isPlayer ? GameManager.instance.levelManager.FightManager.currentPlayerPokemon : GameManager.instance.levelManager.FightManager.currentEnemyPokemon;
+
         if (isPlayer)
         {
             //set player sprite, life and all
             playerImage.sprite = pokemon.pokemonData.PokemonBack;
-            playerName.text = pokemon.pokemonData.PokemonName;
+            playerName.text = pokemon.GetObjectName();
             playerLevel.text = playerLevelString + pokemon.CurrentLevel;
-            playerHealthSlider.value = pokemon.CurrentHealth / pokemon.pokemonData.Health;
-            playerHealth.text = pokemon.CurrentHealth.ToString("F0") + " / " + pokemon.pokemonData.Health.ToString("F0");
+            UpdateHealth(true, 0, 1);
             playerExpSlider.value = (pokemon.CurrentExp - pokemon.ExpCurrentLevel) / (pokemon.ExpNextLevel - pokemon.ExpCurrentLevel);
         }
         else
         {
             //set enemy sprite, life and all
             enemyImage.sprite = pokemon.pokemonData.PokemonFront;
-            enemyName.text = pokemon.pokemonData.PokemonName;
+            enemyName.text = pokemon.GetObjectName();
             enemyLevel.text = enemyLevelString + pokemon.CurrentLevel;
-            enemyHealthSlider.value = pokemon.CurrentHealth / pokemon.pokemonData.Health;
-            enemyHealth.text = pokemon.CurrentHealth.ToString("F0") + " / " + pokemon.pokemonData.Health.ToString("F0");
+            UpdateHealth(false, 0, 1);
             enemyExpSlider.value = (pokemon.CurrentExp - pokemon.ExpCurrentLevel) / (pokemon.ExpNextLevel - pokemon.ExpCurrentLevel);
         }
     }
@@ -398,8 +407,6 @@ public class FightUIManager : MonoBehaviour
         playerMenu.SetActive(false);
     }
 
-    #endregion
-
     public void BackToPlayerMenu()
     {
         //deactive other menu
@@ -410,4 +417,6 @@ public class FightUIManager : MonoBehaviour
         //and active player menu
         playerMenu.SetActive(true);
     }
+
+    #endregion
 }

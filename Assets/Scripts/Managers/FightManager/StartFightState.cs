@@ -21,6 +21,8 @@ public class StartFightState : FightManagerState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        //show description and spawn player pokemon
+
         //set to 0
         delta = 0;
 
@@ -56,7 +58,7 @@ public class StartFightState : FightManagerState
     void SetDescription()
     {
         //select description args and Set Description letter by letter, then call OnEndDescription
-        string[] args = new string[] { fightManager.enemyPokemons[0].pokemonData.PokemonName };
+        string[] args = new string[] { fightManager.currentEnemyPokemon.GetObjectName() };
         fightManager.FightUIManager.SetDescription(description, args, timeBetweenChar, skipSpeed, OnEndDescription);
     }
 

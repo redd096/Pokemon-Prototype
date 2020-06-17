@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PokemonModel : IGetButtonName
+public class PokemonModel : IGetName
 {
     #region variables
 
@@ -50,6 +50,11 @@ public class PokemonModel : IGetButtonName
 
     public string GetButtonName()
     {
+        return pokemonData.PokemonName + " - " + CurrentHealth + "/" + pokemonData.Health;
+    }
+
+    public string GetObjectName()
+    {
         return pokemonData.PokemonName;
     }
 
@@ -62,7 +67,7 @@ public class PokemonModel : IGetButtonName
 
         if(CurrentHealth <= 0)
         {
-            Die();
+            CurrentHealth = 0;
         }
     }
 
@@ -100,11 +105,6 @@ public class PokemonModel : IGetButtonName
 
     #region private API
 
-    void Die()
-    {
-
-    }
-
     void LevelUp()
     {
         ExpCurrentLevel = NecessaryExpForThisLevel(CurrentLevel);
@@ -136,22 +136,20 @@ public class PokemonModel : IGetButtonName
 
         foreach(SPokemonSkill possibleSkill in pokemonData.PossibleSkills)
         {
+            bool reachedLimit = tempSkills.Count >= CurrentSkills.Length;
+
             //try to add (not add always)
-            if (TryAddSkill(possibleSkill.level, 50))
+            if (TryAddSkill(possibleSkill.level, reachedLimit))
             {
-                //not full skills, then add this one
-                if (tempSkills.Count < CurrentSkills.Length)
-                {
-                    tempSkills.Add(new SkillModel(possibleSkill.skill));
-                }
-                //else replace one random
-                else
+                //if reached limit, remove one skill
+                if(reachedLimit)
                 {
                     int randomIndex = Random.Range(0, tempSkills.Count);
                     tempSkills.RemoveAt(randomIndex);
-
-                    tempSkills.Add(new SkillModel(possibleSkill.skill));
                 }
+
+                //add this one
+                tempSkills.Add(new SkillModel(possibleSkill.skill));
             }
         }
 
@@ -159,12 +157,15 @@ public class PokemonModel : IGetButtonName
         CurrentSkills = tempSkills.ToArray();
     }
 
-    bool TryAddSkill(int levelSkill, int percentage)
+    bool TryAddSkill(int levelSkill, bool reachedLimit)
     {
         //check level
         if (levelSkill <= CurrentLevel)
         {
             int random = Random.Range(0, 100);
+
+            //normally 100%, if reached limit 50% (will replace one skill)
+            int percentage = reachedLimit ? 50 : 100;
 
             //add only if lower then percentage
             if (random < percentage)

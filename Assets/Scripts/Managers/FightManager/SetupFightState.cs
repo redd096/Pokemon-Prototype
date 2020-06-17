@@ -22,6 +22,7 @@ public class SetupFightState : FightManagerState
 
     void SetPokemonList()
     {
+        //set pokemons alive and not in arena
         fightManager.FightUIManager.SetPokemonList();
     }
 

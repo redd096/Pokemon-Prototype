@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGetButtonName
+public interface IGetName
 {
     string GetButtonName();
+
+    string GetObjectName();
 }

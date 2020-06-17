@@ -20,7 +20,9 @@ public class SkillState : FightManagerState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        //set start health (of the pokemon getting damage)
+        //do attack and show animation - check if kill the other pokemon, else go to next state
+
+        //set start health (inverse, cause is the other pokemon getting damage)
         startHealth = isPlayer ? fightManager.currentEnemyPokemon.CurrentHealth : fightManager.currentPlayerPokemon.CurrentHealth;
 
         //apply damage
@@ -101,12 +103,12 @@ public class SkillState : FightManagerState
         while (delta < 1)
         {
             delta += Time.deltaTime / durationUpdateHealth;
-            fightManager.FightUIManager.UpdateHealth(isPlayer, startHealth, delta);
+            fightManager.FightUIManager.UpdateHealth(!isPlayer, startHealth, delta);    // !isPlayer, because update the health of the other pokemon (who's been attacked)
             yield return null;
         }
 
         //be sure to end animation
-        fightManager.FightUIManager.UpdateHealth(isPlayer, startHealth, 1);
+        fightManager.FightUIManager.UpdateHealth(!isPlayer, startHealth, 1);            // !isPlayer, because update the health of the other pokemon (who's been attacked)
         fightManager.FightUIManager.EndAnimation();
 
         //call end
@@ -117,7 +119,17 @@ public class SkillState : FightManagerState
 
     void EndTurn()
     {
-        //change state
-        anim.SetTrigger("Next");
+        PokemonModel otherPokemon = isPlayer ? fightManager.currentEnemyPokemon : fightManager.currentPlayerPokemon;
+
+        if (otherPokemon.CurrentHealth <= 0)
+        {
+            //change state to pokemon dead
+            anim.SetTrigger("PokemonDead");
+        }
+        else
+        {
+            //go to next state
+            anim.SetTrigger("Next");
+        }
     }
 }
