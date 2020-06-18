@@ -64,32 +64,32 @@ public static class TextLetterByLetter
     /// <summary>
     /// Write a text letter by letter, then wait input. When press to skip, accelerate speed
     /// </summary>
-    public static void WriteLetterByLetterAndWait(this Text textToSet, string value, float timeBetweenChar, float skipSpeed, System.Action onEndWrite = null, bool canSkip = true)
+    public static void WriteLetterByLetterAndWait_SkipAccelerate(this Text textToSet, string value, System.Action onEndWrite = null, bool canSkip = true)
     {
-        UtilityMonoBehaviour.instance.WriteLetterByLetterAndWait(textToSet, value, timeBetweenChar, skipSpeed, onEndWrite, canSkip);
+        UtilityMonoBehaviour.instance.WriteLetterByLetterAndWait_SkipAccelerate(textToSet, value, onEndWrite, canSkip);
     }
 
     /// <summary>
     /// Write a text letter by letter, then wait input. When press to skip, set immediatly all text
     /// </summary>
-    public static void WriteLetterByLetterAndWait(this Text textToSet, string value, float timeBetweenChar, System.Action onEndWrite = null, bool canSkip = true)
+    public static void WriteLetterByLetterAndWait_SkipImmediatly(this Text textToSet, string value, System.Action onEndWrite = null, bool canSkip = true)
     {
-        UtilityMonoBehaviour.instance.WriteLetterByLetterAndWait(textToSet, value, timeBetweenChar, onEndWrite, canSkip);
+        UtilityMonoBehaviour.instance.WriteLetterByLetterAndWait_SkipImmediatly(textToSet, value, onEndWrite, canSkip);
     }
 
     /// <summary>
     /// Write a text letter by letter. When press to skip, accelerate speed
     /// </summary>
-    public static void WriteLetterByLetter(this Text textToSet, string value, float timeBetweenChar, float skipSpeed, System.Action onEndWrite = null, bool canSkip = true)
+    public static void WriteLetterByLetter_SkipAccelerate(this Text textToSet, string value, System.Action onEndWrite = null, bool canSkip = true)
     {
-        UtilityMonoBehaviour.instance.WriteLetterByLetter(textToSet, value, timeBetweenChar, skipSpeed, onEndWrite, canSkip);
+        UtilityMonoBehaviour.instance.WriteLetterByLetter_SkipAccelerate(textToSet, value, onEndWrite, canSkip);
     }
 
     /// <summary>
     /// Write a text letter by letter. When press to skip, set immediatly all text
     /// </summary>
-    public static void WriteLetterByLetter(this Text textToSet, string value, float timeBetweenChar, System.Action onEndWrite = null, bool canSkip = true)
+    public static void WriteLetterByLetter_SkipImmediatly(this Text textToSet, string value, System.Action onEndWrite = null, bool canSkip = true)
     {
-        UtilityMonoBehaviour.instance.WriteLetterByLetter(textToSet, value, timeBetweenChar, onEndWrite, canSkip);
+        UtilityMonoBehaviour.instance.WriteLetterByLetter_SkipImmediatly(textToSet, value, onEndWrite, canSkip);
     }
 }

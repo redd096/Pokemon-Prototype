@@ -6,16 +6,12 @@ public class StartFightState : FightManagerState
 {
     [Header("Description")]
     [TextArea()]
-    [SerializeField] string description = "Trovato {0} selvatico";
-    [SerializeField] float timeBetweenChar = 0.05f;
-    [SerializeField] float skipSpeed = 0.01f;
+    [SerializeField] string description = "Trovato {EnemyPokemon} selvatico";
 
     [Header("Player Pokemon")]
     [SerializeField] float durationAnimation = 1.5f;
 
     float delta;
-
-    Animator anim;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -39,14 +35,6 @@ public class StartFightState : FightManagerState
         PokemonAnimation();
     }
 
-    protected override void GetReferences(Animator anim)
-    {
-        base.GetReferences(anim);
-
-        //get animator reference
-        this.anim = anim;
-    }
-
     #region enter
 
     void ActiveElements()
@@ -57,9 +45,8 @@ public class StartFightState : FightManagerState
 
     void SetDescription()
     {
-        //select description args and Set Description letter by letter, then call OnEndDescription
-        string[] args = new string[] { fightManager.currentEnemyPokemon.GetObjectName() };
-        fightManager.FightUIManager.SetDescription(description, args, timeBetweenChar, skipSpeed, OnEndDescription);
+        //set Description letter by letter, then call OnEndDescription
+        fightManager.FightUIManager.SetDescription(description, OnEndDescription);
     }
 
     #endregion

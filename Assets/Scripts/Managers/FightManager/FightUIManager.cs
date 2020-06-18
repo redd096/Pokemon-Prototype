@@ -80,8 +80,9 @@ public class FightUIManager : MonoBehaviour
         //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC... [End Fight State + Pokemon Model]
         //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
 
-        //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player]
+        //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player] - fare canvas in fondo, sopra solo alla transition image
         //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer]
+        //NB. mettere tasto pausa in alto a sx? in canvas del pause menu
 
         //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
         //VANNO AGGIUNTO LE POKEBALL
@@ -192,10 +193,6 @@ public class FightUIManager : MonoBehaviour
         enemyPosition = enemyImage.transform.position;
     }
 
-    #endregion
-
-    #region setup fight state
-
     public void SetPokemonList()
     {
         List<PokemonModel> playerPokemons = GameManager.instance.player.PlayerPokemons;
@@ -203,7 +200,7 @@ public class FightUIManager : MonoBehaviour
 
         //foreach pokemon of the player
         List<PokemonModel> pokemonsUsable = new List<PokemonModel>();
-        for(int i = 0; i < playerPokemons.Count; i++)
+        for (int i = 0; i < playerPokemons.Count; i++)
         {
             //check if it isn't the pokemon in arena && is alive, add to the list
             if (playerPokemons[i] != pokemonInArena && playerPokemons[i].CurrentHealth > 0)
@@ -252,18 +249,6 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
-    #region update description state
-
-    public void DeactiveMenu()
-    {
-        playerMenu.SetActive(false);
-        fightMenu.SetActive(false);
-        pokemonMenu.SetActive(false);
-        bagMenu.SetActive(false);
-    }
-
-    #endregion
-
     #region skill state
 
     public void AttackAnimation(bool isPlayer, float delta)
@@ -281,20 +266,43 @@ public class FightUIManager : MonoBehaviour
 
     #region description
 
-    public void SetDescription(string text, string[] args, float timeBetweenChar, float skipSpeed, System.Action onEndDescription)
+    public void SetDescription(string text, System.Action onEndDescription)
     {
         //reset description and active it
         description.text = string.Empty;
         description.gameObject.SetActive(true);
 
         //write description letter by letter. Then press a button and call OnEndDescription
-        string s = string.Format(text, args);
-        description.WriteLetterByLetterAndWait(s, timeBetweenChar, skipSpeed, onEndDescription);
+        string s = ReplaceString(text);
+        description.WriteLetterByLetterAndWait_SkipAccelerate(s, onEndDescription);
     }
 
     public void EndDescription()
     {
         description.gameObject.SetActive(false);
+    }
+
+    string ReplaceString(string text)
+    {
+        FightManager fightManager = GameManager.instance.levelManager.FightManager;
+
+        string s = text;
+
+        //replace string with data
+        Replace(ref s, "{PlayerPokemon}", fightManager.currentPlayerPokemon);
+        Replace(ref s, "{EnemyPokemon}", fightManager.currentEnemyPokemon);
+        Replace(ref s, "{Skill}", fightManager.skillUsed);
+        Replace(ref s, "{Pokemon}", fightManager.pokemonSelected);
+        Replace(ref s, "{Item}", fightManager.itemUsed);
+
+        return s;
+    }
+
+    void Replace(ref string text, string toReplace, IGetName control)
+    {
+        //if contains && control != null -> replace string with object name
+        if (text.Contains(toReplace) && control != null)
+            text = text.Replace(toReplace, control.GetObjectName());
     }
 
     #endregion
@@ -319,6 +327,14 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     #region generic functions
+
+    public void DeactiveMenu()
+    {
+        playerMenu.SetActive(false);
+        fightMenu.SetActive(false);
+        pokemonMenu.SetActive(false);
+        bagMenu.SetActive(false);
+    }
 
     public void UpdateHealth(bool isPlayer, float startHealth, float delta)
     {

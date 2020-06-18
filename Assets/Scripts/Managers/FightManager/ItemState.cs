@@ -7,25 +7,38 @@ public class ItemState : FightManagerState
     [Header("Is Player Turn")]
     [SerializeField] bool isPlayer = true;
 
-    Animator anim;
+    [Header("Description")]
+    [TextArea()]
+    [SerializeField] string description = "Usi {Item} su {PlayerPokemon}...";
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        //show description using item
         //use item
 
-        ApplyEffect();
+        SetDescription();
     }
 
     #region enter
 
-    protected override void GetReferences(Animator anim)
+    void SetDescription()
     {
-        base.GetReferences(anim);
+        //deactive menu, to be sure to read description
+        fightManager.FightUIManager.DeactiveMenu();
 
-        //get animator reference
-        this.anim = anim;
+        //set Description letter by letter, then call OnEndDescription
+        fightManager.FightUIManager.SetDescription(description, OnEndDescription);
+    }
+
+    void OnEndDescription()
+    {
+        //deactive description
+        fightManager.FightUIManager.EndDescription();
+
+        //apply effect
+        ApplyEffect();
     }
 
     #endregion

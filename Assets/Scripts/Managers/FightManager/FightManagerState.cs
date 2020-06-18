@@ -3,6 +3,7 @@
 public class FightManagerState : StateMachineBehaviour
 {
     protected FightManager fightManager;
+    protected Animator anim;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -15,5 +16,8 @@ public class FightManagerState : StateMachineBehaviour
     {
         if (fightManager == null)
             fightManager = anim.GetComponent<FightManager>();
+
+        if (this.anim == null)
+            this.anim = anim;
     }
 }

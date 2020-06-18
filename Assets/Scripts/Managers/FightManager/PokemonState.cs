@@ -7,32 +7,44 @@ public class PokemonState : FightManagerState
     [Header("Is Player Turn")]
     [SerializeField] bool isPlayer = true;
 
+    [Header("Description")]
+    [TextArea()]
+    [SerializeField] string description = "Torna {PlayerPokemon}.\nVai {Pokemon}! Scelgo te!";
+
     [Header("Animation Despawn")]
     [SerializeField] float durationDespawn = 0.5f;
 
     [Header("Animation Spawn")]
     [SerializeField] float durationSpawn = 1.5f;
 
-    Animator anim;
-
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        //show description changing pokemon
         //change pokemon and make animation
 
-        //start animation
-        fightManager.FightUIManager.StartAnimation(RemovePokemon());
+        SetDescription();
     }
 
     #region enter
 
-    protected override void GetReferences(Animator anim)
+    void SetDescription()
     {
-        base.GetReferences(anim);
+        //deactive menu, to be sure to read description
+        fightManager.FightUIManager.DeactiveMenu();
 
-        //get animator reference
-        this.anim = anim;
+        //set Description letter by letter, then call OnEndDescription
+        fightManager.FightUIManager.SetDescription(description, OnEndDescription);
+    }
+
+    void OnEndDescription()
+    {
+        //deactive description
+        fightManager.FightUIManager.EndDescription();
+
+        //start animation
+        fightManager.FightUIManager.StartAnimation(RemovePokemon());
     }
 
     #endregion

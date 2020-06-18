@@ -7,35 +7,33 @@ public class SkillState : FightManagerState
     [Header("Is Player Turn")]
     [SerializeField] bool isPlayer = true;
 
+    [Header("Description")]
+    [TextArea()]
+    [SerializeField] string description = "{PlayerPokemon} usa {Skill}...";
+
     [Header("Skill Animation (half attack, half come back)")]
     [SerializeField] float durationAnimation = 1.0f;
 
     [Header("Update Health")]
     [SerializeField] float durationUpdateHealth = 0.7f;
 
-    [Header("Description")]
-    [SerializeField] float timeBetweenChar = 0.05f;
-    [SerializeField] float skipSpeed = 0.01f;
-
     float startHealth;
-    Animator anim;
     string efficiencyText;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        //show attack description
         //do attack and show animation - show also description of efficiency
         //check if kill the other pokemon, else go to next state
 
         //set start health (inverse, cause is the other pokemon getting damage)
         startHealth = isPlayer ? fightManager.currentEnemyPokemon.CurrentHealth : fightManager.currentPlayerPokemon.CurrentHealth;
 
-        //apply damage
-        ApplyDamage();
+        SetDescription();
 
-        //start animation
-        fightManager.FightUIManager.StartAnimation(AttackAnimation());
+        ApplyDamage();
 
         //TODO
         //apply possible effects
@@ -45,12 +43,22 @@ public class SkillState : FightManagerState
 
     #region enter
 
-    protected override void GetReferences(Animator anim)
+    void SetDescription()
     {
-        base.GetReferences(anim);
+        //deactive menu, to be sure to read description
+        fightManager.FightUIManager.DeactiveMenu();
 
-        //get animator reference
-        this.anim = anim;
+        //set Description letter by letter, then call OnEndDescription
+        fightManager.FightUIManager.SetDescription(description, OnEndDescription);
+    }
+
+    void OnEndDescription()
+    {
+        //deactive description
+        fightManager.FightUIManager.EndDescription();
+
+        //start animation
+        fightManager.FightUIManager.StartAnimation(AttackAnimation());
     }
 
     void ApplyDamage()
@@ -131,14 +139,13 @@ public class SkillState : FightManagerState
     {
         //update health and set description efficiency
         fightManager.FightUIManager.StartAnimation(UpdateHealth());
-        SetDescription();
+        SetDescription_Efficiency();
     }
 
-    void SetDescription()
+    void SetDescription_Efficiency()
     {
-        //select description args and Set Description letter by letter, then call EndTurn
-        string[] args = new string[] { };
-        fightManager.FightUIManager.SetDescription(efficiencyText, args, timeBetweenChar, skipSpeed, EndTurn);
+        //set Description letter by letter, then call EndTurn
+        fightManager.FightUIManager.SetDescription(efficiencyText, EndTurn);
     }
 
     void EndTurn()

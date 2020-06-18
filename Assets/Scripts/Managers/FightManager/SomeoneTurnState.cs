@@ -13,7 +13,7 @@ public class SomeoneTurnState : FightManagerState
 
         //check if there are effects
         //check if dead
-        //then show player menu or do enemy attack
+        //if alive, show player menu or do enemy attack
 
         //TODO se ha qualche effetto attivo, deve mostrarlo
 

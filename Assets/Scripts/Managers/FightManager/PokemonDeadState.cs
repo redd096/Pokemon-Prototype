@@ -7,18 +7,44 @@ public class PokemonDeadState : FightManagerState
     [Header("Is Player Pokemon Who is Dead")]
     [SerializeField] bool isPlayerPokemon = true;
 
+    [Header("Description")]
+    [TextArea()]
+    [SerializeField] string description = "{PlayerPokemon} è esausto";
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        //show description enemy dead
         //check if there are pokemon alives, else call NoMorePokemons
-
         //if there are pokemon alives, show player menu or select new enemy pokemon
 
-        CheckPokemons(animator);
+        SetDescription();
     }
 
-    void CheckPokemons(Animator anim)
+    #region enter
+
+    void SetDescription()
+    {
+        //deactive menu, to be sure to read description
+        fightManager.FightUIManager.DeactiveMenu();
+
+        //set Description letter by letter, then call OnEndDescription
+        fightManager.FightUIManager.SetDescription(description, OnEndDescription);
+    }
+
+    void OnEndDescription()
+    {
+        //deactive description
+        fightManager.FightUIManager.EndDescription();
+
+        //check pokemons
+        CheckPokemons();
+    }
+
+    #endregion
+
+    void CheckPokemons()
     {
         List<PokemonModel> pokemonList = isPlayerPokemon ? GameManager.instance.player.PlayerPokemons : fightManager.enemyPokemons;
         
