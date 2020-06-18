@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : StateMachine
 {
     [Header("Pokemon")]
+    [SerializeField] int pokemonsLevel = 5;
     [SerializeField] PokemonData[] playerPokemonsData = default;
     [SerializeField] List<PokemonModel> playerPokemons = new List<PokemonModel>();
 
@@ -31,7 +32,7 @@ public class Player : StateMachine
 
         //foreach data, create a pokemon model
         for (int i = 0; i < playerPokemonsData.Length; i++)
-            playerPokemons.Add( new PokemonModel(playerPokemonsData[i], 5) );
+            playerPokemons.Add( new PokemonModel(playerPokemonsData[i], pokemonsLevel) );
 
         //foreach data, create a item model
         for (int i = 0; i < playerItemsData.Length; i++)
