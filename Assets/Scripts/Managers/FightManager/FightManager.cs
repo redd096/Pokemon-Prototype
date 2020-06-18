@@ -94,8 +94,12 @@ public class FightManager : MonoBehaviour
 
     public void BackToPlayerMenu()
     {
-        //deactive other menu and active player menu
-        FightUIManager.BackToPlayerMenu();
+        //only if player pokemon is alive (because pokemon menu is shown also when the player has to replace his dead pokemon)
+        if (currentPlayerPokemon.CurrentHealth > 0)
+        {
+            //deactive other menu and active player menu
+            FightUIManager.BackToPlayerMenu();
+        }
     }
 
     #endregion

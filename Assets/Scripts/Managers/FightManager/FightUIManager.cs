@@ -56,48 +56,29 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
-    private void Start()
-    {
-        //remove every button from fight menu
-        foreach(Transform child in contentFightMenu)
-        {
-            Destroy(child.gameObject);
-        }
-        //remove every button from pokemon menu
-        foreach (Transform child in contentPokemonMenu)
-        {
-            Destroy(child.gameObject);
-        }
-        //remove every button from bag menu
-        foreach (Transform child in contentBagMenu)
-        {
-            Destroy(child.gameObject);
-        }
+    //TODO
+    //VANNO AGGIUNTI GLI EFFETTI - SIA DELLE SKILL CHE DEGLI ITEMS (ITEM STATE PER ORA NON FA UN CAZZO) [Skill State + Item State + Someone Turn State]
+    //VA CONTROLLATO IL FINE BATTAGLIA - DARE EXP, ECC... [End Fight State]
+    //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC... [End Fight State + Pokemon Model]
+    //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
 
-        //TODO
-        //VANNO AGGIUNTI GLI EFFETTI - SIA DELLE SKILL CHE DEGLI ITEMS (ITEM STATE PER ORA NON FA UN CAZZO) [Skill State + Item State + Someone Turn State]
-        //VA CONTROLLATO IL FINE BATTAGLIA - DARE EXP, ECC... [End Fight State]
-        //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC... [End Fight State + Pokemon Model]
-        //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
+    //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player] - fare canvas in fondo, sopra solo alla transition image
+    //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer, ma in realtà è meglio cancellarlo e aggiungere 4 bottoni in basso a destra come freccette]
+    //NB. mettere tasto pausa in alto a sx? in canvas del pause menu
 
-        //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player] - fare canvas in fondo, sopra solo alla transition image
-        //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer]
-        //NB. mettere tasto pausa in alto a sx? in canvas del pause menu
+    //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
+    //VANNO AGGIUNTO LE POKEBALL
 
-        //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
-        //VANNO AGGIUNTO LE POKEBALL
-
-        /*
-            da fare se rimane tempo:
-            - in base alla zona appaiono pokemon diversi e hanno % di apparizione - vengono settati da moving manager. Si può rendere array grass Tile con % e pokemon diversi
-            NB. si potrebbe fare anche FightManager singleton e MovingManager differente per ogni scena, così da poter creare anche scene differenti con questo metodo
-            - % di apparizione basata su un valore rarità nella scheda del pokemon - o questa o la % nel grass tile
-            - suoni
-            - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta)
-            - salvataggio all'uscita dal gioco (o alla peggio, nel fade out quando finisce un combattimento, o quando si rigenerano i pokemon all'ospedale)
-            - se si vuole esagerare, i pokemon mantengono i danni subiti e PP e bisogna farli curare, quindi aggiungere ospedali e rimuovere il Restore da RunClick()
-         */
-    }
+    /*
+        da fare se rimane tempo:
+        - in base alla zona appaiono pokemon diversi e hanno % di apparizione - vengono settati da moving manager. Si può rendere array grass Tile con % e pokemon diversi
+        NB. si potrebbe fare anche FightManager singleton e MovingManager differente per ogni scena, così da poter creare anche scene differenti con questo metodo
+        - % di apparizione basata su un valore rarità nella scheda del pokemon - o questa o la % nel grass tile
+        - suoni
+        - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta)
+        - salvataggio all'uscita dal gioco (o alla peggio, nel fade out quando finisce un combattimento, o quando si rigenerano i pokemon all'ospedale)
+        - se si vuole esagerare, i pokemon mantengono i danni subiti e PP e bisogna farli curare, quindi aggiungere ospedali e rimuovere il Restore da RunClick()
+     */
 
     #region private API
 

@@ -22,7 +22,7 @@ public class MovingManager : MonoBehaviour
 {
     [Header("Pokemon")]
     [Range(0, 100)]
-    [SerializeField] float percentageFindPokemon = 30;
+    [SerializeField] int percentageFindPokemon = 30;
 
     [Header("Tilemap")]
     [SerializeField] Tilemap collision = default;
