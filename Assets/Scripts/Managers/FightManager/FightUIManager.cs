@@ -42,9 +42,9 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     #region private poolings
-    Pooling<Button> skillsPooling = new Pooling<Button>();
-    Pooling<Button> pokemonsPooling = new Pooling<Button>();
-    Pooling<Button> itemsPooling = new Pooling<Button>();
+    Pooling<Button> skillsPooling = new Pooling<Button>(false);
+    Pooling<Button> pokemonsPooling = new Pooling<Button>(false);
+    Pooling<Button> itemsPooling = new Pooling<Button>(false);
     #endregion
 
     #region private variables
@@ -142,6 +142,12 @@ public class FightUIManager : MonoBehaviour
     {
         //deactive every button
         poolingList.DeactiveAll();
+
+        //add if there are not enough buttons in pool
+        if(valueArray.Length > poolingList.PooledObjects.Count)
+        {
+            poolingList.Init(prefabSimpleButton, valueArray.Length - poolingList.PooledObjects.Count);
+        }
 
         //foreach value
         foreach (T value in valueArray)

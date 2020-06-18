@@ -9,12 +9,11 @@ public class Pooling
     #region variables
 
     bool canGrow = true;
-    List<GameObject> pooledObjects = new List<GameObject>();
 
     /// <summary>
     /// List of objects in the list
     /// </summary>
-    public List<GameObject> PooledObjects { get { return pooledObjects; } }
+    public List<GameObject> PooledObjects = new List<GameObject>();
 
     #endregion
 
@@ -32,7 +31,7 @@ public class Pooling
     {
         //instantiate and add to list
         GameObject obj = Object.Instantiate(prefab);
-        pooledObjects.Add(obj);
+        PooledObjects.Add(obj);
 
         return obj;
     }
@@ -59,11 +58,16 @@ public class Pooling
     public GameObject Instantiate(GameObject prefab)
     {
         //get the first inactive and return
-        foreach (GameObject obj in pooledObjects)
+        foreach (GameObject obj in PooledObjects)
         {
             if (obj.activeInHierarchy == false)
             {
                 obj.SetActive(true);
+
+                //move to the end of the list
+                PooledObjects.Remove(obj);
+                PooledObjects.Add(obj);
+
                 return obj;
             }
         }
@@ -97,9 +101,9 @@ public class Pooling
     /// </summary>
     public void DeactiveAll()
     {
-        for(int i = 0; i < pooledObjects.Count; i++)
+        for(int i = 0; i < PooledObjects.Count; i++)
         {
-            pooledObjects[i].SetActive(false);
+            PooledObjects[i].SetActive(false);
         }
     }
 
@@ -120,12 +124,11 @@ public class Pooling<T> where T : Component
     #region variables
 
     bool canGrow = true;
-    List<T> pooledObjects = new List<T>();
 
     /// <summary>
     /// List of objects in the list
     /// </summary>
-    public List<T> PooledObjects { get { return pooledObjects; } }
+    public List<T> PooledObjects = new List<T>();    
 
     #endregion
 
@@ -143,7 +146,7 @@ public class Pooling<T> where T : Component
     {
         //instantiate and add to list
         T obj = Object.Instantiate(prefab);
-        pooledObjects.Add(obj);
+        PooledObjects.Add(obj);
 
         return obj;
     }
@@ -170,11 +173,16 @@ public class Pooling<T> where T : Component
     public T Instantiate(T prefab)
     {
         //get the first inactive and return
-        foreach (T obj in pooledObjects)
+        foreach (T obj in PooledObjects)
         {
             if (obj.gameObject.activeInHierarchy == false)
             {
                 obj.gameObject.SetActive(true);
+
+                //move to the end of the list
+                PooledObjects.Remove(obj);
+                PooledObjects.Add(obj);
+
                 return obj;
             }
         }
@@ -208,9 +216,9 @@ public class Pooling<T> where T : Component
     /// </summary>
     public void DeactiveAll()
     {
-        for (int i = 0; i < pooledObjects.Count; i++)
+        for (int i = 0; i < PooledObjects.Count; i++)
         {
-            pooledObjects[i].gameObject.SetActive(false);
+            PooledObjects[i].gameObject.SetActive(false);
         }
     }
 

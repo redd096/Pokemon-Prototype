@@ -150,6 +150,9 @@ public class SkillState : FightManagerState
 
     void EndTurn()
     {
+        //remove description
+        fightManager.FightUIManager.EndDescription();
+
         PokemonModel otherPokemon = isPlayer ? fightManager.currentEnemyPokemon : fightManager.currentPlayerPokemon;
 
         if (otherPokemon.CurrentHealth <= 0)
