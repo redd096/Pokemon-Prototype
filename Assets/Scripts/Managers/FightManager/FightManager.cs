@@ -125,8 +125,8 @@ public class FightManager : MonoBehaviour
 
     public void UseItem(ItemModel item)
     {
-        //remove item
-        item.RemoveItem();
+        //remove item from player inventory
+        GameManager.instance.player.RemoveItem(item);
 
         //set item and change state
         ItemUsed = item;

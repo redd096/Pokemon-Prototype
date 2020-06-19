@@ -96,6 +96,7 @@ public class FightUIManager : MonoBehaviour
 
     void ChangePokemon(Button button, PokemonModel pokemon)
     {
+        //don't change if dead
         if (pokemon.CurrentHealth <= 0)
             return;
 
@@ -220,8 +221,8 @@ public class FightUIManager : MonoBehaviour
         List<PokemonModel> pokemonsUsable = new List<PokemonModel>();
         for (int i = 0; i < playerPokemons.Count; i++)
         {
-            //check if it isn't the pokemon in arena && is alive, add to the list
-            if (playerPokemons[i] != pokemonInArena && playerPokemons[i].CurrentHealth > 0)
+            //check if it isn't the pokemon in arena, add to the list
+            if (playerPokemons[i] != pokemonInArena)
                 pokemonsUsable.Add(playerPokemons[i]);
         }
 

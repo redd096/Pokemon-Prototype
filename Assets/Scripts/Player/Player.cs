@@ -32,11 +32,15 @@ public class Player : StateMachine
 
         //foreach data, create a pokemon model
         for (int i = 0; i < playerPokemonsData.Length; i++)
-            playerPokemons.Add( new PokemonModel(playerPokemonsData[i], pokemonsLevel) );
+        {
+            playerPokemons.Add(new PokemonModel(playerPokemonsData[i], pokemonsLevel));
+        }
 
-        //foreach data, create a item model
+        //foreach data, add in inventory
         for (int i = 0; i < playerItemsData.Length; i++)
-            playerItems.Add(new ItemModel(playerItemsData[i]));
+        {
+            AddItem(new ItemModel(playerItemsData[i]));
+        }
     }
 
     void Update()

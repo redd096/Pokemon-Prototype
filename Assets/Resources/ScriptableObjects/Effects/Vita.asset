@@ -15,4 +15,4 @@ MonoBehaviour:
   duration: 1
   descriptionOnPlayer: '{PlayerPokemon} recupera vita'
   descriptionOnEnemy: '{EnemyPokemon} recupera vita'
-  value: 50
+  value: 15

@@ -25,8 +25,10 @@ public class PokemonModel : IGetName
         } 
         set
         { 
+            //if value < 1 set to 0, so there are no problems with UI (when 0,5 hp it show 0 but don't die)
             if (value < 1) 
                 currentHealth = 0; 
+            //clamp 0 (dead) or data.health (full hp)
             else 
                 currentHealth = Mathf.Clamp(value, 0, pokemonData.Health); 
         } 
