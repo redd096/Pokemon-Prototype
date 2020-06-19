@@ -36,7 +36,7 @@ public class PokemonData : ScriptableObject
     [SerializeField] Sprite pokemonBack = default;
 
     [Header("Attack")]
-    [SerializeField] float health = 100;
+    [Min(0)] [SerializeField] float health = 100;
     [SerializeField] float speed = 45;
     [SerializeField] float physicsAttack = 10;
     [SerializeField] float physicsDefense = 10;

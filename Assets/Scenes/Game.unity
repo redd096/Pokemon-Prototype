@@ -666,25 +666,6 @@ MonoBehaviour:
   enemyPokemons: []
   baseSkill: {fileID: 11400000, guid: 96c17c6e4457ac94b939f1f401fd5d73, type: 2}
   efficiencyTAB: {fileID: 11400000, guid: a360eff70ea83b843bbadc26f4ebc105, type: 2}
-  skillUsed:
-    skillData: {fileID: 0}
-    CurrentPP: 0
-  pokemonSelected:
-    pokemonData: {fileID: 0}
-    CurrentLevel: 0
-    CurrentExp: 0
-    ExpCurrentLevel: 0
-    ExpNextLevel: 0
-    CurrentHealth: 0
-    Speed: 0
-    PhysicsAttack: 0
-    PhysicsDefense: 0
-    SpecialAttack: 0
-    SpecialDefense: 0
-    CurrentSkills: []
-  itemUsed:
-    itemData: {fileID: 0}
-    stack: 0
 --- !u!4 &401553864
 Transform:
   m_ObjectHideFlags: 0
@@ -938,22 +919,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   percentageFindPokemon: 30
   collision: {fileID: 1852988814}
-  grass: {fileID: 857756915}
   grassStruct:
   - tile: {fileID: 857756915}
     pokemons:
     - pokemon: {fileID: 11400000, guid: 2b0e17dc0de30814da41c0b0c981bc19, type: 2}
+      level: 0
       percentage: 100
   - tile: {fileID: 1890099340}
     pokemons:
     - pokemon: {fileID: 11400000, guid: 4e65cb8b7a8f16f4383bc3746b1e63e5, type: 2}
+      level: 0
       percentage: 50
     - pokemon: {fileID: 11400000, guid: f235e15cc06e31641b442b229d9009b2, type: 2}
+      level: 0
       percentage: 50
-  pathPokemon: ScriptableObjects/Pokemons
+  minLevel: 5
   minPokemons: 1
   maxPokemons: 1
-  pokemonsLevel: 5
 --- !u!1 &486505717
 GameObject:
   m_ObjectHideFlags: 0

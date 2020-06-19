@@ -1,32 +1,20 @@
 ﻿using UnityEngine;
 
-public enum EEffect
-{
-    nothing,
-    life,
-    pp,
-    precision,
-    burned,
-    paralyzed,
-}
-
 [CreateAssetMenu(fileName = "Skill", menuName = "Pokemon Prototype/Skill")]
 public class SkillData : ScriptableObject
 {
     [Header("Important")]
-    [SerializeField] string skillName = "Scontro";
+    [SerializeField] string skillName = "Skill";
     [SerializeField] EType skillType = EType.normal;
-    [SerializeField] int pp = 0;
+    [Min(0)] [SerializeField] int pp = 0;
     [SerializeField] bool isSpecial = false;
 
     [Header("Damage")]
     [SerializeField] float power = 10;
-    [Range(0, 100)] [SerializeField] float accuracy = 50;
+    [Range(0, 100)] [SerializeField] int accuracy = 50;
 
     [Header("Effect")]
-    [SerializeField] EEffect effect = EEffect.nothing;
-    [SerializeField] float value = 0;
-    [SerializeField] int duration = 0;
+    [SerializeField] EffectData effect = default;
 
     //important
     public string SkillName => skillName;
@@ -36,10 +24,8 @@ public class SkillData : ScriptableObject
 
     //damage
     public float Power => power;
-    public float Accuracy => accuracy;
+    public int Accuracy => accuracy;
 
     //effect
-    public EEffect Effect => effect;
-    public float Value => value;
-    public int Duration => duration;
+    public EffectData Effect => effect;
 }

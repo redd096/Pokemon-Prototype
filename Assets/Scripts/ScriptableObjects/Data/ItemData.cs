@@ -4,18 +4,14 @@
 public class ItemData : ScriptableObject
 {
     [Header("Important")]
-    [SerializeField] string itemName = "Life Potion";
+    [SerializeField] string itemName = "Item";
 
     [Header("Effect")]
-    [SerializeField] EEffect effect = EEffect.life;
-    [SerializeField] float value = 30;
-    [SerializeField] int duration = 0;
+    [SerializeField] EffectData effect = default;
 
     //important
     public string ItemName => itemName;
 
     //effect
-    public EEffect Effect => effect;
-    public float Value => value;
-    public int Duration => duration;
+    public EffectData Effect => effect;
 }

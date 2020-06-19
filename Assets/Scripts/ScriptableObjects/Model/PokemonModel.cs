@@ -16,13 +16,29 @@ public class PokemonModel : IGetName
     public float ExpNextLevel;// { get; private set; }
 
     //fight
-    public float CurrentHealth;
+    float currentHealth;
+    public float CurrentHealth
+    { 
+        get
+        { 
+            return currentHealth; 
+        } 
+        set
+        { 
+            if (value < 1) 
+                currentHealth = 0; 
+            else 
+                currentHealth = Mathf.Clamp(value, 0, pokemonData.Health); 
+        } 
+    }
     public float Speed;
     public float PhysicsAttack;
     public float PhysicsDefense;
     public float SpecialAttack;
     public float SpecialDefense;
     public SkillModel[] CurrentSkills = new SkillModel[4];
+
+    public List<EffectModel> ActiveEffects = new List<EffectModel>();
 
     #endregion
 
@@ -61,14 +77,25 @@ public class PokemonModel : IGetName
     /// <summary>
     /// get damage and check if dead
     /// </summary>
-    public void GetDamage(float damage)
+    public void GetDamage(SkillModel skill, PokemonModel pokemonWhoAttack, out string efficiencyText)
     {
-        CurrentHealth -= damage;
+        //get attack and defense, based to the skill if special or physics
+        float attack = skill.skillData.IsSpecial ? pokemonWhoAttack.SpecialAttack : pokemonWhoAttack.PhysicsAttack;
+        float defense = skill.skillData.IsSpecial ? SpecialDefense : PhysicsDefense;
 
-        if(CurrentHealth <= 0)
-        {
-            CurrentHealth = 0;
-        }
+        //get multipliers -> out efficiencyText
+        float efficiencyMultiplier = skill.EfficiencyMultiplier(pokemonData.PokemonType, out efficiencyText);
+        float stab = skill.STAB(pokemonWhoAttack.pokemonData.PokemonType);
+        float nRandom = skill.NRandom();
+
+        //((( (2 * Livello Pokemon + 10) * Attacco Pokemon * Potenza Mossa ) / (250 * Difesa Fisica o Difesa Speciale del Nemico)) +2 ) * Efficacia * STAB * N
+        float damage = ((((2 * pokemonWhoAttack.CurrentLevel + 10) * attack * skill.skillData.Power) / (250 * defense)) + 2) * efficiencyMultiplier * stab * nRandom;
+
+        //if the skill has one, add effect to the list
+        AddEffect(skill.skillData.Effect);
+
+        //apply effective damage
+        CurrentHealth -= damage;
     }
 
     /// <summary>
@@ -100,6 +127,52 @@ public class PokemonModel : IGetName
         foreach(SkillModel skill in CurrentSkills)
         {
             skill.RestorePP();
+        }
+
+        //remove effects
+        ActiveEffects.Clear();
+    }
+
+    /// <summary>
+    /// Add effect to the list
+    /// </summary>
+    public EffectModel AddEffect(EffectData effect)
+    {
+        //if no effect, return null
+        if (effect == null)
+            return null;
+
+        //if already in the list, remove it
+        foreach(EffectModel e in ActiveEffects)
+        {
+            if(e.effectData == effect)
+            {
+                ActiveEffects.Remove(e);
+                break;
+            }
+        }
+
+        //insert at start
+        EffectModel newEffect = new EffectModel(effect);
+        ActiveEffects.Insert(0, newEffect);
+
+        //return added effect
+        return newEffect;
+    }
+
+    /// <summary>
+    /// Remove effect from the list
+    /// </summary>
+    public void RemoveEffect(EffectData effect)
+    {
+        //if already in the list, remove it
+        foreach (EffectModel e in ActiveEffects)
+        {
+            if (e.effectData == effect)
+            {
+                ActiveEffects.Remove(e);
+                break;
+            }
         }
     }
 

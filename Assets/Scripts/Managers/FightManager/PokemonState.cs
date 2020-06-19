@@ -94,16 +94,16 @@ public class PokemonState : FightManagerState
     {
         //set new pokemon
         if (isPlayer)
-            fightManager.SetCurrentPlayerPokemon(fightManager.pokemonSelected);
+            fightManager.SetCurrentPlayerPokemon(fightManager.PokemonSelected);
         else
-            fightManager.SetCurrentEnemyPokemon(fightManager.pokemonSelected);
+            fightManager.SetCurrentEnemyPokemon(fightManager.PokemonSelected);
 
         //set UI new pokemon
         fightManager.FightUIManager.SetPokemonInArena(isPlayer);
 
         //if is player turn, set new skill
         if(isPlayer)
-            fightManager.FightUIManager.SetSkillsList(fightManager.pokemonSelected);
+            fightManager.FightUIManager.SetSkillsList(fightManager.currentPlayerPokemon);
 
         //start animation
         fightManager.FightUIManager.StartAnimation(SpawnNextPokemon());

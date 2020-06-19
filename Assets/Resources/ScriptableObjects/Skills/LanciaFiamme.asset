@@ -9,8 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 789fd712b9f2c044984eb26b889fd13e, type: 3}
-  m_Name: Pozione Hp
+  m_Script: {fileID: 11500000, guid: 4a5e08bba291c59488c55ca0d2ea8b0a, type: 3}
+  m_Name: LanciaFiamme
   m_EditorClassIdentifier: 
-  itemName: Pozione Hp
-  effect: {fileID: 11400000, guid: 64049185b1fec6044b0d7dc3bdae3eaa, type: 2}
+  skillName: LanciaFiamme
+  skillType: 1
+  pp: 5
+  isSpecial: 1
+  power: 200
+  accuracy: 50
+  effect: {fileID: 11400000, guid: f1b7efa808a7d414b9773d779ac7e9ef, type: 2}

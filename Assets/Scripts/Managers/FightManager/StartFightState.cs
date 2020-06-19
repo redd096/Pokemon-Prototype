@@ -69,7 +69,8 @@ public class StartFightState : FightManagerState
     void OnEndDescription()
     {
         //be sure to complete animation
-        fightManager.FightUIManager.OnEndDescription();
+        fightManager.FightUIManager.PokemonSpawnAnimation(true, 1);
+        fightManager.FightUIManager.EndDescription();
 
         //change state
         anim.SetTrigger("PlayerRound");

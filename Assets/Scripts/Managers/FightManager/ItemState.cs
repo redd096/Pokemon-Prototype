@@ -11,12 +11,18 @@ public class ItemState : FightManagerState
     [TextArea()]
     [SerializeField] string description = "Usi {Item} su {PlayerPokemon}...";
 
+    [Header("Update Health")]
+    [SerializeField] float durationUpdateHealth = 0.7f;
+
+    PokemonModel pokemon;
+    float previousHealth;
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         //show description using item
-        //use item
+        //add item effect
 
         SetDescription();
     }
@@ -37,24 +43,55 @@ public class ItemState : FightManagerState
         //deactive description
         fightManager.FightUIManager.EndDescription();
 
-        //apply effect
-        ApplyEffect();
+        //add effect to pokemon list
+        AddEffect();
     }
 
     #endregion
 
-    void ApplyEffect()
+    void AddEffect()
     {
-        //TODO
-        //apply possible effect to player pokemon
-        //description effect attivo?
+        //add effect to pokemon list
+        pokemon = isPlayer ? fightManager.currentPlayerPokemon : fightManager.currentEnemyPokemon;
+        EffectModel effect = pokemon.AddEffect(fightManager.ItemUsed.itemData.Effect);
 
+        previousHealth = pokemon.CurrentHealth;
+
+        //apply effect
+        string effectDescription;
+        effect.ApplyEffect(pokemon, isPlayer, out effectDescription);
+
+        //show effect description
+        fightManager.FightUIManager.SetDescription(effectDescription, CheckLife);
+    }
+
+    void CheckLife()
+    {
+        //remove description
+        fightManager.FightUIManager.EndDescription();
+
+        //if changed health, update UI before end turn
+        if (pokemon.CurrentHealth != previousHealth)
+        {
+            fightManager.FightUIManager.UpdateHealth(isPlayer, previousHealth, durationUpdateHealth, EndTurn);
+            return;
+        }
+
+        //else end turn immediatly
         EndTurn();
     }
 
     void EndTurn()
     {
-        //change state
-        anim.SetTrigger("Next");
+        if (pokemon.CurrentHealth > 0)
+        {
+            //go to next state
+            anim.SetTrigger("Next");
+        }
+        else
+        {
+            //change state to pokemon dead
+            anim.SetTrigger("PokemonDead");
+        }
     }
 }

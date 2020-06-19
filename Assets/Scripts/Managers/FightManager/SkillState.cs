@@ -17,7 +17,9 @@ public class SkillState : FightManagerState
     [Header("Update Health")]
     [SerializeField] float durationUpdateHealth = 0.7f;
 
-    float startHealth;
+    PokemonModel otherPokemon;
+
+    float previousHealth;
     string efficiencyText;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -25,20 +27,15 @@ public class SkillState : FightManagerState
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         //show attack description
-        //do attack and show animation - show also description of efficiency
+        //do attack (damage and effect) and show animation - show also description of efficiency
         //check if kill the other pokemon, else go to next state
 
-        //set start health (inverse, cause is the other pokemon getting damage)
-        startHealth = isPlayer ? fightManager.currentEnemyPokemon.CurrentHealth : fightManager.currentPlayerPokemon.CurrentHealth;
+        //set previous health (inverse, cause is the other pokemon getting damage)
+        previousHealth = isPlayer ? fightManager.currentEnemyPokemon.CurrentHealth : fightManager.currentPlayerPokemon.CurrentHealth;
 
         SetDescription();
 
         ApplyDamage();
-
-        //TODO
-        //apply possible effects
-        //description effect attivato?
-        //PENSO CI VOGLIA UN'ALTRA STATE ANCORA PER ATTACCARE L'EFFECT E MOSTRARE UNA DESCRIZIONE
     }
 
     #region enter
@@ -63,26 +60,12 @@ public class SkillState : FightManagerState
 
     void ApplyDamage()
     {
-        SkillModel skill = fightManager.skillUsed;
-
-        //get this pokemon and the other pokemon, based if is player or enemy turn
+        //get this and other pokemon, based if is player or enemy turn
         PokemonModel thisPokemon = isPlayer ? fightManager.currentPlayerPokemon : fightManager.currentEnemyPokemon;
-        PokemonModel otherPokemon = isPlayer ? fightManager.currentEnemyPokemon : fightManager.currentPlayerPokemon;
+        otherPokemon = isPlayer ? fightManager.currentEnemyPokemon : fightManager.currentPlayerPokemon;
 
-        //get attack and defense, based to the skill if special or physics
-        float attack = fightManager.skillUsed.skillData.IsSpecial ? thisPokemon.SpecialAttack : thisPokemon.PhysicsAttack;
-        float defense = fightManager.skillUsed.skillData.IsSpecial ? otherPokemon.SpecialDefense : otherPokemon.PhysicsDefense;
-
-        //get multipliers
-        float efficiencyMultiplier = skill.EfficiencyMultiplier(otherPokemon.pokemonData.PokemonType, out efficiencyText);
-        float stab = skill.STAB(thisPokemon.pokemonData.PokemonType);
-        float nRandom = skill.NRandom();
-
-        //((( (2 * Livello Pokemon + 10) * Attacco Pokemon * Potenza Mossa ) / (250 * Difesa Fisica o Difesa Speciale del Nemico)) +2 ) * Efficacia * STAB * N
-        float damage = ((((2 * thisPokemon.CurrentLevel + 10) * attack * skill.skillData.Power) / (250 * defense)) + 2) * efficiencyMultiplier * stab * nRandom;
-
-        //apply damage
-        otherPokemon.GetDamage(damage);
+        //apply damage and effect
+        otherPokemon.GetDamage(fightManager.SkillUsed, thisPokemon, out efficiencyText);
     }
 
     #endregion
@@ -116,35 +99,18 @@ public class SkillState : FightManagerState
         EndAttackAnimation();
     }
 
-    IEnumerator UpdateHealth()
-    {
-        float delta = 0;
-
-        //update health
-        while (delta < 1)
-        {
-            delta += Time.deltaTime / durationUpdateHealth;
-            fightManager.FightUIManager.UpdateHealth(!isPlayer, startHealth, delta);    // !isPlayer, because update the health of the other pokemon (who's been attacked)
-            yield return null;
-        }
-
-        //be sure to end animation
-        fightManager.FightUIManager.UpdateHealth(!isPlayer, startHealth, 1);            // !isPlayer, because update the health of the other pokemon (who's been attacked)
-        fightManager.FightUIManager.EndAnimation();
-    }
-
     #endregion
 
     void EndAttackAnimation()
     {
         //update health and set description efficiency
-        fightManager.FightUIManager.StartAnimation(UpdateHealth());
+        fightManager.FightUIManager.UpdateHealth(!isPlayer, previousHealth, durationUpdateHealth);  // !isPlayer, because update the health of the other pokemon (who's been attacked)
         SetDescription_Efficiency();
     }
 
     void SetDescription_Efficiency()
     {
-        //set Description letter by letter, then call EndTurn
+        //set Description letter by letter, then call OnEndDescription_Efficiency
         fightManager.FightUIManager.SetDescription(efficiencyText, EndTurn);
     }
 
@@ -153,17 +119,15 @@ public class SkillState : FightManagerState
         //remove description
         fightManager.FightUIManager.EndDescription();
 
-        PokemonModel otherPokemon = isPlayer ? fightManager.currentEnemyPokemon : fightManager.currentPlayerPokemon;
-
-        if (otherPokemon.CurrentHealth <= 0)
-        {
-            //change state to pokemon dead
-            anim.SetTrigger("PokemonDead");
-        }
-        else
+        if (otherPokemon.CurrentHealth > 0)
         {
             //go to next state
             anim.SetTrigger("Next");
+        }
+        else
+        {
+            //change state to pokemon dead
+            anim.SetTrigger("PokemonDead");
         }
     }
 }

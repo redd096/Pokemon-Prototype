@@ -50,6 +50,7 @@ public class FightUIManager : MonoBehaviour
     #region private variables
 
     Coroutine doingAnimation;
+    Coroutine updatingHealth;
 
     Vector3 playerPosition;
     Vector3 enemyPosition;
@@ -62,20 +63,19 @@ public class FightUIManager : MonoBehaviour
     //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC... [End Fight State + Pokemon Model]
     //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
 
-    //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player] - fare canvas in fondo, sopra solo alla transition image
-    //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer, ma in realtà è meglio cancellarlo e aggiungere 4 bottoni in basso a destra come freccette]
-    //NB. mettere tasto pausa in alto a sx? in canvas del pause menu
+    //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player, ma vorrei preferirei tasto in alto a sx] - fare canvas in fondo, sopra solo alla transition image
+    //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer, ma in realtà è meglio cancellarlo e aggiungere 4 bottoni in basso a dx come freccette]
+    //LASCIARE IL TASTO BACK NEL SomeoneTurnState? O OBBLIGARE ALL'UTIZILLO DEL BACKBUTTON PRESENTE IN OGNI MENù?
 
     //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
     //VANNO AGGIUNTO LE POKEBALL
 
     /*
         da fare se rimane tempo:
-        - in base alla zona appaiono pokemon diversi e hanno % di apparizione - vengono settati da moving manager. Si può rendere array grass Tile con % e pokemon diversi
-        NB. si potrebbe fare anche FightManager singleton e MovingManager differente per ogni scena, così da poter creare anche scene differenti con questo metodo
+        NB. si potrebbe fare anche FightManager singleton e MovingManager differente per ogni scena, l'unico problema è l'event system che dovrà diventare singleton anche lui
         - % di apparizione basata su un valore rarità nella scheda del pokemon - o questa o la % nel grass tile
         - suoni
-        - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta)
+        - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta) (StartFightState description?)
         - salvataggio all'uscita dal gioco (o alla peggio, nel fade out quando finisce un combattimento, o quando si rigenerano i pokemon all'ospedale)
         - se si vuole esagerare, i pokemon mantengono i danni subiti e PP e bisogna farli curare, quindi aggiungere ospedali e rimuovere il Restore da RunClick()
      */
@@ -125,17 +125,13 @@ public class FightUIManager : MonoBehaviour
         poolingList.DeactiveAll();
 
         //add if there are not enough buttons in pool
-        if(valueArray.Length > poolingList.PooledObjects.Count)
-        {
-            poolingList.Init(prefabSimpleButton, valueArray.Length - poolingList.PooledObjects.Count);
-        }
+        poolingList.InitCycle(prefabSimpleButton, valueArray.Length);
 
         //foreach value
         foreach (T value in valueArray)
         {
             //instantiate button from pool and set parent
-            Button button = poolingList.Instantiate(prefabSimpleButton);
-            button.transform.SetParent(parent, false);
+            Button button = poolingList.Instantiate(prefabSimpleButton, parent, false);
 
             //and set it
             SetButton(button, value, function);
@@ -152,6 +148,42 @@ public class FightUIManager : MonoBehaviour
 
         //set text
         button.GetComponentInChildren<Text>().text = value.GetButtonName();
+    }
+
+    IEnumerator UpdateHealth_Coroutine(bool isPlayer, float previousHealth, float durationUpdateHealth, System.Action onEndUpdateHealth)
+    {
+        float delta = 0;
+
+        //update health
+        while (delta < 1)
+        {
+            delta += Time.deltaTime / durationUpdateHealth;
+            SetHealthUI(isPlayer, previousHealth, delta);
+            yield return null;
+        }
+
+        //be sure to end animation
+        SetHealthUI(isPlayer, previousHealth, 1);
+
+        onEndUpdateHealth?.Invoke();
+
+        updatingHealth = null;
+    }
+
+    void SetHealthUI(bool isPlayer, float previousHealth, float delta)
+    {
+        //get what to edit
+        Slider slider = isPlayer ? playerHealthSlider : enemyHealthSlider;
+        Text text = isPlayer ? playerHealth : enemyHealth;
+        PokemonModel pokemon = isPlayer ? GameManager.instance.levelManager.FightManager.currentPlayerPokemon : GameManager.instance.levelManager.FightManager.currentEnemyPokemon;
+
+        //current health based on delta
+        float currentHealth = Mathf.Lerp(previousHealth, pokemon.CurrentHealth, delta);
+
+        //set slider and text
+        slider.value = currentHealth / pokemon.pokemonData.Health;
+        slider.fillRect.GetComponent<Image>().color = HealthGradient.Evaluate(currentHealth / pokemon.pokemonData.Health);
+        text.text = currentHealth.ToString("F0") + " / " + pokemon.pokemonData.Health.ToString("F0");
     }
 
     #endregion
@@ -216,15 +248,6 @@ public class FightUIManager : MonoBehaviour
         playerImage.gameObject.SetActive(true);
     }
 
-    public void OnEndDescription()
-    {
-        //end description
-        EndDescription();
-
-        //be sure to complete animation
-        playerImage.transform.localScale = Vector3.one;
-    }
-
     #endregion
 
     #region player round state
@@ -260,7 +283,7 @@ public class FightUIManager : MonoBehaviour
         description.gameObject.SetActive(true);
 
         //write description letter by letter. Then press a button and call OnEndDescription
-        string s = ReplaceString(text);
+        string s = Parse(text);
         description.WriteLetterByLetterAndWait_SkipAccelerate(s, onEndDescription);
     }
 
@@ -269,7 +292,7 @@ public class FightUIManager : MonoBehaviour
         description.gameObject.SetActive(false);
     }
 
-    string ReplaceString(string text)
+    string Parse(string text)
     {
         FightManager fightManager = GameManager.instance.levelManager.FightManager;
 
@@ -278,9 +301,9 @@ public class FightUIManager : MonoBehaviour
         //replace string with data
         Replace(ref s, "{PlayerPokemon}", fightManager.currentPlayerPokemon);
         Replace(ref s, "{EnemyPokemon}", fightManager.currentEnemyPokemon);
-        Replace(ref s, "{Skill}", fightManager.skillUsed);
-        Replace(ref s, "{Pokemon}", fightManager.pokemonSelected);
-        Replace(ref s, "{Item}", fightManager.itemUsed);
+        Replace(ref s, "{Skill}", fightManager.SkillUsed);
+        Replace(ref s, "{Pokemon}", fightManager.PokemonSelected);
+        Replace(ref s, "{Item}", fightManager.ItemUsed);
 
         return s;
     }
@@ -323,20 +346,14 @@ public class FightUIManager : MonoBehaviour
         bagMenu.SetActive(false);
     }
 
-    public void UpdateHealth(bool isPlayer, float startHealth, float delta)
+    public void UpdateHealth(bool isPlayer, float previousHealth, float durationUpdateHealth, System.Action onEndUpdateHealth = null)
     {
-        //get what to edit
-        Slider slider = isPlayer ? playerHealthSlider : enemyHealthSlider;
-        Text text = isPlayer ? playerHealth : enemyHealth;
-        PokemonModel pokemon = isPlayer ? GameManager.instance.levelManager.FightManager.currentPlayerPokemon : GameManager.instance.levelManager.FightManager.currentEnemyPokemon;
+        //stop if already running
+        if (updatingHealth != null)
+            StopCoroutine(updatingHealth);
 
-        //current health based on delta
-        float currentHealth = Mathf.Lerp(startHealth, pokemon.CurrentHealth, delta);
-
-        //set slider and text
-        slider.value = currentHealth / pokemon.pokemonData.Health;
-        slider.fillRect.GetComponent<Image>().color = HealthGradient.Evaluate(currentHealth / pokemon.pokemonData.Health);
-        text.text = currentHealth.ToString("F0") + " / " + pokemon.pokemonData.Health.ToString("F0");
+        //start coroutine
+        updatingHealth = StartCoroutine(UpdateHealth_Coroutine(isPlayer, previousHealth, durationUpdateHealth, onEndUpdateHealth));
     }
 
     public void SetSkillsList(PokemonModel pokemon)
@@ -364,7 +381,7 @@ public class FightUIManager : MonoBehaviour
             playerImage.sprite = pokemon.pokemonData.PokemonBack;
             playerName.text = pokemon.GetObjectName();
             playerLevel.text = playerLevelString + pokemon.CurrentLevel;
-            UpdateHealth(true, 0, 1);
+            SetHealthUI(true, 0, 1);
             playerExpSlider.value = (pokemon.CurrentExp - pokemon.ExpCurrentLevel) / (pokemon.ExpNextLevel - pokemon.ExpCurrentLevel);
         }
         else
@@ -373,7 +390,7 @@ public class FightUIManager : MonoBehaviour
             enemyImage.sprite = pokemon.pokemonData.PokemonFront;
             enemyName.text = pokemon.GetObjectName();
             enemyLevel.text = enemyLevelString + pokemon.CurrentLevel;
-            UpdateHealth(false, 0, 1);
+            SetHealthUI(false, 0, 1);
             enemyExpSlider.value = (pokemon.CurrentExp - pokemon.ExpCurrentLevel) / (pokemon.ExpNextLevel - pokemon.ExpCurrentLevel);
         }
     }

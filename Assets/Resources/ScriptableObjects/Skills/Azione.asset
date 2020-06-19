@@ -18,6 +18,4 @@ MonoBehaviour:
   isSpecial: 0
   power: 200
   accuracy: 75
-  effect: 0
-  value: 0
-  duration: 0
+  effect: {fileID: 0}

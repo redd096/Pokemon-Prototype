@@ -20,9 +20,9 @@ public class FightManager : MonoBehaviour
 
     #region for states
 
-    [HideInInspector] public SkillModel skillUsed;
-    [HideInInspector] public PokemonModel pokemonSelected;
-    [HideInInspector] public ItemModel itemUsed;
+    public SkillModel SkillUsed { get; private set; }
+    public PokemonModel PokemonSelected { get; private set; }
+    public ItemModel ItemUsed { get; private set; }
 
     #endregion
 
@@ -112,14 +112,14 @@ public class FightManager : MonoBehaviour
         skill.CurrentPP--;
 
         //set skill and change state
-        skillUsed = skill;
+        SkillUsed = skill;
         anim.SetTrigger("Skill");
     }
 
     public void ChangePokemon(PokemonModel pokemon)
     {
         //set pokemon and change state
-        pokemonSelected = pokemon;
+        PokemonSelected = pokemon;
         anim.SetTrigger("Pokemon");
     }
 
@@ -129,7 +129,7 @@ public class FightManager : MonoBehaviour
         item.RemoveItem();
 
         //set item and change state
-        itemUsed = item;
+        ItemUsed = item;
         anim.SetTrigger("Item");
     }
 

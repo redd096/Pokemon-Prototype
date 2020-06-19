@@ -53,7 +53,22 @@ public class Pooling
     }
 
     /// <summary>
-    /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one
+    /// If not enough objects in the pool, instantiate necessary to reach the cycleAmount
+    /// </summary>
+    public void InitCycle(GameObject prefab, int cycleAmount)
+    {
+        //add if there are not enough buttons in pool
+        if (cycleAmount > PooledObjects.Count)
+        {
+            Init(prefab, cycleAmount - PooledObjects.Count);
+        }
+    }
+
+    #region instantiate
+
+    /// <summary>
+    /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one. 
+    /// NB SetActive not works in the same frame, so if you are instantiating in a cycle consider to use InitCycle()
     /// </summary>
     public GameObject Instantiate(GameObject prefab)
     {
@@ -83,7 +98,8 @@ public class Pooling
 
     /// <summary>
     /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one. 
-    /// Then set position and rotation
+    /// Then set position and rotation. 
+    /// NB SetActive not works in the same frame, so if you are instantiating in a cycle consider to use InitCycle()
     /// </summary>
     public GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation)
     {
@@ -95,6 +111,38 @@ public class Pooling
 
         return obj;
     }
+
+    /// <summary>
+    /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one. 
+    /// Then set parent. 
+    /// NB SetActive not works in the same frame, so if you are instantiating in a cycle consider to use InitCycle()
+    /// </summary>
+    public GameObject Instantiate(GameObject prefab, Transform parent)
+    {
+        //return obj but with position and rotation set
+        GameObject obj = Instantiate(prefab);
+
+        obj.transform.SetParent(parent);
+
+        return obj;
+    }
+
+    /// <summary>
+    /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one. 
+    /// Then set parent. 
+    /// NB SetActive not works in the same frame, so if you are instantiating in a cycle consider to use InitCycle()
+    /// </summary>
+    public GameObject Instantiate(GameObject prefab, Transform parent, bool worldPositionStays)
+    {
+        //return obj but with position and rotation set
+        GameObject obj = Instantiate(prefab);
+
+        obj.transform.SetParent(parent, worldPositionStays);
+
+        return obj;
+    }
+
+    #endregion
 
     /// <summary>
     /// Deactive every object in the list
@@ -168,7 +216,22 @@ public class Pooling<T> where T : Component
     }
 
     /// <summary>
-    /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one
+    /// If not enough objects in the pool, instantiate necessary to reach the cycleAmount
+    /// </summary>
+    public void InitCycle(T prefab, int cycleAmount)
+    {
+        //add if there are not enough buttons in pool
+        if (cycleAmount > PooledObjects.Count)
+        {
+            Init(prefab, cycleAmount - PooledObjects.Count);
+        }
+    }
+
+    #region instantiate
+
+    /// <summary>
+    /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one. 
+    /// NB SetActive not works in the same frame, so if you are instantiating in a cycle consider to use InitCycle()
     /// </summary>
     public T Instantiate(T prefab)
     {
@@ -198,7 +261,8 @@ public class Pooling<T> where T : Component
 
     /// <summary>
     /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one. 
-    /// Then set position and rotation
+    /// Then set position and rotation. 
+    /// NB SetActive not works in the same frame, so if you are instantiating in a cycle consider to use InitCycle()
     /// </summary>
     public T Instantiate(T prefab, Vector3 position, Quaternion rotation)
     {
@@ -210,6 +274,38 @@ public class Pooling<T> where T : Component
 
         return obj;
     }
+
+    /// <summary>
+    /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one. 
+    /// Then set parent. 
+    /// NB SetActive not works in the same frame, so if you are instantiating in a cycle consider to use InitCycle()
+    /// </summary>
+    public T Instantiate(T prefab, Transform parent)
+    {
+        //return obj but with position and rotation set
+        T obj = Instantiate(prefab);
+
+        obj.transform.SetParent(parent);
+
+        return obj;
+    }
+
+    /// <summary>
+    /// Active first inactive in the list. If everything is already active, if can grow, instantiate new one. 
+    /// Then set parent. 
+    /// NB SetActive not works in the same frame, so if you are instantiating in a cycle consider to use InitCycle()
+    /// </summary>
+    public T Instantiate(T prefab, Transform parent, bool worldPositionStays)
+    {
+        //return obj but with position and rotation set
+        T obj = Instantiate(prefab);
+
+        obj.transform.SetParent(parent, worldPositionStays);
+
+        return obj;
+    }
+
+    #endregion
 
     /// <summary>
     /// Deactive every object in the list
