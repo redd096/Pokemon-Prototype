@@ -15,9 +15,12 @@ public class EndFightState : FightManagerState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        //TODO devi calcolare un botto di cose per salire di livello e item droppati        
+        //set description win or lose
+        //if lose, end fight
+        //if win, get experience, level up, check new skills and get items    
 
         SetDescription();
+        GetExperience();
     }
 
     #region enter
@@ -31,14 +34,36 @@ public class EndFightState : FightManagerState
         fightManager.FightUIManager.SetDescription(description, OnEndDescription);
     }
 
+    void GetExperience()
+    {
+        //only if win
+        if (isWin == false)
+            return;
+
+        //every player pokemon who fought get experience
+        foreach(PokemonModel pokemon in fightManager.pokemonsWhoFought)
+        {
+            //get experience from every enemy pokemon
+            foreach(PokemonModel enemyPokemon in fightManager.enemyPokemons)
+            {
+                pokemon.GetExperience(true, enemyPokemon.pokemonData.ExperienceOnDeath, enemyPokemon.CurrentLevel, fightManager.pokemonsWhoFought.Count);
+            }
+        }
+    }
+
+    #endregion
+
     void OnEndDescription()
     {
         //deactive description
         fightManager.FightUIManager.EndDescription();
 
+        //TODO
+        //INVECE DI FARE RUNCLICK, DOVREBBE MOSTRARE LA BARRA DELL'EXP CHE SI AGGIORNA GRADUALMENTE (COME UPDATE HEALTH)
+        //IN CASO DI LEVEL UP DEVE AGGIORNARSI E VEDERE ANCHE SE IMPARA NUOVE SKILL 
+        //DOVREBBE RACCOGLIERE ANCHE OGGETTI
+
         //end fight
         fightManager.RunClick();
     }
-
-    #endregion
 }

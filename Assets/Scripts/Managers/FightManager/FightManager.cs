@@ -15,10 +15,12 @@ public class FightManager : MonoBehaviour
     [Header("Efficiency TAB")]
     public EfficiencyTAB efficiencyTAB;
 
+    #region for states
+
     public PokemonModel currentPlayerPokemon { get; private set; }
     public PokemonModel currentEnemyPokemon { get; private set; }
 
-    #region for states
+    public List<PokemonModel> pokemonsWhoFought { get; private set; }
 
     public SkillModel SkillUsed { get; private set; }
     public PokemonModel PokemonSelected { get; private set; }
@@ -141,6 +143,10 @@ public class FightManager : MonoBehaviour
     {
         //set player pokemon in arena
         currentPlayerPokemon = pokemon;
+
+        //if not alreasy in the list, add 
+        if (pokemonsWhoFought.Contains(pokemon) == false)
+            pokemonsWhoFought.Add(pokemon);
     } 
 
     public void SetCurrentEnemyPokemon(PokemonModel pokemon)

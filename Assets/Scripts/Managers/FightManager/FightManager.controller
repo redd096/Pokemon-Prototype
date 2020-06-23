@@ -1833,7 +1833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWin: 0
-  description: Hai finito i pokemon...
+  description: Tutti i tuoi pokemon sono esausti...
 --- !u!1101 &9166840006830758203
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

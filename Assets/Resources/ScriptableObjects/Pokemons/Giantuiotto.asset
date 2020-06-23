@@ -17,18 +17,18 @@ MonoBehaviour:
   speedExperience: 1
   pokemonFront: {fileID: 21300000, guid: c23bc204844129647b09ff8ec36b2129, type: 3}
   pokemonBack: {fileID: 21300000, guid: e1b3f41d3d547164fbb5122011911fef, type: 3}
-  health: 100
-  speed: 45
-  physicsAttack: 10
-  physicsDefense: 10
-  specialAttack: 10
-  specialDefense: 10
+  health: 200
+  speed: 60
+  physicsAttack: 20
+  physicsDefense: 20
+  specialAttack: 20
+  specialDefense: 20
   possibleSkills:
   - skill: {fileID: 11400000, guid: 8c0642622b5f3684598cb352edbc7bd6, type: 2}
     level: 0
   - skill: {fileID: 11400000, guid: 2ab64c71f9fe5bb408042cdf06db7e5b, type: 2}
     level: 0
-  experienceOnDeath: 64
+  experienceOnDeath: 142
   catchRate: 45
   evolutionLevel: 30
   pokemonEvolution: {fileID: 0}

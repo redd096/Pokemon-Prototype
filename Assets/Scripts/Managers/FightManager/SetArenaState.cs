@@ -23,7 +23,7 @@ public class SetArenaState : FightManagerState
 
     void SetArena()
     {
-        //set only if there are pokemons
+        //set only if there are pokemons (because this is called at start game before deactive fightManager, but the enemy has no pokemons until player find one in the grass)
         if (GameManager.instance.player.PlayerPokemons.Count <= 0 || fightManager.enemyPokemons.Count <= 0)
             return;
 

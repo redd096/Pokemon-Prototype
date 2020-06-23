@@ -72,11 +72,11 @@ public class FightUIManager : MonoBehaviour
     /*
         da fare se rimane tempo:
         NB. si potrebbe fare anche FightManager singleton e MovingManager differente per ogni scena, l'unico problema è l'event system che dovrà diventare singleton anche lui
-        - sistemare rect view per funzionare con la rotella del mouse (se si passa sopra un button lo dà per selected invece che hover, quindi non funzia lo scroll)
         - suoni
         - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta) (StartFightState description?)
         - salvataggio all'uscita dal gioco (o alla peggio, nel fade out quando finisce un combattimento, o quando si rigenerano i pokemon all'ospedale)
         - se si vuole esagerare, i pokemon mantengono i danni subiti e PP e bisogna farli curare, quindi aggiungere ospedali e rimuovere il Restore da RunClick()
+        - aggiungere menù opzioni nel menù di pausa e nel main menu (con volume e full screen mode - si potrebbe mettere anche la velocità di scrittura)
      */
 
     #region private API
@@ -274,6 +274,8 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
+    #region generic functions
+
     #region description
 
     public void SetDescription(string text, System.Action onEndDescription)
@@ -335,8 +337,6 @@ public class FightUIManager : MonoBehaviour
     }
 
     #endregion
-
-    #region generic functions
 
     public void DeactiveMenu()
     {

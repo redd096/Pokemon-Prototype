@@ -25,7 +25,7 @@ public class PokemonModel : IGetName
         } 
         set
         { 
-            //if value < 1 set to 0, so there are no problems with UI (when 0,5 hp it show 0 but don't die)
+            //if value < 1 set to 0, so there are no problems with UI (like when is 0,5 hp and it shows 0 but don't die)
             if (value < 1) 
                 currentHealth = 0; 
             //clamp 0 (dead) or data.health (full hp)
@@ -77,7 +77,7 @@ public class PokemonModel : IGetName
     }
 
     /// <summary>
-    /// get damage and check if dead
+    /// get damage and add effect (if skill has one)
     /// </summary>
     public void GetDamage(SkillModel skill, PokemonModel pokemonWhoAttack, out string efficiencyText)
     {
@@ -101,20 +101,7 @@ public class PokemonModel : IGetName
     }
 
     /// <summary>
-    /// get experience and check level up
-    /// </summary>
-    public void GetExperience(float experience)
-    {
-        CurrentExp += experience;
-
-        if(CurrentExp >= ExpNextLevel)
-        {
-            LevelUp();
-        }
-    }
-
-    /// <summary>
-    /// restore pokemon, reset full values
+    /// restore pokemon, reset full values (restore also skills and remove effects)
     /// </summary>
     public void Restore()
     {
@@ -178,12 +165,44 @@ public class PokemonModel : IGetName
         }
     }
 
+    /// <summary>
+    /// get experience
+    /// </summary>
+    /// <param name="isWildPokemon">is the enemy a wild pokemon or a trainer?</param>
+    /// <param name="experience">experienceOnDeath from enemy pokemon data</param>
+    /// <param name="levelEnemyPokemon">enemy pokemon current level</param>
+    /// <param name="numberPokemonsNotDeadInFight">every pokemon who fought but didn't die</param>
+    public void GetExperience(bool isWildPokemon, float experience, int levelEnemyPokemon, int numberPokemonsNotDeadInFight)
+    {
+        //is wild pokemon from bool to float multiplier
+        float multiplierPokemonTrainer = isWildPokemon ? 1 : 1.5f;
+
+        //calculate experience and add to CurrentExp
+        float experienceToGet = (multiplierPokemonTrainer * experience * levelEnemyPokemon) / (7 * numberPokemonsNotDeadInFight);
+        CurrentExp += experienceToGet;
+    }
+
+    /// <summary>
+    /// check if level up. If true update ExpCurrentLevel and ExpNextLevel
+    /// </summary>
+    public bool CheckLevelUp()
+    {
+        //check level up
+        if (CurrentExp >= ExpNextLevel)
+        {
+            LevelUp();
+            return true;
+        }
+
+        return false;
+    }
+
     #region private API
 
     void LevelUp()
     {
         ExpCurrentLevel = NecessaryExpForThisLevel(CurrentLevel);
-        ExpNextLevel = NecessaryExpForThisLevel(CurrentLevel +1);
+        ExpNextLevel = NecessaryExpForThisLevel(CurrentLevel + 1);
         //TODO check evolution and new skills
     }
 
@@ -209,11 +228,12 @@ public class PokemonModel : IGetName
     {
         List<SkillModel> tempSkills = new List<SkillModel>();
 
+        //check every possible skill
         foreach(SPokemonSkill possibleSkill in pokemonData.PossibleSkills)
         {
             bool reachedLimit = tempSkills.Count >= CurrentSkills.Length;
 
-            //try to add (not add always)
+            //try to add (add until reach limit, then 50% to add)
             if (TryAddSkill(possibleSkill.level, reachedLimit))
             {
                 //if reached limit, remove one skill
