@@ -144,6 +144,10 @@ public class FightManager : MonoBehaviour
         //set player pokemon in arena
         currentPlayerPokemon = pokemon;
 
+        //if first time, reset list
+        if (pokemonsWhoFought == null)
+            pokemonsWhoFought = new List<PokemonModel>();
+
         //if not alreasy in the list, add 
         if (pokemonsWhoFought.Contains(pokemon) == false)
             pokemonsWhoFought.Add(pokemon);

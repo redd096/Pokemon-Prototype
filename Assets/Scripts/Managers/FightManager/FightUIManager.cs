@@ -39,6 +39,9 @@ public class FightUIManager : MonoBehaviour
     [SerializeField] Transform contentPokemonMenu = default;
     [SerializeField] GameObject bagMenu = default;
     [SerializeField] Transform contentBagMenu = default;
+    [SerializeField] GameObject yesNoMenu = default;
+    [SerializeField] Button yesButton = default;
+    [SerializeField] Button nopeButton = default;
     #endregion
 
     #region private poolings
@@ -50,7 +53,7 @@ public class FightUIManager : MonoBehaviour
     #region private variables
 
     Coroutine doingAnimation;
-    Coroutine updatingHealth;
+    Coroutine updatingBar;
 
     Vector3 playerPosition;
     Vector3 enemyPosition;
@@ -58,7 +61,19 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     //TODO
-    //VA CONTROLLATO IL FINE BATTAGLIA - DARE EXP, ECC... [End Fight State]
+    //EndFightState deve solo far uscire la scritta come per il nemico, poi chiama "Next" se si ha vinto o RunClick se si ha perso
+    //nel nuovo state deve prima caricarmi tutta la barra dell'esperienza e settarmi i livelli, 
+    //poi una volta finito, checka le skills dal livello iniziale fino ad ora e chiede se voglio modificarle
+    //infine checka l'evoluzione, se rifiuto finisce il fight
+    //se accetto crea nuovo model, aggiorna la lista, poi passa dal pokemon state per il cambio
+    //infine conclude il fight
+
+    //IL POKEMON STATE DEVE DIVENTARE UNA SEMPLICE FUNZIONE RICHIAMABILE DA FIGHT UI MANAGER
+    //NELL'END FIGHT STATE, LA DESCRIPTION DEVE MOSTRARE "{PlayerPokemon} vuole evolversi in {EvolutionPokemon}"
+    //oppure "{PlayerPokemon} vuole imparare {newSkill}"
+    //E QUANDO SI SCEGLIERE DI EVOLVERSI, OLTRE A CAMBIARE LA LISTA DEL PLAYER, DEVE ANCHE MOSTRARLO IN UI CHIAMANDO LA STESSA FUNZIONE DI POKEMON STATE
+
+
     //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC... [End Fight State + Pokemon Model]
     //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
 
@@ -80,6 +95,8 @@ public class FightUIManager : MonoBehaviour
      */
 
     #region private API
+
+    #region buttons
 
     void UseSkill(Button button, SkillModel skill)
     {
@@ -119,6 +136,10 @@ public class FightUIManager : MonoBehaviour
             Pooling.Destroy(button.gameObject);
     }
 
+    #endregion
+
+    #region set lists
+
     void SetList<T>(Pooling<Button> poolingList, T[] valueArray, Transform parent, System.Action<Button, T> function) where T : IGetName
     {
         //deactive every button
@@ -150,24 +171,28 @@ public class FightUIManager : MonoBehaviour
         button.GetComponentInChildren<Text>().text = value.GetButtonName();
     }
 
-    IEnumerator UpdateHealth_Coroutine(bool isPlayer, float previousHealth, float durationUpdateHealth, System.Action onEndUpdateHealth)
+    #endregion
+
+    #region update health
+
+    IEnumerator UpdateHealth_Coroutine(bool isPlayer, float previousValue, float durationUpdate, System.Action onEndUpdate)
     {
         float delta = 0;
 
-        //update health
+        //update bar
         while (delta < 1)
         {
-            delta += Time.deltaTime / durationUpdateHealth;
-            SetHealthUI(isPlayer, previousHealth, delta);
+            delta += Time.deltaTime / durationUpdate;
+            SetHealthUI(isPlayer, previousValue, delta);
             yield return null;
         }
 
         //be sure to end animation
-        SetHealthUI(isPlayer, previousHealth, 1);
+        SetHealthUI(isPlayer, previousValue, 1);
 
-        onEndUpdateHealth?.Invoke();
+        onEndUpdate?.Invoke();
 
-        updatingHealth = null;
+        updatingBar = null;
     }
 
     void SetHealthUI(bool isPlayer, float previousHealth, float delta)
@@ -185,6 +210,53 @@ public class FightUIManager : MonoBehaviour
         slider.fillRect.GetComponent<Image>().color = HealthGradient.Evaluate(currentHealth / pokemon.pokemonData.Health);
         text.text = currentHealth.ToString("F0") + " / " + pokemon.pokemonData.Health.ToString("F0");
     }
+
+    #endregion
+
+    #region update experience
+
+    IEnumerator UpdateExperience_Coroutine(float previousValue, float durationUpdate, System.Action<float> onEndUpdate)
+    {
+        float delta = 0;
+        float updatedExp = 0;
+
+        //update bar
+        while (delta < 1)
+        {
+            delta += Time.deltaTime / durationUpdate;
+
+            //if true, break before end update
+            if (SetExperienceUI(previousValue, delta, out updatedExp))
+                break;
+
+            yield return null;
+        }
+
+        //call function, with updatedExp to know where the animation end
+        onEndUpdate?.Invoke(updatedExp);
+
+        updatingBar = null;
+    }
+
+    bool SetExperienceUI(float previousExp, float delta, out float currentExp)
+    {
+        //get player pokemon
+        PokemonModel pokemon = GameManager.instance.levelManager.FightManager.currentPlayerPokemon;
+
+        //current exp based on delta
+        currentExp = Mathf.Lerp(previousExp, pokemon.CurrentExp, delta);
+
+        //set player slider
+        playerExpSlider.value = (currentExp - pokemon.ExpCurrentLevel) / (pokemon.ExpNextLevel - pokemon.ExpCurrentLevel);
+
+        //return true if already full slider (also if currentExp didn't reach pokemon.CurrentExp)
+        if (playerExpSlider.value > 1)
+            return true;
+
+        return false;
+    }
+
+    #endregion
 
     #endregion
 
@@ -250,7 +322,7 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
-    #region player round state
+    #region someone turn state
 
     public void ActivePlayerMenu()
     {
@@ -274,6 +346,39 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
+    #region end fight state
+
+    public void UpdateExperience(float previousExp, float durationUpdateExp, System.Action<float> onEndUpdateExp = null)
+    {
+        //stop if already running
+        if (updatingBar != null)
+            StopCoroutine(updatingBar);
+
+        //start coroutine
+        updatingBar = StartCoroutine(UpdateExperience_Coroutine(previousExp, durationUpdateExp, onEndUpdateExp));
+    }
+
+    public void UpdateLevel(int level)
+    {
+        playerLevel.text = playerLevelString + level;
+    }
+
+    public void ShowYesNoMenu(System.Action yesFunc, System.Action noFunc)
+    {
+        //active yes no menu
+        yesNoMenu.SetActive(true);
+
+        //be sure to not have listeners
+        yesButton.onClick.RemoveAllListeners();
+        nopeButton.onClick.RemoveAllListeners();
+
+        //add new listener to buttons
+        yesButton.onClick.AddListener(() => yesFunc());
+        nopeButton.onClick.AddListener(() => noFunc());
+    }
+
+    #endregion
+
     #region generic functions
 
     #region description
@@ -286,6 +391,7 @@ public class FightUIManager : MonoBehaviour
 
         //write description letter by letter. Then press a button and call OnEndDescription
         string s = Parse(text);
+
         description.WriteLetterByLetterAndWait_SkipAccelerate(s, onEndDescription);
     }
 
@@ -344,16 +450,17 @@ public class FightUIManager : MonoBehaviour
         fightMenu.SetActive(false);
         pokemonMenu.SetActive(false);
         bagMenu.SetActive(false);
+        yesNoMenu.SetActive(false);
     }
 
     public void UpdateHealth(bool isPlayer, float previousHealth, float durationUpdateHealth, System.Action onEndUpdateHealth = null)
     {
         //stop if already running
-        if (updatingHealth != null)
-            StopCoroutine(updatingHealth);
+        if (updatingBar != null)
+            StopCoroutine(updatingBar);
 
         //start coroutine
-        updatingHealth = StartCoroutine(UpdateHealth_Coroutine(isPlayer, previousHealth, durationUpdateHealth, onEndUpdateHealth));
+        updatingBar = StartCoroutine(UpdateHealth_Coroutine(isPlayer, previousHealth, durationUpdateHealth, onEndUpdateHealth));
     }
 
     public void SetSkillsList(PokemonModel pokemon)

@@ -1,5 +1,35 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
+
+public static class Utility
+{
+    public static List<T> CreateCopy<T>(this List<T> list)
+    {
+        List<T> newList = new List<T>();
+
+        //add every element in new list
+        foreach (T element in list)
+        {
+            newList.Add(element);
+        }
+
+        return newList;
+    }
+
+    public static T[] CreateCopy<T>(this T[] array)
+    {
+        T[] newArray = new T[array.Length];
+
+        //add every element in new array
+        for (int i = 0; i < array.Length; i++)
+        {
+            newArray[i] = array[i];
+        }
+
+        return newArray;
+    }
+}
 
 public static class FadeUtility
 {

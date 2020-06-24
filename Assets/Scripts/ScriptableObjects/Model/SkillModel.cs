@@ -5,7 +5,19 @@ public class SkillModel : IGetName
 {
     public SkillData skillData;// { get; private set; }
 
-    public int CurrentPP;
+    int currentPP;
+    public int CurrentPP 
+    { 
+        get 
+        { 
+            return currentPP; 
+        } 
+        set 
+        {
+            //clamp from 0 to max PP
+            currentPP = Mathf.Clamp(value, 0, skillData.PP);
+        }
+    }
 
     public SkillModel(SkillData skillData)
     {
@@ -26,6 +38,9 @@ public class SkillModel : IGetName
         return skillData.SkillName;
     }
 
+    /// <summary>
+    /// Set full PP
+    /// </summary>
     public void RestorePP()
     {
         CurrentPP = skillData.PP;
@@ -44,7 +59,7 @@ public class SkillModel : IGetName
         return efficiency;
     }
 
-    //TEMP
+    //HACK
     string EfficiencyText(float efficiency)
     {
         switch (efficiency)

@@ -10,4 +10,6 @@ public class EffectVita : EffectData
     {
         pokemon.CurrentHealth += value;
     }
+
+    public override void RemoveEffect(PokemonModel pokemon) {}
 }

@@ -26,6 +26,8 @@ MonoBehaviour:
   possibleSkills:
   - skill: {fileID: 11400000, guid: 8c0642622b5f3684598cb352edbc7bd6, type: 2}
     level: 0
+  - skill: {fileID: 11400000, guid: 963506b94a6d53945b5dd7b650e77678, type: 2}
+    level: 2
   experienceOnDeath: 64
   catchRate: 45
   evolutionLevel: 30

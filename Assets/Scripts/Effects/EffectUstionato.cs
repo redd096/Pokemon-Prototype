@@ -10,4 +10,6 @@ public class EffectUstionato : EffectData
     {
         pokemon.CurrentHealth -= value;
     }
+
+    public override void RemoveEffect(PokemonModel pokemon) {}
 }

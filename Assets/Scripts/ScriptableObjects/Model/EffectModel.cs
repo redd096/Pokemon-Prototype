@@ -20,16 +20,31 @@ public class EffectModel
 
     public void ApplyEffect(PokemonModel pokemon, bool isPlayerPokemon, out string effectDescription)
     {
+        //remove duration
         CurrentDuration--;
 
         //apply effect to the pokemon
         effectData.ApplyEffect(pokemon);
 
-        //if duration <= 0, remove from the list of the pokemon
+        //if duration <= 0, remove from the list of the pokemon and add to removed effects
         if (CurrentDuration <= 0)
+        {
             pokemon.RemoveEffect(effectData);
+        }
 
         //out description
         effectDescription = isPlayerPokemon ? effectData.DescriptionOnPlayer : effectData.DescriptionOnEnemy;
+    }
+
+    public void RemoveEffect(PokemonModel pokemon, bool isPlayerPokemon, out string effectDescription)
+    {
+        //remove effect to the pokemon
+        effectData.RemoveEffect(pokemon);
+
+        //remove from the list
+        pokemon.RemovedEffects.Remove(this);
+
+        //out description
+        effectDescription = isPlayerPokemon ? effectData.DescriptionRemoveFromPlayer : effectData.DescriptionRemoveFromEnemy;
     }
 }

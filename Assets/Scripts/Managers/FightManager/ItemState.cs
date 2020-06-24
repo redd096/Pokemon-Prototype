@@ -67,9 +67,6 @@ public class ItemState : FightManagerState
 
     void CheckLife()
     {
-        //remove description
-        fightManager.FightUIManager.EndDescription();
-
         //if changed health, update UI before end turn
         if (pokemon.CurrentHealth != previousHealth)
         {
@@ -83,6 +80,9 @@ public class ItemState : FightManagerState
 
     void EndTurn()
     {
+        //remove description
+        fightManager.FightUIManager.EndDescription();
+
         if (pokemon.CurrentHealth > 0)
         {
             //go to next state

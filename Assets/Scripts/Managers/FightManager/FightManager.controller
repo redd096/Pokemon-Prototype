@@ -234,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isWin: 1
   description: "L'hai asfaltato! Senza piet\xE0!"
+  durationUpdateExperience: 0.7
 --- !u!1101 &-6456826409241565740
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -1834,6 +1835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isWin: 0
   description: Tutti i tuoi pokemon sono esausti...
+  durationUpdateExperience: 0.7
 --- !u!1101 &9166840006830758203
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

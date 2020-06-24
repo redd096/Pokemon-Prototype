@@ -16,7 +16,7 @@ public class PokemonModel : IGetName
     public float ExpNextLevel;// { get; private set; }
 
     //fight
-    float currentHealth;
+    public float currentHealth;
     public float CurrentHealth
     { 
         get
@@ -41,6 +41,8 @@ public class PokemonModel : IGetName
     public SkillModel[] CurrentSkills = new SkillModel[4];
 
     public List<EffectModel> ActiveEffects = new List<EffectModel>();
+    public List<EffectModel> RemovedEffects = new List<EffectModel>();
+    [Range(0, 100)] public int CurrentMaxAccuracy;
 
     #endregion
 
@@ -54,7 +56,7 @@ public class PokemonModel : IGetName
 
         //set level and exp
         CurrentLevel = level;
-        ExpNextLevel = NecessaryExpForThisLevel(level +1);
+        ExpNextLevel = NecessaryExpForThisLevel(level + 1);
         if (level > 1) 
             CurrentExp = NecessaryExpForThisLevel(level);
 
@@ -81,23 +83,34 @@ public class PokemonModel : IGetName
     /// </summary>
     public void GetDamage(SkillModel skill, PokemonModel pokemonWhoAttack, out string efficiencyText)
     {
-        //get attack and defense, based to the skill if special or physics
-        float attack = skill.skillData.IsSpecial ? pokemonWhoAttack.SpecialAttack : pokemonWhoAttack.PhysicsAttack;
-        float defense = skill.skillData.IsSpecial ? SpecialDefense : PhysicsDefense;
+        int random = Random.Range(0, 100);
+        int accuracy = Mathf.Min(CurrentMaxAccuracy, skill.skillData.Accuracy);
 
-        //get multipliers -> out efficiencyText
-        float efficiencyMultiplier = skill.EfficiencyMultiplier(pokemonData.PokemonType, out efficiencyText);
-        float stab = skill.STAB(pokemonWhoAttack.pokemonData.PokemonType);
-        float nRandom = skill.NRandom();
+        //try to hit enemy
+        if (random < accuracy)
+        {
+            //get attack and defense, based to the skill if special or physics
+            float attack = skill.skillData.IsSpecial ? pokemonWhoAttack.SpecialAttack : pokemonWhoAttack.PhysicsAttack;
+            float defense = skill.skillData.IsSpecial ? SpecialDefense : PhysicsDefense;
 
-        //((( (2 * Livello Pokemon + 10) * Attacco Pokemon * Potenza Mossa ) / (250 * Difesa Fisica o Difesa Speciale del Nemico)) +2 ) * Efficacia * STAB * N
-        float damage = ((((2 * pokemonWhoAttack.CurrentLevel + 10) * attack * skill.skillData.Power) / (250 * defense)) + 2) * efficiencyMultiplier * stab * nRandom;
+            //get multipliers -> out efficiencyText
+            float efficiencyMultiplier = skill.EfficiencyMultiplier(pokemonData.PokemonType, out efficiencyText);
+            float stab = skill.STAB(pokemonWhoAttack.pokemonData.PokemonType);
+            float nRandom = skill.NRandom();
 
-        //if the skill has one, add effect to the list
-        AddEffect(skill.skillData.Effect);
+            //((( (2 * Livello Pokemon + 10) * Attacco Pokemon * Potenza Mossa ) / (250 * Difesa Fisica o Difesa Speciale del Nemico)) +2 ) * Efficacia * STAB * N
+            float damage = ((((2 * pokemonWhoAttack.CurrentLevel + 10) * attack * skill.skillData.Power) / (250 * defense)) + 2) * efficiencyMultiplier * stab * nRandom;
 
-        //apply effective damage
-        CurrentHealth -= damage;
+            //if the skill has one, add effect to the list
+            AddEffect(skill.skillData.Effect);
+
+            //apply effective damage
+            CurrentHealth -= damage;
+            return;
+        }
+
+        //else miss
+        efficiencyText = "Ups, mancato!";
     }
 
     /// <summary>
@@ -120,6 +133,7 @@ public class PokemonModel : IGetName
 
         //remove effects
         ActiveEffects.Clear();
+        CurrentMaxAccuracy = 100;
     }
 
     /// <summary>
@@ -150,15 +164,16 @@ public class PokemonModel : IGetName
     }
 
     /// <summary>
-    /// Remove effect from the list
+    /// Remove effect from the list and add to removed effects
     /// </summary>
     public void RemoveEffect(EffectData effect)
     {
-        //if already in the list, remove it
+        //if already in the list, remove it and add to RemovedEffects
         foreach (EffectModel e in ActiveEffects)
         {
             if (e.effectData == effect)
             {
+                RemovedEffects.Add(e);
                 ActiveEffects.Remove(e);
                 break;
             }
@@ -197,13 +212,46 @@ public class PokemonModel : IGetName
         return false;
     }
 
+    /// <summary>
+    /// check if pokemon can evolve
+    /// </summary>
+    public bool CheckEvolution()
+    {
+        //if has an evolution and current level is >= return true
+        if(pokemonData.PokemonEvolution != null && CurrentLevel >= pokemonData.EvolutionLevel)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// check if can learn new skill
+    /// </summary>
+    public bool CanLearnSkill()
+    {
+        //check every possible skill for this pokemon
+        foreach(SPokemonSkill skill in pokemonData.PossibleSkills)
+        {
+            //if there is a skill for this level, return true
+            if (skill.level == CurrentLevel)
+                return true;
+        }
+
+        return false;
+    }
+
     #region private API
 
     void LevelUp()
     {
+        //update level
+        CurrentLevel++;
+
+        //update necessary exp
         ExpCurrentLevel = NecessaryExpForThisLevel(CurrentLevel);
         ExpNextLevel = NecessaryExpForThisLevel(CurrentLevel + 1);
-        //TODO check evolution and new skills
     }
 
     float NecessaryExpForThisLevel(int level)

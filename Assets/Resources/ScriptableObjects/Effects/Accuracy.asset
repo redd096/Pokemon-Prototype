@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d3ddebd9da6524a8f75f1b37df916a, type: 3}
+  m_Name: Accuracy
+  m_EditorClassIdentifier: 
+  duration: 2
+  descriptionOnPlayer: '{PlayerPokemon} non vede chiaramente...'
+  descriptionOnEnemy: '{EnemyPokemon} non vede chiaramente...'
+  descriptionRemoveFromPlayer: "{PlayerPokemon} non \xE8 pi\xF9 accecato"
+  descriptionRemoveFromEnemy: "{EnemyPokemon} non \xE8 pi\xF9 accecato"
+  value: 30

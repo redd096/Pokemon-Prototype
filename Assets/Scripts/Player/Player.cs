@@ -56,6 +56,8 @@ public class Player : StateMachine
 
     #region public API
 
+    #region state machine
+
     public void StartMovingPhase()
     {
         //start state machine for moving
@@ -67,6 +69,19 @@ public class Player : StateMachine
         //start state machine for fight
         SetState(null);
     }
+
+    #endregion
+
+    #region pokemon
+
+    public void ReplacePokemon(PokemonModel pokemonToReplace, PokemonModel newPokemon)
+    {
+
+    }
+
+    #endregion
+
+    #region item
 
     public void AddItem(ItemModel item)
     {
@@ -94,6 +109,8 @@ public class Player : StateMachine
         if(item.stack <= 0)
             playerItems.Remove(item);
     }
+
+    #endregion
 
     #endregion
 }

@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a5e08bba291c59488c55ca0d2ea8b0a, type: 3}
-  m_Name: Azione
+  m_Script: {fileID: 11500000, guid: 789fd712b9f2c044984eb26b889fd13e, type: 3}
+  m_Name: Pozione PP
   m_EditorClassIdentifier: 
-  skillName: Azione
-  skillType: 0
-  pp: 40
-  isSpecial: 0
-  power: 100
-  accuracy: 75
-  effect: {fileID: 0}
+  itemName: Pozione PP
+  effect: {fileID: 11400000, guid: 1c92550f37a50ff4882220af007867ed, type: 2}

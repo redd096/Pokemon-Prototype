@@ -11,7 +11,7 @@ public class SkillData : ScriptableObject
 
     [Header("Damage")]
     [SerializeField] float power = 10;
-    [Range(0, 100)] [SerializeField] int accuracy = 50;
+    [Range(30, 100)] [SerializeField] int accuracy = 50;
 
     [Header("Effect")]
     [SerializeField] EffectData effect = default;

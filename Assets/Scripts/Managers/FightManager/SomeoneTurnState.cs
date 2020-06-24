@@ -13,6 +13,7 @@ public class SomeoneTurnState : FightManagerState
     PokemonModel pokemon;
     bool waitDescription;
     float previousHealth;
+    bool removingOldEffects;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -24,7 +25,9 @@ public class SomeoneTurnState : FightManagerState
 
         pokemon = isPlayer ? fightManager.currentPlayerPokemon : fightManager.currentEnemyPokemon;
 
-        ApplyEffects();
+        //start removing old effects, then apply new ones
+        removingOldEffects = true;
+        CheckEffects();
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -40,29 +43,32 @@ public class SomeoneTurnState : FightManagerState
 
     #region enter
 
-    void ApplyEffects()
+    void CheckEffects()
     {
         //start coroutine
-        fightManager.FightUIManager.StartAnimation(ApplyAllEffects());
+        fightManager.FightUIManager.StartAnimation(CheckAllEffects());
     }
 
-    IEnumerator ApplyAllEffects()
+    IEnumerator CheckAllEffects()
     {
         //create a copy, because the list can be modified (when apply, can remove effect from the list)
-        List<EffectModel> activeEffects = CopyList(pokemon.ActiveEffects);
+        List<EffectModel> effects = Utility.CreateCopy(removingOldEffects ? pokemon.RemovedEffects : pokemon.ActiveEffects);
 
-        //foreach effect applied on this pokemon
-        foreach (EffectModel effect in activeEffects)
+        //foreach effect removed or applied on this pokemon
+        foreach (EffectModel effect in effects)
         {
             previousHealth = pokemon.CurrentHealth;
 
-            //apply effect
+            //remove or apply effect
             string effectDescription;
-            effect.ApplyEffect(pokemon, isPlayer, out effectDescription);
+            if (removingOldEffects)
+                effect.RemoveEffect(pokemon, isPlayer, out effectDescription);
+            else
+                effect.ApplyEffect(pokemon, isPlayer, out effectDescription);
 
             //show description
-            fightManager.FightUIManager.SetDescription(effectDescription, CheckLife);
             waitDescription = true;
+            fightManager.FightUIManager.SetDescription(effectDescription, CheckLife);
 
             //wait to finish writing description
             while(waitDescription)
@@ -71,23 +77,20 @@ public class SomeoneTurnState : FightManagerState
             }
         }
         
-        //end animation and check if alive
+        //end animation
         fightManager.FightUIManager.EndAnimation();
 
-        CheckIsAlive();
-    }
-
-    List<T> CopyList<T>(List<T> list)
-    {
-        List<T> newList = new List<T>();
-
-        //add every element in new list
-        foreach(T element in list)
+        //if removing old effects, now check every effects applied
+        if (removingOldEffects)
         {
-            newList.Add(element);
+            removingOldEffects = false;
+            CheckEffects();
         }
-
-        return newList;
+        //else, check is alive
+        else
+        {
+            CheckIsAlive();
+        }
     }
 
     void CheckLife()
@@ -113,6 +116,8 @@ public class SomeoneTurnState : FightManagerState
 
     void CheckIsAlive()
     {
+        fightManager.FightUIManager.EndDescription();
+
         //check is alive
         if (pokemon.CurrentHealth > 0)
         {
