@@ -31,7 +31,7 @@ public class Player : StateMachine
         offsetCamera = cam.transform.position - transform.position;
 
         //foreach data, create a pokemon model
-        for (int i = 0; i < playerPokemonsData.Length; i++)
+        for (int i = 0; i < Mathf.Min(playerPokemonsData.Length, GameManager.instance.MaxPokemonInTeam); i++)
         {
             playerPokemons.Add(new PokemonModel(playerPokemonsData[i], pokemonsLevel));
         }

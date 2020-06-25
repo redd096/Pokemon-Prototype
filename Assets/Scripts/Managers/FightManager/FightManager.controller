@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerPokemon: 1
-  description: "{PlayerPokemon} \xE8 esausto"
+  description: "{PlayerPokemon} \xE8 esausto."
 --- !u!1102 &-2700608918887690042
 AnimatorState:
   serializedVersion: 5
@@ -978,61 +978,61 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StartFightPhase
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PlayerRound
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Skill
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Pokemon
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Item
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Next
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PokemonDead
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: NoMorePokemons
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: LearnSkill
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -1461,9 +1461,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: '{PlayerPokemon} ottiene {0} punti esperienza.'
-  questionEvolution: '{PlayerPokemon} vuole evolversi in {0}'
+  questionEvolution: '{PlayerPokemon} vuole evolversi in {0}.'
   refuseEvolution: '{PlayerPokemon} non si evolve in {0}...'
-  questionSkill: '{PlayerPokemon} vuole imparare {0}'
+  questionSkill: '{PlayerPokemon} vuole imparare {0}.'
   refuseSkill: '{PlayerPokemon} non apprende {0}...'
   durationUpdateExperience: 0.7
 --- !u!1101 &3646372681625803512
@@ -1594,7 +1594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69051066f7270ed40922a82edfa9ac6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Scegli uno slot per {SkillToLearn}
+  description: Scegli uno slot per {SkillToLearn}.
   confirmDescription: '{PlayerPokemon} apprende {SkillToLearn}.'
   forgetSkillDescription: '{PlayerPokemon} dimentica {0}...'
   refuseDescription: '{PlayerPokemon} non apprende {SkillToLearn}...'
@@ -1807,7 +1807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerPokemon: 1
-  description: "{PlayerPokemon} \xE8 esausto"
+  description: "{PlayerPokemon} \xE8 esausto."
 --- !u!114 &6967788652071006014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1821,7 +1821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerPokemon: 0
-  description: "{EnemyPokemon} \xE8 esausto"
+  description: "{EnemyPokemon} \xE8 esausto."
 --- !u!1101 &6981026081461159350
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

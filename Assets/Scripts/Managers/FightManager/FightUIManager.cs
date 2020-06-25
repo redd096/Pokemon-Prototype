@@ -66,9 +66,6 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     //TODO
-    //CONTROLLA CHE FUNZIONA L'APPRENDIMENTO DI UNA NUOVA SKILL
-    //CONTROLLA CHE FUNZIONA L'EVOLUZIONE
-    //CONTROLLA CHE FUNZIONA UN MIX
     //TROVARE IL MODO DI FAR SALIRE DI LIVELLO, EVOLVERE E APPRENDERE NUOVE SKILL PURE AI POKEMON CHE HANNO COMBATTUTO MA NON SONO ORA SELEZIONATI DAL PLAYER
 
     //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
@@ -137,13 +134,13 @@ public class FightUIManager : MonoBehaviour
 
     #region set lists
 
-    void SetList<T>(Pooling<Button> poolingList, T[] valueArray, Transform parent, System.Action<Button, T> function) where T : IGetName
+    void SetList<T>(Pooling<Button> poolingList, List<T> valueArray, Transform parent, System.Action<Button, T> function) where T : IGetName
     {
         //deactive every button
         poolingList.DeactiveAll();
 
         //add if there are not enough buttons in pool
-        poolingList.InitCycle(prefabSimpleButton, valueArray.Length);
+        poolingList.InitCycle(prefabSimpleButton, valueArray.Count);
 
         //foreach value
         foreach (T value in valueArray)
@@ -296,12 +293,12 @@ public class FightUIManager : MonoBehaviour
         }
 
         //list of pokemons not in arena
-        SetList(pokemonsPooling, pokemonsUsable.ToArray(), contentPokemonMenu, ChangePokemon);
+        SetList(pokemonsPooling, pokemonsUsable, contentPokemonMenu, ChangePokemon);
     }
 
     public void SetItemsList()
     {
-        SetList(itemsPooling, GameManager.instance.player.PlayerItems.ToArray(), contentBagMenu, UseItem);
+        SetList(itemsPooling, GameManager.instance.player.PlayerItems, contentBagMenu, UseItem);
     }
 
     #endregion
@@ -343,7 +340,7 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
-    #region end fight state
+    #region experience player state
 
     public void UpdateExperience(float previousExp, float durationUpdateExp, System.Action<float> onEndUpdateExp = null)
     {
@@ -358,35 +355,6 @@ public class FightUIManager : MonoBehaviour
     public void UpdateLevel(int level)
     {
         playerLevel.text = playerLevelString + level;
-    }
-
-    public void SetLearnSkillsMenu(System.Action<int> confirmFunc, System.Action refuseFunc)
-    {
-        //set refuse skill button
-        refuseSkillButton.onClick.RemoveAllListeners();
-        refuseSkillButton.onClick.AddListener(() => refuseFunc());
-
-        //deactive every button in the pooling and add if there are not enough buttons in pool
-        skillsToReplacePooling.DeactiveAll();
-        skillsToReplacePooling.InitCycle(prefabSimpleButton, GameManager.instance.maxSkillForPokemon);
-
-        //get current skills of the pokemon
-        SkillModel[] currentSkills = GameManager.instance.levelManager.FightManager.currentPlayerPokemon.CurrentSkills;
-
-        for (int i = 0; i < currentSkills.Length; i++)
-        {
-            //instantiate button from pool and set parent
-            Button button = skillsToReplacePooling.Instantiate(prefabSimpleButton, contentLearnSkillMenu, false);
-
-            //be sure to not have listeners
-            button.onClick.RemoveAllListeners();
-
-            //add new listener to button
-            button.onClick.AddListener(() => confirmFunc(i));
-
-            //set text (name of the skill or empty)
-            button.GetComponentInChildren<Text>().text = currentSkills[i].GetObjectName();
-        }
     }
 
     public void ShowYesNoMenu(System.Action yesFunc, System.Action noFunc)
@@ -406,6 +374,40 @@ public class FightUIManager : MonoBehaviour
     public void HideYesNoMenu()
     {
         yesNoMenu.SetActive(false);
+    }
+
+    #endregion
+
+    #region learn skill state
+
+    public void SetLearnSkillsMenu(System.Action<int> confirmFunc, System.Action refuseFunc)
+    {
+        //set refuse skill button
+        refuseSkillButton.onClick.RemoveAllListeners();
+        refuseSkillButton.onClick.AddListener(() => refuseFunc());
+
+        //deactive every button in the pooling and add if there are not enough buttons in pool
+        skillsToReplacePooling.DeactiveAll();
+        skillsToReplacePooling.InitCycle(prefabSimpleButton, GameManager.instance.MaxSkillForPokemon);
+
+        //get current skills of the pokemon
+        List<SkillModel> currentSkills = GameManager.instance.levelManager.FightManager.currentPlayerPokemon.CurrentSkills;
+
+        for (int i = 0; i < Mathf.Min(currentSkills.Count +1, GameManager.instance.MaxSkillForPokemon); i++)
+        {
+            //instantiate button from pool and set parent
+            Button button = skillsToReplacePooling.Instantiate(prefabSimpleButton, contentLearnSkillMenu, false);
+
+            //be sure to not have listeners
+            button.onClick.RemoveAllListeners();
+
+            //add new listener to button
+            int indexForLambda = i;                                         //for some reason, need to make a copy of anything you want to access for the lambda
+            button.onClick.AddListener(() => confirmFunc(indexForLambda));
+
+            //set text (name of the skill or empty)
+            button.GetComponentInChildren<Text>().text = i < currentSkills.Count ? currentSkills[i].GetObjectName() : "-";
+        }
     }
 
     public void ShowLearnSkillsMenu()

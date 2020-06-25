@@ -38,7 +38,7 @@ public class PokemonModel : IGetName
     public float PhysicsDefense;
     public float SpecialAttack;
     public float SpecialDefense;
-    public SkillModel[] CurrentSkills = new SkillModel[GameManager.instance.maxSkillForPokemon];
+    public List<SkillModel> CurrentSkills = new List<SkillModel>();
 
     public List<EffectModel> ActiveEffects = new List<EffectModel>();
     public List<EffectModel> RemovedEffects = new List<EffectModel>();
@@ -157,8 +157,7 @@ public class PokemonModel : IGetName
         //restore skills
         foreach(SkillModel skill in CurrentSkills)
         {
-            if(skill != null)
-                skill.RestorePP();
+            skill.RestorePP();
         }
 
         //remove effects
@@ -320,8 +319,16 @@ public class PokemonModel : IGetName
         //add to learned or refused list
         SetSkillLearnedOrRefused(skillToLearn.skillData);
 
-        //replace skill (or empty space) with new skill
-        CurrentSkills[skillToReplace] = skillToLearn;
+        //replace skill with new one
+        if (skillToReplace < CurrentSkills.Count)
+        {
+            CurrentSkills[skillToReplace] = skillToLearn;
+        }
+        //or add to the list
+        else
+        {
+            CurrentSkills.Add(skillToLearn);
+        }
     }
 
     /// <summary>
@@ -366,12 +373,10 @@ public class PokemonModel : IGetName
 
     void RandomSkills()
     {
-        List<SkillModel> tempSkills = new List<SkillModel>();
-
         //check every possible skill
         foreach(SPokemonSkill possibleSkill in pokemonData.PossibleSkills)
         {
-            bool reachedLimit = tempSkills.Count >= GameManager.instance.maxSkillForPokemon;
+            bool reachedLimit = CurrentSkills.Count >= GameManager.instance.MaxSkillForPokemon;
 
             //if no skill setted, then skip it
             if (possibleSkill.skill == null)
@@ -383,22 +388,13 @@ public class PokemonModel : IGetName
                 //if reached limit, remove one skill
                 if(reachedLimit)
                 {
-                    int randomIndex = Random.Range(0, tempSkills.Count);
-                    tempSkills.RemoveAt(randomIndex);
+                    int randomIndex = Random.Range(0, CurrentSkills.Count);
+                    CurrentSkills.RemoveAt(randomIndex);
                 }
 
                 //add this one
-                tempSkills.Add(new SkillModel(possibleSkill.skill));
+                CurrentSkills.Add(new SkillModel(possibleSkill.skill));
             }
-        }
-
-        //set current skills
-        for (int i = 0; i < GameManager.instance.maxSkillForPokemon; i++)
-        {
-            if (i < tempSkills.Count)
-                CurrentSkills[i] = tempSkills[i];
-            else
-                CurrentSkills[i] = new SkillModel(null);
         }
     }
 

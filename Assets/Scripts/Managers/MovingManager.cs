@@ -58,7 +58,7 @@ public class MovingManager : MonoBehaviour
         fightManager.enemyPokemons = new List<PokemonModel>();
 
         //get random team quantity (max + 1 'cause last one is exclusive)
-        int quantity = Random.Range(minPokemons, maxPokemons + 1);
+        int quantity = Random.Range(minPokemons, Mathf.Min(GameManager.instance.MaxPokemonInTeam, maxPokemons) + 1);
 
         //fill the quantity with pokemonList
         for (int i = 0; i < quantity; i++)

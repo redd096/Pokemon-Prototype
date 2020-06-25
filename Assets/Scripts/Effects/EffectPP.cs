@@ -11,8 +11,7 @@ public class EffectPP : EffectData
         //for every skill, add PP
         foreach(SkillModel skill in pokemon.CurrentSkills)
         {
-            if(skill != null)
-                skill.CurrentPP += value;
+            skill.CurrentPP += value;
         }
     }
 

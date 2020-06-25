@@ -15,6 +15,6 @@ MonoBehaviour:
   duration: 5
   descriptionOnPlayer: "{PlayerPokemon} \xE8 ustionato..."
   descriptionOnEnemy: "{EnemyPokemon} \xE8 ustionato..."
-  descriptionRemoveFromPlayer: "{PlayerPokemon} non \xE8 pi\xF9 ustionato"
-  descriptionRemoveFromEnemy: "{EnemyPokemon} non \xE8 pi\xF9 ustionato"
+  descriptionRemoveFromPlayer: "{PlayerPokemon} non \xE8 pi\xF9 ustionato."
+  descriptionRemoveFromEnemy: "{EnemyPokemon} non \xE8 pi\xF9 ustionato."
   value: 10

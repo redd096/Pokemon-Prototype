@@ -31,16 +31,13 @@ public class LearnSkillState : FightManagerState
 
     void OnEndDescription()
     {
-        //deactive description
-        fightManager.FightUIManager.EndDescription();
-
         //show skills to replace
         fightManager.FightUIManager.ShowLearnSkillsMenu();
     }
 
     #endregion
 
-    string Replace(string text, string value)
+    string Parse(string text, string value)
     {
         if (text.Contains("{0}"))
             return text.Replace("{0}", value);
@@ -50,8 +47,11 @@ public class LearnSkillState : FightManagerState
 
     void LearnSkill(int index)
     {
+        //remove menu
+        fightManager.FightUIManager.HideLearnSkillsMenu();
+
         //get skill to forget
-        SkillModel skillToForget = index < fightManager.currentPlayerPokemon.CurrentSkills.Length ? fightManager.currentPlayerPokemon.CurrentSkills[index] : null;
+        SkillModel skillToForget = index < fightManager.currentPlayerPokemon.CurrentSkills.Count ? fightManager.currentPlayerPokemon.CurrentSkills[index] : null;
 
         //learn skill
         fightManager.currentPlayerPokemon.LearnSkill(fightManager.SkillToLearn, index);
@@ -59,9 +59,9 @@ public class LearnSkillState : FightManagerState
         //if need to forget a skill, show forgetSkillDescription before confirm
         if (skillToForget != null)
         {
-            string s = Replace(forgetSkillDescription, skillToForget.GetObjectName());
+            string s = Parse(forgetSkillDescription, skillToForget.GetObjectName());
 
-            fightManager.FightUIManager.SetDescription(forgetSkillDescription, ConfirmSkillDescription);
+            fightManager.FightUIManager.SetDescription(s, ConfirmSkillDescription);
         }
         //else show immediatly the confirm
         else
@@ -72,6 +72,9 @@ public class LearnSkillState : FightManagerState
 
     void RefuseSkill()
     {
+        //remove menu
+        fightManager.FightUIManager.HideLearnSkillsMenu();
+
         //refuse skill
         fightManager.currentPlayerPokemon.RefuseSkill(fightManager.SkillToLearn.skillData);
 
@@ -89,9 +92,6 @@ public class LearnSkillState : FightManagerState
     {
         //deactive description
         fightManager.FightUIManager.EndDescription();
-
-        //remove menu
-        fightManager.FightUIManager.HideLearnSkillsMenu();
 
         //change state
         anim.SetTrigger("Next");

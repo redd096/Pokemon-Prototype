@@ -30,17 +30,11 @@ public class SkillModel : IGetName
 
     public string GetButtonName()
     {
-        if (skillData == null)
-            return "-";
-
         return skillData.SkillName + " - PP: " + CurrentPP;
     }
 
     public string GetObjectName()
     {
-        if (skillData == null)
-            return "-";
-
         return skillData.SkillName;
     }
 

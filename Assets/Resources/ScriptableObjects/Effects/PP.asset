@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: PP
   m_EditorClassIdentifier: 
   duration: 1
-  descriptionOnPlayer: '{PlayerPokemon} recupera PP'
-  descriptionOnEnemy: '{EnemyPokemon} recupera PP'
+  descriptionOnPlayer: '{PlayerPokemon} recupera PP.'
+  descriptionOnEnemy: '{EnemyPokemon} recupera PP.'
+  descriptionRemoveFromPlayer: 
+  descriptionRemoveFromEnemy: 
   value: 10
