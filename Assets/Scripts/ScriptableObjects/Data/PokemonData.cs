@@ -19,6 +19,7 @@ public enum ESpeedExperience
 [System.Serializable]
 public struct SPokemonSkill
 {
+    [Header("Only one skill for level")]
     public SkillData skill;
     public int level;
 }

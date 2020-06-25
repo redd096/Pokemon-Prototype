@@ -42,12 +42,17 @@ public class FightUIManager : MonoBehaviour
     [SerializeField] GameObject yesNoMenu = default;
     [SerializeField] Button yesButton = default;
     [SerializeField] Button nopeButton = default;
+    [SerializeField] GameObject learnSkillsMenu = default;
+    [SerializeField] Transform contentLearnSkillMenu = default;
+    [SerializeField] Button refuseSkillButton = default;
     #endregion
 
     #region private poolings
     Pooling<Button> skillsPooling = new Pooling<Button>(false);
     Pooling<Button> pokemonsPooling = new Pooling<Button>(false);
     Pooling<Button> itemsPooling = new Pooling<Button>(false);
+
+    Pooling<Button> skillsToReplacePooling = new Pooling<Button>(false);
     #endregion
 
     #region private variables
@@ -61,19 +66,6 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     //TODO
-    //EndFightState deve solo far uscire la scritta come per il nemico, poi chiama "Next" se si ha vinto o RunClick se si ha perso
-    //nel nuovo state deve prima caricarmi tutta la barra dell'esperienza e settarmi i livelli, 
-    //poi una volta finito, checka le skills dal livello iniziale fino ad ora e chiede se voglio modificarle
-    //infine checka l'evoluzione, se rifiuto finisce il fight
-    //se accetto crea nuovo model, aggiorna la lista, poi passa dal pokemon state per il cambio
-    //infine conclude il fight
-
-    //IL POKEMON STATE DEVE DIVENTARE UNA SEMPLICE FUNZIONE RICHIAMABILE DA FIGHT UI MANAGER
-    //NELL'END FIGHT STATE, LA DESCRIPTION DEVE MOSTRARE "{PlayerPokemon} vuole evolversi in {EvolutionPokemon}"
-    //oppure "{PlayerPokemon} vuole imparare {newSkill}"
-    //E QUANDO SI SCEGLIERE DI EVOLVERSI, OLTRE A CAMBIARE LA LISTA DEL PLAYER, DEVE ANCHE MOSTRARLO IN UI CHIAMANDO LA STESSA FUNZIONE DI POKEMON STATE
-
-
     //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC... [End Fight State + Pokemon Model]
     //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
 
@@ -363,6 +355,40 @@ public class FightUIManager : MonoBehaviour
         playerLevel.text = playerLevelString + level;
     }
 
+    public void SetLearnSkillsMenu(System.Action<int> confirmFunc, System.Action refuseFunc)
+    {
+        //set refuse skill button
+        refuseSkillButton.onClick.RemoveAllListeners();
+        refuseSkillButton.onClick.AddListener(() => refuseFunc());
+
+        //deactive every button in the pooling
+        skillsToReplacePooling.DeactiveAll();
+
+        //get current skills of the pokemon
+        SkillModel[] currentSkills = GameManager.instance.levelManager.FightManager.currentPlayerPokemon.CurrentSkills;
+
+        //add if there are not enough buttons in pool
+        skillsToReplacePooling.InitCycle(prefabSimpleButton, currentSkills.Length);
+
+        for (int i = 0; i < currentSkills.Length; i++)
+        {
+            //instantiate button from pool and set parent
+            Button button = skillsToReplacePooling.Instantiate(prefabSimpleButton, contentLearnSkillMenu, false);
+
+            //be sure to not have listeners
+            button.onClick.RemoveAllListeners();
+
+            //add new listener to button
+            button.onClick.AddListener(() => confirmFunc(i));
+
+            //set text (name of the skill or empty)
+            if (currentSkills[i] != null)
+                button.GetComponentInChildren<Text>().text = currentSkills[i].skillData.SkillName;
+            else
+                button.GetComponentInChildren<Text>().text = "-";
+        }
+    }
+
     public void ShowYesNoMenu(System.Action yesFunc, System.Action noFunc)
     {
         //active yes no menu
@@ -375,6 +401,21 @@ public class FightUIManager : MonoBehaviour
         //add new listener to buttons
         yesButton.onClick.AddListener(() => yesFunc());
         nopeButton.onClick.AddListener(() => noFunc());
+    }
+
+    public void HideYesNoMenu()
+    {
+        yesNoMenu.SetActive(false);
+    }
+
+    public void ShowLearnSkillsMenu()
+    {
+        learnSkillsMenu.SetActive(true);
+    }
+
+    public void HideLearnSkillsMenu()
+    {
+        learnSkillsMenu.SetActive(false);
     }
 
     #endregion
@@ -412,6 +453,7 @@ public class FightUIManager : MonoBehaviour
         Replace(ref s, "{Skill}", fightManager.SkillUsed);
         Replace(ref s, "{Pokemon}", fightManager.PokemonSelected);
         Replace(ref s, "{Item}", fightManager.ItemUsed);
+        Replace(ref s, "{SkillToLearn}", fightManager.SkillToLearn);
 
         return s;
     }
@@ -451,6 +493,7 @@ public class FightUIManager : MonoBehaviour
         pokemonMenu.SetActive(false);
         bagMenu.SetActive(false);
         yesNoMenu.SetActive(false);
+        learnSkillsMenu.SetActive(false);
     }
 
     public void UpdateHealth(bool isPlayer, float previousHealth, float durationUpdateHealth, System.Action onEndUpdateHealth = null)

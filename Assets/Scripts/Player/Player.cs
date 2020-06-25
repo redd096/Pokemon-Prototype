@@ -76,7 +76,19 @@ public class Player : StateMachine
 
     public void ReplacePokemon(PokemonModel pokemonToReplace, PokemonModel newPokemon)
     {
+        //look in the list
+        for(int i = 0; i < playerPokemons.Count; i++)
+        {
+            //when found pokemonToReplace
+            if(playerPokemons[i] == pokemonToReplace)
+            {
+                //remove
+                playerPokemons.Remove(pokemonToReplace);
 
+                //and add new one in the same position
+                playerPokemons.Insert(i, newPokemon);
+            }
+        }
     }
 
     #endregion

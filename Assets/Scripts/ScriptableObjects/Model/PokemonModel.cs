@@ -16,7 +16,7 @@ public class PokemonModel : IGetName
     public float ExpNextLevel;// { get; private set; }
 
     //fight
-    public float currentHealth;
+    float currentHealth;
     public float CurrentHealth
     { 
         get
@@ -44,6 +44,7 @@ public class PokemonModel : IGetName
     public List<EffectModel> RemovedEffects = new List<EffectModel>();
     [Range(0, 100)] public int CurrentMaxAccuracy;
 
+    List<SPokemonSkill> skillsLearnedOrRefused = new List<SPokemonSkill>();
     #endregion
 
     /// <summary>
@@ -57,13 +58,39 @@ public class PokemonModel : IGetName
         //set level and exp
         CurrentLevel = level;
         ExpNextLevel = NecessaryExpForThisLevel(level + 1);
-        if (level > 1) 
-            CurrentExp = NecessaryExpForThisLevel(level);
+        if (level > 1)
+            ExpCurrentLevel = NecessaryExpForThisLevel(level);
 
-        ExpCurrentLevel = CurrentExp;
+        //reset to start of this level
+        CurrentExp = ExpCurrentLevel;
 
         //random skills based on level
         RandomSkills();
+
+        Restore();
+    }
+
+    /// <summary>
+    /// set default values from another pokemon (used from GetEvolution())
+    /// </summary>
+    PokemonModel(PokemonModel previousPokemon)
+    {
+        //set data
+        pokemonData = previousPokemon.pokemonData.PokemonEvolution;
+
+        //set level and exp
+        int level = previousPokemon.CurrentLevel;
+        CurrentLevel = level;
+        ExpNextLevel = NecessaryExpForThisLevel(level + 1);
+        if(level > 1)
+            ExpCurrentLevel = NecessaryExpForThisLevel(level);
+
+        //get other pokemon exp
+        CurrentExp = previousPokemon.CurrentExp;
+
+        //get a copy of the skills 
+        CurrentSkills = previousPokemon.CurrentSkills.CreateCopy();
+        skillsLearnedOrRefused = previousPokemon.skillsLearnedOrRefused.CreateCopy();
 
         Restore();
     }
@@ -77,6 +104,8 @@ public class PokemonModel : IGetName
     {
         return pokemonData.PokemonName;
     }
+
+    #region fight and restore
 
     /// <summary>
     /// get damage and add effect (if skill has one)
@@ -180,6 +209,10 @@ public class PokemonModel : IGetName
         }
     }
 
+    #endregion
+
+    #region experience and level up
+
     /// <summary>
     /// get experience
     /// </summary>
@@ -198,9 +231,9 @@ public class PokemonModel : IGetName
     }
 
     /// <summary>
-    /// check if level up. If true update ExpCurrentLevel and ExpNextLevel
+    /// check if level up. If true level up and update ExpCurrentLevel and ExpNextLevel
     /// </summary>
-    public bool CheckLevelUp()
+    public bool TryLevelUp()
     {
         //check level up
         if (CurrentExp >= ExpNextLevel)
@@ -211,6 +244,10 @@ public class PokemonModel : IGetName
 
         return false;
     }
+
+    #endregion
+
+    #region evolution
 
     /// <summary>
     /// check if pokemon can evolve
@@ -227,20 +264,64 @@ public class PokemonModel : IGetName
     }
 
     /// <summary>
+    /// get model of evolution pokemon
+    /// </summary>
+    public PokemonModel GetEvolution()
+    {
+        //create evolution pokemon model, same level
+        return new PokemonModel(this);
+    }
+
+    #endregion
+
+    #region learn skill
+
+    /// <summary>
     /// check if can learn new skill
     /// </summary>
-    public bool CanLearnSkill()
+    public SkillData CanLearnSkill()
     {
         //check every possible skill for this pokemon
         foreach(SPokemonSkill skill in pokemonData.PossibleSkills)
         {
-            //if there is a skill for this level, return true
-            if (skill.level == CurrentLevel)
-                return true;
+            //if there is a skill for this level and is not in "learned or refused", then return the skill data
+            if (skill.level <= CurrentLevel && skillsLearnedOrRefused.Contains(skill) == false)
+            {
+                //if no skill setted, then add to "learned or refused" and skip
+                if (skill.skill == null)
+                {
+                    skillsLearnedOrRefused.Add(skill);
+                    continue;
+                }
+
+                return skill.skill;
+            }
         }
 
-        return false;
+        return null;
     }
+
+    /// <summary>
+    /// learn skill
+    /// </summary>
+    public void LearnSkill(SkillModel skillToLearn, int skillToReplace)
+    {
+        //add to learned or refused list
+        SetSkillLearnedOrRefused(skillToLearn.skillData);
+
+        //replace skill (or empty space) with new skill
+        CurrentSkills[skillToReplace] = skillToLearn;
+    }
+
+    /// <summary>
+    /// refuse skill
+    /// </summary>
+    public void RefuseSkill(SkillData skillToRefuse)
+    {
+        SetSkillLearnedOrRefused(skillToRefuse);
+    }
+
+    #endregion
 
     #region private API
 
@@ -281,6 +362,13 @@ public class PokemonModel : IGetName
         {
             bool reachedLimit = tempSkills.Count >= CurrentSkills.Length;
 
+            //add to the list learned or refused
+            skillsLearnedOrRefused.Add(possibleSkill);
+
+            //if no skill setted, then skip it
+            if (possibleSkill.skill == null)
+                continue;
+
             //try to add (add until reach limit, then 50% to add)
             if (TryAddSkill(possibleSkill.level, reachedLimit))
             {
@@ -318,6 +406,24 @@ public class PokemonModel : IGetName
         }
 
         return false;
+    }
+
+    void SetSkillLearnedOrRefused(SkillData skillLearnedOrRefused)
+    {
+        if (skillLearnedOrRefused == null)
+            return;
+
+        //check every possible skill
+        foreach (SPokemonSkill skill in pokemonData.PossibleSkills)
+        {
+            //if is not already in the list and is the skill to refuse
+            if (skillsLearnedOrRefused.Contains(skill) == false && skill.skill == skillLearnedOrRefused)
+            {
+                //add to refused list
+                skillsLearnedOrRefused.Add(skill);
+                return;
+            }
+        }
     }
 
     #endregion

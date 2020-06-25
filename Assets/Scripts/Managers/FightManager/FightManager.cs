@@ -26,6 +26,8 @@ public class FightManager : MonoBehaviour
     public PokemonModel PokemonSelected { get; private set; }
     public ItemModel ItemUsed { get; private set; }
 
+    public SkillModel SkillToLearn { get; private set; }
+
     #endregion
 
     Animator anim;
@@ -133,6 +135,13 @@ public class FightManager : MonoBehaviour
         //set item and change state
         ItemUsed = item;
         anim.SetTrigger("Item");
+    }
+
+    public void LearnSkill(SkillModel skill)
+    {
+        //set skill to learn and change state
+        SkillToLearn = skill;
+        anim.SetTrigger("LearnSkill");
     }
 
     #endregion
