@@ -146,7 +146,7 @@ public class SomeoneTurnState : FightManagerState
         //create a list of skill with PP > 0
         foreach (SkillModel skill in fightManager.currentEnemyPokemon.CurrentSkills)
         {
-            if (skill.CurrentPP > 0)
+            if (skill != null && skill.CurrentPP > 0)
             {
                 skillsUsable.Add(skill);
             }

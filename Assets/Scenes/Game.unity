@@ -941,7 +941,7 @@ MonoBehaviour:
       percentage: 50
   minLevel: 5
   minPokemons: 1
-  maxPokemons: 2
+  maxPokemons: 1
 --- !u!1 &486505717
 GameObject:
   m_ObjectHideFlags: 0
@@ -17916,32 +17916,32 @@ PrefabInstance:
     - target: {fileID: 3665265985209757360, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.903
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3665265985209757360, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.903
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3665265985209757360, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3665265984465300927, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.732
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3665265984465300927, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.732
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3665265984465300927, guid: 031160ed1d5db08448af6955223b48a4,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 031160ed1d5db08448af6955223b48a4, type: 3}
@@ -18075,17 +18075,17 @@ PrefabInstance:
     - target: {fileID: 1128626001313805810, guid: 3b1c1fad86723594f944ae0d808a50e3,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.903
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1128626001313805810, guid: 3b1c1fad86723594f944ae0d808a50e3,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.903
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1128626001313805810, guid: 3b1c1fad86723594f944ae0d808a50e3,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1128626001539826587, guid: 3b1c1fad86723594f944ae0d808a50e3,
         type: 3}
@@ -18105,17 +18105,17 @@ PrefabInstance:
     - target: {fileID: 1128626001913034493, guid: 3b1c1fad86723594f944ae0d808a50e3,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.732
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1128626001913034493, guid: 3b1c1fad86723594f944ae0d808a50e3,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.732
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1128626001913034493, guid: 3b1c1fad86723594f944ae0d808a50e3,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b1c1fad86723594f944ae0d808a50e3, type: 3}

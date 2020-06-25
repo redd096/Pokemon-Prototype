@@ -38,7 +38,7 @@ public class PokemonModel : IGetName
     public float PhysicsDefense;
     public float SpecialAttack;
     public float SpecialDefense;
-    public SkillModel[] CurrentSkills = new SkillModel[4];
+    public SkillModel[] CurrentSkills = new SkillModel[GameManager.instance.maxSkillForPokemon];
 
     public List<EffectModel> ActiveEffects = new List<EffectModel>();
     public List<EffectModel> RemovedEffects = new List<EffectModel>();
@@ -157,7 +157,8 @@ public class PokemonModel : IGetName
         //restore skills
         foreach(SkillModel skill in CurrentSkills)
         {
-            skill.RestorePP();
+            if(skill != null)
+                skill.RestorePP();
         }
 
         //remove effects
@@ -180,6 +181,16 @@ public class PokemonModel : IGetName
             if(e.effectData == effect)
             {
                 ActiveEffects.Remove(e);
+                break;
+            }
+        }
+
+        //remove from removed effects too
+        foreach(EffectModel e in RemovedEffects)
+        {
+            if(e.effectData == effect)
+            {
+                RemovedEffects.Remove(e);
                 break;
             }
         }
@@ -360,17 +371,14 @@ public class PokemonModel : IGetName
         //check every possible skill
         foreach(SPokemonSkill possibleSkill in pokemonData.PossibleSkills)
         {
-            bool reachedLimit = tempSkills.Count >= CurrentSkills.Length;
-
-            //add to the list learned or refused
-            skillsLearnedOrRefused.Add(possibleSkill);
+            bool reachedLimit = tempSkills.Count >= GameManager.instance.maxSkillForPokemon;
 
             //if no skill setted, then skip it
             if (possibleSkill.skill == null)
                 continue;
 
             //try to add (add until reach limit, then 50% to add)
-            if (TryAddSkill(possibleSkill.level, reachedLimit))
+            if (TryAddSkill(possibleSkill, reachedLimit))
             {
                 //if reached limit, remove one skill
                 if(reachedLimit)
@@ -385,14 +393,23 @@ public class PokemonModel : IGetName
         }
 
         //set current skills
-        CurrentSkills = tempSkills.ToArray();
+        for (int i = 0; i < GameManager.instance.maxSkillForPokemon; i++)
+        {
+            if (i < tempSkills.Count)
+                CurrentSkills[i] = tempSkills[i];
+            else
+                CurrentSkills[i] = new SkillModel(null);
+        }
     }
 
-    bool TryAddSkill(int levelSkill, bool reachedLimit)
+    bool TryAddSkill(SPokemonSkill skill, bool reachedLimit)
     {
         //check level
-        if (levelSkill <= CurrentLevel)
+        if (skill.level <= CurrentLevel)
         {
+            //add to the list learned or refused
+            skillsLearnedOrRefused.Add(skill);
+
             int random = Random.Range(0, 100);
 
             //normally 100%, if reached limit 50% (will replace one skill)

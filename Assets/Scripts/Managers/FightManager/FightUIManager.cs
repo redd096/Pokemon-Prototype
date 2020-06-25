@@ -66,8 +66,13 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     //TODO
-    //INFINE VA FATTO L'AUMENTO DI LIVELLO, SBLOCCO SKILL, ECC... [End Fight State + Pokemon Model]
+    //CONTROLLA CHE FUNZIONA L'APPRENDIMENTO DI UNA NUOVA SKILL
+    //CONTROLLA CHE FUNZIONA L'EVOLUZIONE
+    //CONTROLLA CHE FUNZIONA UN MIX
+    //TROVARE IL MODO DI FAR SALIRE DI LIVELLO, EVOLVERE E APPRENDERE NUOVE SKILL PURE AI POKEMON CHE HANNO COMBATTUTO MA NON SONO ORA SELEZIONATI DAL PLAYER
+
     //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
+    //ANDREBBE AGGIUNTO UN MODO DI PRENDERE OGGETTI (TROVATI IN GIRO O COMPRATI)
 
     //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player, ma preferirei tasto in alto a sx] - fare canvas in fondo alla gerarchia, sopra solo alla transition image
     //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer, ma in realtà è meglio cancellarlo e aggiungere 4 bottoni in basso a dx come freccette]
@@ -92,8 +97,8 @@ public class FightUIManager : MonoBehaviour
 
     void UseSkill(Button button, SkillModel skill)
     {
-        //don't do anything when PP are 0
-        if (skill.CurrentPP <= 0)
+        //don't do anything when there is no skill or PP are 0
+        if (skill == null || skill.CurrentPP <= 0)
             return;
 
         //call it in fight manager
@@ -159,8 +164,8 @@ public class FightUIManager : MonoBehaviour
         //add new listener to button
         button.onClick.AddListener(() => function(button, value));
 
-        //set text
-        button.GetComponentInChildren<Text>().text = value.GetButtonName();
+        //set button name or empty
+        button.GetComponentInChildren<Text>().text = value != null ? value.GetButtonName() : "-";
     }
 
     #endregion
@@ -224,10 +229,10 @@ public class FightUIManager : MonoBehaviour
             yield return null;
         }
 
+        updatingBar = null;
+
         //call function, with updatedExp to know where the animation end
         onEndUpdate?.Invoke(updatedExp);
-
-        updatingBar = null;
     }
 
     bool SetExperienceUI(float previousExp, float delta, out float currentExp)
@@ -241,8 +246,8 @@ public class FightUIManager : MonoBehaviour
         //set player slider
         playerExpSlider.value = (currentExp - pokemon.ExpCurrentLevel) / (pokemon.ExpNextLevel - pokemon.ExpCurrentLevel);
 
-        //return true if already full slider (also if currentExp didn't reach pokemon.CurrentExp)
-        if (playerExpSlider.value > 1)
+        //return true if already reached next level (also if currentExp didn't reach pokemon.CurrentExp)
+        if (currentExp > pokemon.ExpNextLevel)
             return true;
 
         return false;
@@ -361,14 +366,12 @@ public class FightUIManager : MonoBehaviour
         refuseSkillButton.onClick.RemoveAllListeners();
         refuseSkillButton.onClick.AddListener(() => refuseFunc());
 
-        //deactive every button in the pooling
+        //deactive every button in the pooling and add if there are not enough buttons in pool
         skillsToReplacePooling.DeactiveAll();
+        skillsToReplacePooling.InitCycle(prefabSimpleButton, GameManager.instance.maxSkillForPokemon);
 
         //get current skills of the pokemon
         SkillModel[] currentSkills = GameManager.instance.levelManager.FightManager.currentPlayerPokemon.CurrentSkills;
-
-        //add if there are not enough buttons in pool
-        skillsToReplacePooling.InitCycle(prefabSimpleButton, currentSkills.Length);
 
         for (int i = 0; i < currentSkills.Length; i++)
         {
@@ -382,10 +385,7 @@ public class FightUIManager : MonoBehaviour
             button.onClick.AddListener(() => confirmFunc(i));
 
             //set text (name of the skill or empty)
-            if (currentSkills[i] != null)
-                button.GetComponentInChildren<Text>().text = currentSkills[i].skillData.SkillName;
-            else
-                button.GetComponentInChildren<Text>().text = "-";
+            button.GetComponentInChildren<Text>().text = currentSkills[i].GetObjectName();
         }
     }
 

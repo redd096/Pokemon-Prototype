@@ -41,9 +41,12 @@ public class ExperiencePlayerState : FightManagerState
         }
     }
 
-    string ParseDescription(string text, string value)
+    string Replace(string text, string value)
     {
-        return string.Format(text, value);
+        if (text.Contains("{0}"))
+            return text.Replace("{0}", value);
+
+        return text;
     }
 
     #region enter
@@ -76,7 +79,7 @@ public class ExperiencePlayerState : FightManagerState
 
         //get experience got
         float experienceGot = pokemonPlayer.CurrentExp - previousExp;
-        string _description = ParseDescription(description, experienceGot.ToString("F0"));
+        string _description = Replace(description, experienceGot.ToString("F0"));
 
         //set Description letter by letter, then call OnEndDescription
         fightManager.FightUIManager.SetDescription(_description, OnEndDescription);
@@ -150,7 +153,7 @@ public class ExperiencePlayerState : FightManagerState
         fightManager.FightUIManager.HideYesNoMenu();
 
         //get evolution name
-        string _refuseEvolution = ParseDescription(refuseEvolution, pokemonPlayer.pokemonData.PokemonEvolution.PokemonName);
+        string _refuseEvolution = Replace(refuseEvolution, pokemonPlayer.pokemonData.PokemonEvolution.PokemonName);
 
         //description, then check skills
         fightManager.FightUIManager.SetDescription(_refuseEvolution, CheckSkillsToLearn);
@@ -185,7 +188,7 @@ public class ExperiencePlayerState : FightManagerState
         pokemonPlayer.RefuseSkill(skillToLearn);
 
         //get skill name
-        string _refuseSkill = ParseDescription(refuseSkill, skillToLearn.SkillName);
+        string _refuseSkill = Replace(refuseSkill, skillToLearn.SkillName);
 
         //description, then check other skills
         fightManager.FightUIManager.SetDescription(_refuseSkill, CheckSkillsToLearn);
@@ -201,7 +204,7 @@ public class ExperiencePlayerState : FightManagerState
         if (checkEvolution && pokemonPlayer.CheckEvolution())
         {
             //get evolution name
-            string _questionEvolution = ParseDescription(questionEvolution, pokemonPlayer.pokemonData.PokemonEvolution.PokemonName);
+            string _questionEvolution = Replace(questionEvolution, pokemonPlayer.pokemonData.PokemonEvolution.PokemonName);
 
             fightManager.FightUIManager.SetDescription(_questionEvolution, ShowYesNoEvolution);
             return;
@@ -212,7 +215,7 @@ public class ExperiencePlayerState : FightManagerState
         if (skillToLearn)
         {
             //get skill name
-            string _questionSkill = ParseDescription(questionSkill, skillToLearn.SkillName);
+            string _questionSkill = Replace(questionSkill, skillToLearn.SkillName);
 
             fightManager.FightUIManager.SetDescription(_questionSkill, ShowYesNoLearnSkill);
             return;

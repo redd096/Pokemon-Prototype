@@ -59,7 +59,7 @@ public class FightManager : MonoBehaviour
         //check if there is at least one skill with PP > 0
         foreach(SkillModel skill in currentPlayerPokemon.CurrentSkills)
         {
-            if (skill.CurrentPP > 0)
+            if (skill != null && skill.CurrentPP > 0)
             {
                 //if can fight (there is at least one skill with PP > 0) go from player menu to fight menu
                 FightUIManager.FightClick();

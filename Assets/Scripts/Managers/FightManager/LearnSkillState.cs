@@ -40,10 +40,18 @@ public class LearnSkillState : FightManagerState
 
     #endregion
 
+    string Replace(string text, string value)
+    {
+        if (text.Contains("{0}"))
+            return text.Replace("{0}", value);
+
+        return text;
+    }
+
     void LearnSkill(int index)
     {
         //get skill to forget
-        SkillModel skillToForget = fightManager.currentPlayerPokemon.CurrentSkills[index];
+        SkillModel skillToForget = index < fightManager.currentPlayerPokemon.CurrentSkills.Length ? fightManager.currentPlayerPokemon.CurrentSkills[index] : null;
 
         //learn skill
         fightManager.currentPlayerPokemon.LearnSkill(fightManager.SkillToLearn, index);
@@ -51,7 +59,7 @@ public class LearnSkillState : FightManagerState
         //if need to forget a skill, show forgetSkillDescription before confirm
         if (skillToForget != null)
         {
-            string s = string.Format(forgetSkillDescription, skillToForget.GetObjectName());
+            string s = Replace(forgetSkillDescription, skillToForget.GetObjectName());
 
             fightManager.FightUIManager.SetDescription(forgetSkillDescription, ConfirmSkillDescription);
         }
