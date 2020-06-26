@@ -195,17 +195,17 @@ PrefabInstance:
     - target: {fileID: 1826566657891893310, guid: 834971286f538c346889308ee4d05fb2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1826566657891893310, guid: 834971286f538c346889308ee4d05fb2,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1826566657891893310, guid: 834971286f538c346889308ee4d05fb2,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1826566657891893310, guid: 834971286f538c346889308ee4d05fb2,
         type: 3}
@@ -345,7 +345,8 @@ MonoBehaviour:
   m_DragThreshold: 10
   firstSelectedGameObjects:
   - {fileID: 211323719}
-  overrideButton: {fileID: 0}
+  overrideObject: {fileID: 0}
+  notInteractables: []
 --- !u!4 &332057679
 Transform:
   m_ObjectHideFlags: 0
@@ -553,17 +554,17 @@ PrefabInstance:
     - target: {fileID: 1826566657891893310, guid: 834971286f538c346889308ee4d05fb2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 1826566657891893310, guid: 834971286f538c346889308ee4d05fb2,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1826566657891893310, guid: 834971286f538c346889308ee4d05fb2,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1826566657891893310, guid: 834971286f538c346889308ee4d05fb2,
         type: 3}
