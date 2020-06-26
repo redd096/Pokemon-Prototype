@@ -14,6 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] Sprite resumeSprite = default;
     [SerializeField] GameObject pauseMenu = default;
 
+    [Header("Movement")]
+    [SerializeField] GameObject movementMenu = default;
+
     private void Start()
     {
         transitionImage.gameObject.SetActive(true);
@@ -87,6 +90,15 @@ public class UIManager : MonoBehaviour
 
         //change button sprite
         pauseButton.image.sprite = pause ? resumeSprite : pauseSprite;
+    }
+
+    #endregion
+
+    #region movement
+
+    public void ShowMovementMenu(bool show)
+    {
+        movementMenu.SetActive(show);
     }
 
     #endregion

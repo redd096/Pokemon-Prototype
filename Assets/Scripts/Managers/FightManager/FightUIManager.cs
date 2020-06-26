@@ -66,8 +66,6 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     //TODO
-    //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [aggiungere 4 bottoni in basso a dx come freccette - sopra al PauseMenu in gerarchia, perché deve venire nascosto]
-
     //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
     //VANNO AGGIUNTO LE POKEBALL
 

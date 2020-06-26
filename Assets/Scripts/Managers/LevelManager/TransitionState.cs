@@ -42,6 +42,9 @@ public class TransitionState : StateMachineBehaviour
         //start setup waiting the fade out
         if (startFight)
             levelManager.FightManager.SetupState();
+
+        //show movement menu in moving phase, hide in fight phase
+        GameManager.instance.UiManager.ShowMovementMenu(!startFight);
     }
 
     void StartFadeOut()

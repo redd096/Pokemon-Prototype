@@ -8,6 +8,20 @@ public class IdlePLayer : PlayerState
     {
     }
 
+    public override IEnumerator Enter()
+    {
+        yield return base.Enter();
+
+        player.movePlayer += MovePlayer;
+    }
+
+    public override IEnumerator Exit()
+    {
+        yield return base.Exit();
+
+        player.movePlayer -= MovePlayer;
+    }
+
     public override void Execution()
     {
         base.Execution();
@@ -20,24 +34,49 @@ public class IdlePLayer : PlayerState
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
+        //try to move if there is path in direction
+        if(horizontal > 0)
+        {
+            MovePlayer("Right");
+        }
+        else if(horizontal < 0)
+        {
+            MovePlayer("Left");
+        }
+        else if(vertical > 0)
+        {
+            MovePlayer("Up");
+        }
+        else if (vertical < 0)
+        {
+            MovePlayer("Down");
+        }
+    }
+
+    void MovePlayer(string direction)
+    {
         Vector3 newPosition = Vector3.zero;
 
-        //try to move if there is path in direction
-        if(horizontal > 0 && CheckPath(Vector3.right, out newPosition))
+        switch (direction)
         {
-            Move(newPosition, "Right");
-        }
-        else if(horizontal < 0 && CheckPath(Vector3.left, out newPosition))
-        {
-            Move(newPosition, "Left");
-        }
-        else if(vertical > 0 && CheckPath(Vector3.up, out newPosition))
-        {
-            Move(newPosition, "Up");
-        }
-        else if (vertical < 0 && CheckPath(Vector3.down, out newPosition))
-        {
-            Move(newPosition, "Down");
+            case "Right":
+                if (CheckPath(Vector3.right, out newPosition))
+                    Move(newPosition, direction);
+                break;
+            case "Left":
+                if (CheckPath(Vector3.left, out newPosition))
+                    Move(newPosition, direction);
+                break;
+            case "Up":
+                if (CheckPath(Vector3.up, out newPosition))
+                    Move(newPosition, direction);
+                break;
+            case "Down":
+                if (CheckPath(Vector3.down, out newPosition))
+                    Move(newPosition, direction);
+                break;
+            default:
+                break;
         }
     }
 

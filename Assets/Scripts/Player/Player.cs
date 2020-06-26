@@ -21,8 +21,14 @@ public class Player : StateMachine
     public List<ItemModel> PlayerItems { get { return playerItems; } }
     public float DurationMovement { get { return durationMovement; } }
 
+    #region for states
+
     public Camera cam { get; private set; }
     public Vector3 offsetCamera { get; private set; }
+
+    public System.Action<string> movePlayer;
+
+    #endregion
 
     private void Start()
     {
@@ -62,6 +68,15 @@ public class Player : StateMachine
     {
         //start state machine for fight
         SetState(null);
+    }
+
+    #endregion
+
+    #region buttons
+
+    public void MovePlayer(string direction)
+    {
+        movePlayer?.Invoke(direction);
     }
 
     #endregion
