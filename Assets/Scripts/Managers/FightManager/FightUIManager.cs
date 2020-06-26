@@ -57,6 +57,8 @@ public class FightUIManager : MonoBehaviour
 
     #region private variables
 
+    FightManager fightManager;
+
     Coroutine doingAnimation;
     Coroutine updatingBar;
 
@@ -70,8 +72,21 @@ public class FightUIManager : MonoBehaviour
     //VANNO AGGIUNTO LE POKEBALL
 
     /*
+        per creare nuove scene:
+        - Level, Fight e Moving managers si spostano 
+     *      moving manager è quello per creare la scena, quindi andrebbe ricreato ogni volta
+     *      fight manager in realtà potrebbe essere singleton (NB che dipende da event system)
+     *      level manager pure singleton, basta metter nell'awake il find degli altri manager e nel SetDefaults() deve far ripartire l'animator per il fade out
+     *      NB che level manager dovrebbe disattivarsi quando non c'è il moving manager (ad esempio nel main menu)
+        - UIManager ed EventSystem pure si spostano
+     *      ui manager potrebbe essere singleton, bisogna però controllare di attivarlo solo se c'è il moving manager (NB che dipende da event system)
+     *      event system credo possa essere singleton, dipende da come lo gestisce unity (assicurarsi che siano singleton fight manager e ui manager, altrimenti è inutile)
+        - Main Camera non è un problema, ci dev'essere comunque in tutte le scene
+        - Player è il reale problema,  non lo si può spostare nella nuova scena, perché non avrebbe pokemon e oggetti salvati
+     *      glieli passo da game manager ?
+     *      se no, indovina un po'... probabilmente anche questo si può fare singleton e attivarlo solo quando c'è il moving manager
+     
         da fare se rimane tempo:
-        NB. si potrebbe fare anche FightManager singleton e MovingManager differente per ogni scena, l'unico problema è l'event system che dovrà diventare singleton anche lui
         - interazioni nello stato di moving, come ad esempio comprare o trovare items
         - suoni
         - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta) (StartFightState description?)
@@ -80,6 +95,11 @@ public class FightUIManager : MonoBehaviour
         - aggiungere menù opzioni nel menù di pausa e nel main menu (con volume e full screen mode - si potrebbe mettere anche la velocità di scrittura)
         - andrebbe gestita anche la fuga, per ora è solo un clicca Run e si torna in fase di moving
      */
+
+    private void Start()
+    {
+        fightManager = GetComponent<FightManager>();
+    }
 
     #region private API
 
@@ -92,7 +112,7 @@ public class FightUIManager : MonoBehaviour
             return;
 
         //call it in fight manager
-        GameManager.instance.LevelManager.FightManager.UseSkill(skill);
+        fightManager.UseSkill(skill);
 
         //change PP in text
         button.GetComponentInChildren<Text>().text = skill.GetButtonName();
@@ -105,16 +125,16 @@ public class FightUIManager : MonoBehaviour
             return;
 
         //call it in fight manager
-        GameManager.instance.LevelManager.FightManager.ChangePokemon(pokemon);
+        fightManager.ChangePokemon(pokemon);
 
         //move current pokemon in arena to the list of pokemons
-        SetButton(button, GameManager.instance.LevelManager.FightManager.currentPlayerPokemon, ChangePokemon);
+        SetButton(button, fightManager.currentPlayerPokemon, ChangePokemon);
     }
 
     void UseItem(Button button, ItemModel item)
     {
         //call it in fight manager
-        GameManager.instance.LevelManager.FightManager.UseItem(item);
+        fightManager.UseItem(item);
 
         //update stacks or remove button
         if(item.stack > 0)
@@ -187,7 +207,7 @@ public class FightUIManager : MonoBehaviour
         //get what to edit
         Slider slider = isPlayer ? playerHealthSlider : enemyHealthSlider;
         Text text = isPlayer ? playerHealth : enemyHealth;
-        PokemonModel pokemon = isPlayer ? GameManager.instance.LevelManager.FightManager.currentPlayerPokemon : GameManager.instance.LevelManager.FightManager.currentEnemyPokemon;
+        PokemonModel pokemon = isPlayer ? fightManager.currentPlayerPokemon : fightManager.currentEnemyPokemon;
 
         //current health based on delta
         float currentHealth = Mathf.Lerp(previousHealth, pokemon.CurrentHealth, delta);
@@ -228,7 +248,7 @@ public class FightUIManager : MonoBehaviour
     bool SetExperienceUI(float previousExp, float delta, out float currentExp)
     {
         //get player pokemon
-        PokemonModel pokemon = GameManager.instance.LevelManager.FightManager.currentPlayerPokemon;
+        PokemonModel pokemon = fightManager.currentPlayerPokemon;
 
         //current exp based on delta
         currentExp = Mathf.Lerp(previousExp, pokemon.CurrentExp, delta);
@@ -274,7 +294,7 @@ public class FightUIManager : MonoBehaviour
     public void SetPokemonList()
     {
         List<PokemonModel> playerPokemons = GameManager.instance.Player.PlayerPokemons;
-        PokemonModel pokemonInArena = GameManager.instance.LevelManager.FightManager.currentPlayerPokemon;
+        PokemonModel pokemonInArena = fightManager.currentPlayerPokemon;
 
         //foreach pokemon of the player
         List<PokemonModel> pokemonsUsable = new List<PokemonModel>();
@@ -384,7 +404,7 @@ public class FightUIManager : MonoBehaviour
         skillsToReplacePooling.InitCycle(prefabSimpleButton, GameManager.instance.MaxSkillForPokemon);
 
         //get current skills of the pokemon
-        List<SkillModel> currentSkills = GameManager.instance.LevelManager.FightManager.currentPlayerPokemon.CurrentSkills;
+        List<SkillModel> currentSkills = fightManager.currentPlayerPokemon.CurrentSkills;
 
         for (int i = 0; i < Mathf.Min(currentSkills.Count +1, GameManager.instance.MaxSkillForPokemon); i++)
         {
@@ -438,8 +458,6 @@ public class FightUIManager : MonoBehaviour
 
     string Parse(string text)
     {
-        FightManager fightManager = GameManager.instance.LevelManager.FightManager;
-
         string s = text;
 
         //replace string with data
@@ -518,7 +536,7 @@ public class FightUIManager : MonoBehaviour
     public void SetPokemonInArena(bool isPlayer)
     {
         //get player or enemy pokemon
-        PokemonModel pokemon = isPlayer ? GameManager.instance.LevelManager.FightManager.currentPlayerPokemon : GameManager.instance.LevelManager.FightManager.currentEnemyPokemon;
+        PokemonModel pokemon = isPlayer ? fightManager.currentPlayerPokemon : fightManager.currentEnemyPokemon;
 
         if (isPlayer)
         {

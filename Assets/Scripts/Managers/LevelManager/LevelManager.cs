@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -44,4 +43,32 @@ public class LevelManager : MonoBehaviour
     {
         anim.SetTrigger("Moving");
     }
+
+    #region moving and fight manager
+
+    /// <summary>
+    /// Before moving, check if there is path or there is a collision
+    /// </summary>
+    public bool CheckPath(Vector3 playerDestination)
+    {
+        return movingManager.CheckPath(playerDestination);
+    }
+
+    /// <summary>
+    /// After moving, check if the player found a pokemon
+    /// </summary>
+    public bool CheckPokemon(Vector3 playerPosition)
+    {
+        return movingManager.CheckPokemon(playerPosition);
+    }
+
+    /// <summary>
+    /// Set list of pokemons for this fight
+    /// </summary>
+    public void SetEnemyPokemons(List<PokemonModel> pokemons)
+    {
+        fightManager.enemyPokemons = pokemons;
+    }
+
+    #endregion
 }

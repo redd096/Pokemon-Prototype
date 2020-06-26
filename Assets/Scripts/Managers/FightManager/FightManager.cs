@@ -12,9 +12,6 @@ public class FightManager : MonoBehaviour
     [Header("Skill when everything at 0 PP")]
     public SkillData baseSkill;
 
-    [Header("Efficiency TAB")]
-    public EfficiencyTAB efficiencyTAB;
-
     #region for states
 
     public PokemonModel currentPlayerPokemon { get; private set; }

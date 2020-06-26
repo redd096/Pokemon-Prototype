@@ -86,7 +86,7 @@ public class IdlePLayer : PlayerState
         newPosition = stateMachine.transform.position + direction;
 
         //check if path is free or there is a collision
-        return GameManager.instance.LevelManager.MovingManager.CheckPath(newPosition);
+        return GameManager.instance.LevelManager.CheckPath(newPosition);
     }
 
     void Move(Vector3 newPosition, string direction)

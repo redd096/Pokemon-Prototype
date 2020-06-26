@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//NB. If you want, you can remove pauseButton and movementMenu from the Canvas
+
 public class UIManager : MonoBehaviour
 {
     [Header("Image used for transitions")]
@@ -21,6 +23,7 @@ public class UIManager : MonoBehaviour
     {
         transitionImage.gameObject.SetActive(true);
         PauseMenu(false);
+        ShowMovementMenu(true);
     }
 
     #region private API
@@ -82,26 +85,20 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region pause
-
     public void PauseMenu(bool pause)
     {
         pauseMenu.SetActive(pause);
 
         //change button sprite
-        pauseButton.image.sprite = pause ? resumeSprite : pauseSprite;
+        if(pauseButton)
+            pauseButton.image.sprite = pause ? resumeSprite : pauseSprite;
     }
-
-    #endregion
-
-    #region movement
 
     public void ShowMovementMenu(bool show)
     {
-        movementMenu.SetActive(show);
+        if(movementMenu)
+            movementMenu.SetActive(show);
     }
-
-    #endregion
 
     #endregion
 }

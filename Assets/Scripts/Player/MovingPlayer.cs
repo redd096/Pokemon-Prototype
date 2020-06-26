@@ -57,7 +57,7 @@ public class MovingPlayer : PlayerState
     void CheckDestination()
     {
         //check if there is a pokemon, otherwise come back to idle
-        if(GameManager.instance.LevelManager.MovingManager.CheckPokemon(stateMachine.transform.position) == false)
+        if(GameManager.instance.LevelManager.CheckPokemon(stateMachine.transform.position) == false)
             stateMachine.SetState(new IdlePLayer(stateMachine));
     }
 }

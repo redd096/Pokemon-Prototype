@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7b85ed23d927d438ffb17ffecb63cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxSkillForPokemon: 4
+  MaxPokemonInTeam: 6
+  EfficiencyTAB: {fileID: 11400000, guid: a360eff70ea83b843bbadc26f4ebc105, type: 2}
 --- !u!114 &2303444538275084128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,3 +72,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e34d066782848c240a7c4144d5170ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeBetweenChar: 0.05
+  skipSpeed: 0.01

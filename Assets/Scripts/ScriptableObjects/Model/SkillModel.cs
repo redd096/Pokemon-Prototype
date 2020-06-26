@@ -55,7 +55,7 @@ public class SkillModel : IGetName
     public float EfficiencyMultiplier(EType pokemonToAttackType, out string efficiencyText)
     {
         //get from the matrix in fight manager
-        float efficiency = GameManager.instance.LevelManager.FightManager.efficiencyTAB.PokemonArray[(int)pokemonToAttackType].SkillArray[(int)skillData.SkillType];
+        float efficiency = GameManager.instance.EfficiencyTAB.PokemonArray[(int)pokemonToAttackType].SkillArray[(int)skillData.SkillType];
 
         efficiencyText = EfficiencyText(efficiency);
 
