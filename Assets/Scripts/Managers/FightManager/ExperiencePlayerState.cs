@@ -202,7 +202,7 @@ public class ExperiencePlayerState : FightManagerState
         PokemonModel evolution = pokemonGettingExperience.GetEvolution();
 
         //replace pokemon in player list
-        GameManager.instance.player.ReplacePokemon(pokemonGettingExperience, evolution);
+        GameManager.instance.Player.ReplacePokemon(pokemonGettingExperience, evolution);
 
         //evolve pokemon (change state to do animation)
         fightManager.ChangePokemon(evolution);

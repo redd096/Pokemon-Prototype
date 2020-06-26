@@ -16,7 +16,7 @@ public abstract class State
 
     public virtual void Execution()
     {
-
+        
     }
 
     public virtual IEnumerator Exit()

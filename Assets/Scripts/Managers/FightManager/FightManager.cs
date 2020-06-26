@@ -87,22 +87,26 @@ public class FightManager : MonoBehaviour
     {
         //remove player menu, cause the player will try to run away
         FightUIManager.RunClick();
-        GameManager.instance.levelManager.StartMoving();
+        GameManager.instance.LevelManager.StartMoving();
 
         //TEMP refullo i pokemon del giocatore quando esco dal combattimento
-        foreach (PokemonModel pokemon in GameManager.instance.player.PlayerPokemons)
+        foreach (PokemonModel pokemon in GameManager.instance.Player.PlayerPokemons)
         {
             pokemon.Restore();
         }
     }
 
-    public void BackToPlayerMenu()
+    public void BackButton()
     {
+        //only if not paused
+        if (Time.timeScale == 0)
+            return;
+
         //only if player pokemon is alive (because pokemon menu is shown also when the player has to replace his dead pokemon)
         if (currentPlayerPokemon.CurrentHealth > 0)
         {
             //deactive other menu and active player menu
-            FightUIManager.BackToPlayerMenu();
+            FightUIManager.BackButton();
         }
     }
 
@@ -130,7 +134,7 @@ public class FightManager : MonoBehaviour
     public void UseItem(ItemModel item)
     {
         //remove item from player inventory
-        GameManager.instance.player.RemoveItem(item);
+        GameManager.instance.Player.RemoveItem(item);
 
         //set item and change state
         ItemUsed = item;

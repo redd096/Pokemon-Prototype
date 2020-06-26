@@ -46,7 +46,7 @@ public class PokemonDeadState : FightManagerState
 
     void CheckPokemons()
     {
-        List<PokemonModel> pokemonList = isPlayerPokemon ? GameManager.instance.player.PlayerPokemons : fightManager.enemyPokemons;
+        List<PokemonModel> pokemonList = isPlayerPokemon ? GameManager.instance.Player.PlayerPokemons : fightManager.enemyPokemons;
         
         //check if there are pokemon alive in the list
         foreach (PokemonModel pokemon in pokemonList)

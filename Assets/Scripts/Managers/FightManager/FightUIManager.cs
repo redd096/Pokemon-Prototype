@@ -66,9 +66,7 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     //TODO
-    //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player, ma preferirei tasto in alto a sx] - fare canvas in fondo alla gerarchia, sopra solo alla transition image
-    //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer, ma in realtà è meglio cancellarlo e aggiungere 4 bottoni in basso a dx come freccette]
-    //LASCIARE IL TASTO BACK NEL SomeoneTurnState? O OBBLIGARE ALL'UTIZILLO DEL BACKBUTTON PRESENTE IN OGNI MENù?
+    //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [aggiungere 4 bottoni in basso a dx come freccette - sopra al PauseMenu in gerarchia, perché deve venire nascosto]
 
     //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
     //VANNO AGGIUNTO LE POKEBALL
@@ -96,7 +94,7 @@ public class FightUIManager : MonoBehaviour
             return;
 
         //call it in fight manager
-        GameManager.instance.levelManager.FightManager.UseSkill(skill);
+        GameManager.instance.LevelManager.FightManager.UseSkill(skill);
 
         //change PP in text
         button.GetComponentInChildren<Text>().text = skill.GetButtonName();
@@ -109,16 +107,16 @@ public class FightUIManager : MonoBehaviour
             return;
 
         //call it in fight manager
-        GameManager.instance.levelManager.FightManager.ChangePokemon(pokemon);
+        GameManager.instance.LevelManager.FightManager.ChangePokemon(pokemon);
 
         //move current pokemon in arena to the list of pokemons
-        SetButton(button, GameManager.instance.levelManager.FightManager.currentPlayerPokemon, ChangePokemon);
+        SetButton(button, GameManager.instance.LevelManager.FightManager.currentPlayerPokemon, ChangePokemon);
     }
 
     void UseItem(Button button, ItemModel item)
     {
         //call it in fight manager
-        GameManager.instance.levelManager.FightManager.UseItem(item);
+        GameManager.instance.LevelManager.FightManager.UseItem(item);
 
         //update stacks or remove button
         if(item.stack > 0)
@@ -191,7 +189,7 @@ public class FightUIManager : MonoBehaviour
         //get what to edit
         Slider slider = isPlayer ? playerHealthSlider : enemyHealthSlider;
         Text text = isPlayer ? playerHealth : enemyHealth;
-        PokemonModel pokemon = isPlayer ? GameManager.instance.levelManager.FightManager.currentPlayerPokemon : GameManager.instance.levelManager.FightManager.currentEnemyPokemon;
+        PokemonModel pokemon = isPlayer ? GameManager.instance.LevelManager.FightManager.currentPlayerPokemon : GameManager.instance.LevelManager.FightManager.currentEnemyPokemon;
 
         //current health based on delta
         float currentHealth = Mathf.Lerp(previousHealth, pokemon.CurrentHealth, delta);
@@ -232,7 +230,7 @@ public class FightUIManager : MonoBehaviour
     bool SetExperienceUI(float previousExp, float delta, out float currentExp)
     {
         //get player pokemon
-        PokemonModel pokemon = GameManager.instance.levelManager.FightManager.currentPlayerPokemon;
+        PokemonModel pokemon = GameManager.instance.LevelManager.FightManager.currentPlayerPokemon;
 
         //current exp based on delta
         currentExp = Mathf.Lerp(previousExp, pokemon.CurrentExp, delta);
@@ -277,8 +275,8 @@ public class FightUIManager : MonoBehaviour
 
     public void SetPokemonList()
     {
-        List<PokemonModel> playerPokemons = GameManager.instance.player.PlayerPokemons;
-        PokemonModel pokemonInArena = GameManager.instance.levelManager.FightManager.currentPlayerPokemon;
+        List<PokemonModel> playerPokemons = GameManager.instance.Player.PlayerPokemons;
+        PokemonModel pokemonInArena = GameManager.instance.LevelManager.FightManager.currentPlayerPokemon;
 
         //foreach pokemon of the player
         List<PokemonModel> pokemonsUsable = new List<PokemonModel>();
@@ -295,7 +293,7 @@ public class FightUIManager : MonoBehaviour
 
     public void SetItemsList()
     {
-        SetList(itemsPooling, GameManager.instance.player.PlayerItems, contentBagMenu, UseItem);
+        SetList(itemsPooling, GameManager.instance.Player.PlayerItems, contentBagMenu, UseItem);
     }
 
     #endregion
@@ -388,7 +386,7 @@ public class FightUIManager : MonoBehaviour
         skillsToReplacePooling.InitCycle(prefabSimpleButton, GameManager.instance.MaxSkillForPokemon);
 
         //get current skills of the pokemon
-        List<SkillModel> currentSkills = GameManager.instance.levelManager.FightManager.currentPlayerPokemon.CurrentSkills;
+        List<SkillModel> currentSkills = GameManager.instance.LevelManager.FightManager.currentPlayerPokemon.CurrentSkills;
 
         for (int i = 0; i < Mathf.Min(currentSkills.Count +1, GameManager.instance.MaxSkillForPokemon); i++)
         {
@@ -442,7 +440,7 @@ public class FightUIManager : MonoBehaviour
 
     string Parse(string text)
     {
-        FightManager fightManager = GameManager.instance.levelManager.FightManager;
+        FightManager fightManager = GameManager.instance.LevelManager.FightManager;
 
         string s = text;
 
@@ -522,7 +520,7 @@ public class FightUIManager : MonoBehaviour
     public void SetPokemonInArena(bool isPlayer)
     {
         //get player or enemy pokemon
-        PokemonModel pokemon = isPlayer ? GameManager.instance.levelManager.FightManager.currentPlayerPokemon : GameManager.instance.levelManager.FightManager.currentEnemyPokemon;
+        PokemonModel pokemon = isPlayer ? GameManager.instance.LevelManager.FightManager.currentPlayerPokemon : GameManager.instance.LevelManager.FightManager.currentEnemyPokemon;
 
         if (isPlayer)
         {
@@ -586,6 +584,20 @@ public class FightUIManager : MonoBehaviour
 
         //and active player menu
         playerMenu.SetActive(true);
+    }
+
+    public void BackButton()
+    {
+        //if in an other menu, back to player menu
+        if (playerMenu.activeInHierarchy == false)
+        {
+            BackToPlayerMenu();
+        }
+        //else go to pause menu
+        else
+        {
+            GameManager.instance.PauseResumeGame();
+        }
     }
 
     #endregion

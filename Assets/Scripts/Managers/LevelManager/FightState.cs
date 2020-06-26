@@ -27,7 +27,7 @@ public class FightState : StateMachineBehaviour
     void SetPlayer()
     {
         //set player
-        GameManager.instance.player.StartFightPhase();
+        GameManager.instance.Player.StartFightPhase();
     }
 
     void SetFightManager()

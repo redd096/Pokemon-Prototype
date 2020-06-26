@@ -54,7 +54,7 @@ public class MovingManager : MonoBehaviour
 
     void EnemySelectPokemons(PokemonInGrass[] pokemonList)
     {
-        FightManager fightManager = GameManager.instance.levelManager.FightManager;
+        FightManager fightManager = GameManager.instance.LevelManager.FightManager;
         fightManager.enemyPokemons = new List<PokemonModel>();
 
         //get random team quantity (max + 1 'cause last one is exclusive)
@@ -130,6 +130,6 @@ public class MovingManager : MonoBehaviour
 
     void FoundPokemon()
     {
-        GameManager.instance.levelManager.StartFight();
+        GameManager.instance.LevelManager.StartFight();
     }
 }

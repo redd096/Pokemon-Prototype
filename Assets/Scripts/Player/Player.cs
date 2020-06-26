@@ -46,12 +46,6 @@ public class Player : StateMachine
     void Update()
     {
         state?.Execution();
-
-        //if press back - pause menu
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            //TODO pause menu
-        }
     }
 
     #region public API
@@ -68,6 +62,19 @@ public class Player : StateMachine
     {
         //start state machine for fight
         SetState(null);
+    }
+
+    #endregion
+
+    #region for states
+
+    public void CheckPause()
+    {
+        //if press back - pause menu
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
+        {
+            GameManager.instance.PauseResumeGame();
+        }
     }
 
     #endregion

@@ -14,6 +14,6 @@ public class MovingState : StateMachineBehaviour
     void SetPlayer()
     {
         //set player
-        GameManager.instance.player.StartMovingPhase();
+        GameManager.instance.Player.StartMovingPhase();
     }
 }

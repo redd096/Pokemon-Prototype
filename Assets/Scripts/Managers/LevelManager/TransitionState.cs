@@ -21,7 +21,7 @@ public class TransitionState : StateMachineBehaviour
             levelManager = animator.GetComponent<LevelManager>();
 
         //do fade in, then call EndFadeIn
-        levelManager.FadeIn(timeToFadeIn, EndFadeIn);
+        GameManager.instance.UiManager.FadeIn_Fill(timeToFadeIn, EndFadeIn);
     }
 
     void EndFadeIn()
@@ -47,7 +47,7 @@ public class TransitionState : StateMachineBehaviour
     void StartFadeOut()
     {
         //do fade out, then call StartGame
-        levelManager.FadeOut(timeToFadeOut, StartGame);
+        GameManager.instance.UiManager.FadeOut_Fill(timeToFadeOut, StartGame);
     }
 
     void StartGame()

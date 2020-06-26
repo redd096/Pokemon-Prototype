@@ -4,32 +4,6 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : Singleton<SceneLoader>
 {
     /// <summary>
-    /// Resume time and hide cursor
-    /// </summary>
-    public void ResumeGame()
-    {
-        //hide pause menu and enable player input
-        //GameManager.instance.uiManager.PauseMenu(false);
-        //GameManager.instance.player.enable = true;
-
-        //hide cursor and set timeScale to 1
-        Time.timeScale = 1;
-    }
-
-    /// <summary>
-    /// Pause time and show cursor
-    /// </summary>
-    public void PauseGame()
-    {
-        //show pause menu and disable player input
-        //GameManager.instance.uiManager.PauseMenu(true);
-        //GameManager.instance.player.enable = false;
-
-        //show cursor and stop time
-        Time.timeScale = 0;
-    }
-
-    /// <summary>
     /// Exit game (works also in editor)
     /// </summary>
     public void ExitGame()
@@ -54,7 +28,7 @@ public class SceneLoader : Singleton<SceneLoader>
     /// </summary>
     public void LoadNewScene(string scene)
     {
-        //show cursor and set timeScale to 1
+        //set timeScale to 1
         Time.timeScale = 1;
 
         //load new scene

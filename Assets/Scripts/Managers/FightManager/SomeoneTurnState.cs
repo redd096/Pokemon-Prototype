@@ -34,10 +34,10 @@ public class SomeoneTurnState : FightManagerState
     {
         base.OnStateUpdate(animator, stateInfo, layerIndex);
 
-        //if player turn and press back - back to player menu
+        //if player turn and press back - back to player menu or pause
         if(isPlayer && Input.GetKeyDown(KeyCode.Escape))
         {
-            fightManager.BackToPlayerMenu();
+            fightManager.BackButton();
         }
     }
 

@@ -285,6 +285,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 211323717}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &211323719 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1826566657891893311, guid: 834971286f538c346889308ee4d05fb2,
+    type: 3}
+  m_PrefabInstance: {fileID: 211323717}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &332057676
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,11 +340,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6069114b282a8044894aab5a86a24d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 211323719}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
   firstSelectedGameObjects:
-  - {fileID: 0}
+  - {fileID: 211323719}
+  overrideButton: {fileID: 0}
 --- !u!4 &332057679
 Transform:
   m_ObjectHideFlags: 0
@@ -470,6 +477,7 @@ MonoBehaviour:
   imageTransition: {fileID: 1820266747}
   timeFadeOut: 1
   timeFadeIn: 1
+  nameNewScene: Game
 --- !u!1001 &1417026708
 PrefabInstance:
   m_ObjectHideFlags: 0

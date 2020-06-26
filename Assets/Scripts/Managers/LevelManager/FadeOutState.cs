@@ -26,7 +26,7 @@ public class FadeOutState : StateMachineBehaviour
         //do fade out and start game
         if(delta < 1)
         {
-            levelManager.TransitionImage.FadeOut(ref delta, timeToFadeOut);
+            GameManager.instance.UiManager.FadeOut(ref delta, timeToFadeOut);
         }
         else
         {
@@ -46,9 +46,7 @@ public class FadeOutState : StateMachineBehaviour
     void StartGame()
     {
         //reset alpha but remove fill amount, so player can't see image
-        levelManager.TransitionImage.fillAmount = 0;
-        Color imageColor = levelManager.TransitionImage.color;
-        levelManager.TransitionImage.color = new Color(imageColor.r, imageColor.g, imageColor.b, 1);
+        GameManager.instance.UiManager.ResetTransitionImage();
 
         //start game
         levelManager.StartMoving();

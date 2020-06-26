@@ -24,13 +24,13 @@ public class SetArenaState : FightManagerState
     void SetArena()
     {
         //set only if there are pokemons (because this is called at start game before deactive fightManager, but the enemy has no pokemons until player find one in the grass)
-        if (GameManager.instance.player.PlayerPokemons.Count <= 0 || fightManager.enemyPokemons.Count <= 0)
+        if (GameManager.instance.Player.PlayerPokemons.Count <= 0 || fightManager.enemyPokemons.Count <= 0)
             return;
 
         PokemonModel playerPokemon = null;
 
         //find first pokemon alive
-        foreach (PokemonModel pokemon in GameManager.instance.player.PlayerPokemons)
+        foreach (PokemonModel pokemon in GameManager.instance.Player.PlayerPokemons)
         {
             if (pokemon.CurrentHealth > 0)
             {
@@ -42,7 +42,7 @@ public class SetArenaState : FightManagerState
         //if no pokemon alive, show the first
         if(playerPokemon == null)
         {
-            playerPokemon = GameManager.instance.player.PlayerPokemons[0];
+            playerPokemon = GameManager.instance.Player.PlayerPokemons[0];
         }
 
         PokemonModel enemyPokemon = fightManager.enemyPokemons[0];

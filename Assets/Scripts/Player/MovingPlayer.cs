@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPlayer : State
+public class MovingPlayer : PlayerState
 {
     Vector2 targetPosition;
     string direction;
@@ -15,8 +15,9 @@ public class MovingPlayer : State
 
     public override IEnumerator Enter()
     {
+        yield return base.Enter();
+
         //get references from player
-        Player player = stateMachine as Player;
         Transform transform = player.transform;
         Animator anim = player.GetComponentInChildren<Animator>();
         float durationMovement = player.DurationMovement;
@@ -56,7 +57,7 @@ public class MovingPlayer : State
     void CheckDestination()
     {
         //check if there is a pokemon, otherwise come back to idle
-        if(GameManager.instance.levelManager.MovingManager.CheckPokemon(stateMachine.transform.position) == false)
+        if(GameManager.instance.LevelManager.MovingManager.CheckPokemon(stateMachine.transform.position) == false)
             stateMachine.SetState(new IdlePLayer(stateMachine));
     }
 }
