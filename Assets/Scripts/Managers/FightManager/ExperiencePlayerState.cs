@@ -16,9 +16,12 @@ public class ExperiencePlayerState : FightManagerState
     [SerializeField] float durationUpdateExperience = 0.7f;
 
     float previousExp;
-    PokemonModel pokemonPlayer;
-    bool alreadyGotExperience;
     SkillData skillToLearn;
+
+    PokemonModel pokemonGettingExperience;
+    List<PokemonModel> pokemonsWhoGotExperience = new List<PokemonModel>();
+    bool alreadyGotExperience;
+    bool alreadyCheckedEvolution;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -26,18 +29,29 @@ public class ExperiencePlayerState : FightManagerState
 
         //get experience, level up, check evolution and new skills
 
-        pokemonPlayer = fightManager.currentPlayerPokemon;
+        CheckNewPokemon();
+    }
 
-        //get experience and start descrption, then check level up
+    void CheckNewPokemon()
+    {
+        //get experience
         if (alreadyGotExperience == false)
         {
+            //if already checked every pokemon, end fight
+            if(pokemonsWhoGotExperience.Count >= fightManager.pokemonsWhoFought.Count)
+            {
+                EndFight();
+                return;
+            }
+
+            //else check experience
             GetExperience();
             SetDescription();
         }
-        //if already got experience, then we changed state to evolve pokemon -> check skills now
+        //if already got experience, then we changed state for skill or evolve, so continue to check
         else
         {
-            CheckSkillsToLearn();
+            LevelUp();
         }
     }
 
@@ -58,17 +72,34 @@ public class ExperiencePlayerState : FightManagerState
         //every player pokemon who fought get experience
         foreach (PokemonModel pokemon in fightManager.pokemonsWhoFought)
         {
-            //set previous exp for pokemon in arena
-            if (pokemon == pokemonPlayer)
+            //first get experience the pokemon in arena
+            if(pokemonGettingExperience == null)
             {
-                previousExp = pokemon.CurrentExp;
+                pokemonGettingExperience = fightManager.currentPlayerPokemon;
+                pokemonsWhoGotExperience.Add(pokemonGettingExperience);
+                break;
             }
+            //then all the others
+            else if (pokemonsWhoGotExperience.Contains(pokemon) == false)
+            {
+                pokemonGettingExperience = pokemon;
+                pokemonsWhoGotExperience.Add(pokemon);
 
-            //get experience from every enemy pokemon
-            foreach (PokemonModel enemyPokemon in fightManager.enemyPokemons)
-            {
-                pokemon.GetExperience(true, enemyPokemon.pokemonData.ExperienceOnDeath, enemyPokemon.CurrentLevel, pokemonsWhoFoughtNotDead);
+                //update UI
+                fightManager.SetCurrentPlayerPokemon(pokemon);
+                fightManager.FightUIManager.SetPokemonInArena(true);
+
+                break;
             }
+        }
+
+        //set previous exp
+        previousExp = pokemonGettingExperience.CurrentExp;
+
+        //get experience from every enemy pokemon
+        foreach (PokemonModel enemyPokemon in fightManager.enemyPokemons)
+        {
+            pokemonGettingExperience.GetExperience(true, enemyPokemon.pokemonData.ExperienceOnDeath, enemyPokemon.CurrentLevel, pokemonsWhoFoughtNotDead);
         }
     }
 
@@ -78,7 +109,7 @@ public class ExperiencePlayerState : FightManagerState
         fightManager.FightUIManager.DeactiveMenu();
 
         //get experience got
-        float experienceGot = pokemonPlayer.CurrentExp - previousExp;
+        float experienceGot = pokemonGettingExperience.CurrentExp - previousExp;
         string _description = Parse(description, experienceGot.ToString("F0"));
 
         //set Description letter by letter, then call OnEndDescription
@@ -95,68 +126,28 @@ public class ExperiencePlayerState : FightManagerState
 
     #endregion
 
-    #region level up
+    #region check level up
 
     void CheckLevelUp(float updatedExp)
     {
         //try level up
-        bool levelUp = pokemonPlayer.TryLevelUp();
+        bool levelUp = pokemonGettingExperience.TryLevelUp();
 
         if (levelUp)
         {
             //update level UI
-            fightManager.FightUIManager.UpdateLevel(pokemonPlayer.CurrentLevel);
+            fightManager.FightUIManager.UpdateLevel(pokemonGettingExperience.CurrentLevel);
 
             //try update again experience bar, then re-call check level up
             fightManager.FightUIManager.UpdateExperience(updatedExp, durationUpdateExperience, CheckLevelUp);
         }
-        //if not level up, we don't need to update experience anymore, so check evolution and skills
+        //if not level up, we don't need to update experience anymore, so check skills and evolution
         else
         {
             alreadyGotExperience = true;
 
-            LevelUp(true);
+            LevelUp();
         }
-    }
-
-    void CheckSkillsToLearn()
-    {
-        LevelUp(false);
-    }
-
-    #endregion
-
-    #region evolution
-
-    void ShowYesNoEvolution()
-    {
-        fightManager.FightUIManager.ShowYesNoMenu(YesEvolution, NopeEvolution);
-    }
-
-    void YesEvolution()
-    {
-        //remove menu
-        fightManager.FightUIManager.HideYesNoMenu();
-
-        PokemonModel evolution = pokemonPlayer.GetEvolution();
-
-        //replace pokemon in player list
-        GameManager.instance.player.ReplacePokemon(pokemonPlayer, evolution);
-
-        //change pokemon (change state to do animation)
-        fightManager.ChangePokemon(evolution);
-    }
-
-    void NopeEvolution()
-    {
-        //remove menu
-        fightManager.FightUIManager.HideYesNoMenu();
-
-        //get evolution name
-        string _refuseEvolution = Parse(refuseEvolution, pokemonPlayer.pokemonData.PokemonEvolution.PokemonName);
-
-        //description, then check skills
-        fightManager.FightUIManager.SetDescription(_refuseEvolution, CheckSkillsToLearn);
     }
 
     #endregion
@@ -185,33 +176,58 @@ public class ExperiencePlayerState : FightManagerState
         fightManager.FightUIManager.HideYesNoMenu();
 
         //refuse skill
-        pokemonPlayer.RefuseSkill(skillToLearn);
+        pokemonGettingExperience.RefuseSkill(skillToLearn);
 
         //get skill name
         string _refuseSkill = Parse(refuseSkill, skillToLearn.SkillName);
 
         //description, then check other skills
-        fightManager.FightUIManager.SetDescription(_refuseSkill, CheckSkillsToLearn);
+        fightManager.FightUIManager.SetDescription(_refuseSkill, LevelUp);
     }
 
     #endregion
 
-    void LevelUp(bool checkEvolution)
+    #region evolution
+
+    void ShowYesNoEvolution()
+    {
+        fightManager.FightUIManager.ShowYesNoMenu(YesEvolution, NopeEvolution);
+    }
+
+    void YesEvolution()
+    {
+        //remove menu
+        fightManager.FightUIManager.HideYesNoMenu();
+
+        PokemonModel evolution = pokemonGettingExperience.GetEvolution();
+
+        //replace pokemon in player list
+        GameManager.instance.player.ReplacePokemon(pokemonGettingExperience, evolution);
+
+        //evolve pokemon (change state to do animation)
+        fightManager.ChangePokemon(evolution);
+    }
+
+    void NopeEvolution()
+    {
+        //remove menu
+        fightManager.FightUIManager.HideYesNoMenu();
+
+        //get evolution name
+        string _refuseEvolution = Parse(refuseEvolution, pokemonGettingExperience.pokemonData.PokemonEvolution.PokemonName);
+
+        //description, then check skills
+        fightManager.FightUIManager.SetDescription(_refuseEvolution, LevelUp);
+    }
+
+    #endregion
+
+    void LevelUp()
     {
         string tempDescription = string.Empty;
 
-        //check if can evolve
-        if (checkEvolution && pokemonPlayer.CheckEvolution())
-        {
-            //get evolution name
-            string _questionEvolution = Parse(questionEvolution, pokemonPlayer.pokemonData.PokemonEvolution.PokemonName);
-
-            fightManager.FightUIManager.SetDescription(_questionEvolution, ShowYesNoEvolution);
-            return;
-        }
-
-        //else check if can learn new skill
-        skillToLearn = pokemonPlayer.CanLearnSkill();
+        //check if can learn new skill
+        skillToLearn = pokemonGettingExperience.CanLearnSkill();
         if (skillToLearn)
         {
             //get skill name
@@ -221,14 +237,31 @@ public class ExperiencePlayerState : FightManagerState
             return;
         }
 
-        //if no evolution and no skills, then end fight
-        EndFight();
+        //else check if can evolve
+        if (alreadyCheckedEvolution == false && pokemonGettingExperience.CheckEvolution())
+        {
+            alreadyCheckedEvolution = true;
+
+            //get evolution name
+            string _questionEvolution = Parse(questionEvolution, pokemonGettingExperience.pokemonData.PokemonEvolution.PokemonName);
+
+            fightManager.FightUIManager.SetDescription(_questionEvolution, ShowYesNoEvolution);
+            return;
+        }
+
+        //if no evolution and no skills, then check new pokemon
+        alreadyGotExperience = false;
+        alreadyCheckedEvolution = false;
+        CheckNewPokemon();
     }
 
     void EndFight()
     {
         //reset 
+        pokemonGettingExperience = null;
+        pokemonsWhoGotExperience.Clear();
         alreadyGotExperience = false;
+        alreadyCheckedEvolution = false;
 
         //HACK
         fightManager.RunClick();

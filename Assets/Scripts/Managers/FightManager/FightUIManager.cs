@@ -66,11 +66,6 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     //TODO
-    //TROVARE IL MODO DI FAR SALIRE DI LIVELLO, EVOLVERE E APPRENDERE NUOVE SKILL PURE AI POKEMON CHE HANNO COMBATTUTO MA NON SONO ORA SELEZIONATI DAL PLAYER
-
-    //ANDREBBE GESTITA ANCHE LA FUGA, PER ORA è SOLO UN CLICCA RUN E SI TORNA IN FASE DI MOVING
-    //ANDREBBE AGGIUNTO UN MODO DI PRENDERE OGGETTI (TROVATI IN GIRO O COMPRATI)
-
     //VA AGGIUNTO UN MENU DI PAUSA (PER USCIRE DAL GIOCO) [Iniziato in Player, ma preferirei tasto in alto a sx] - fare canvas in fondo alla gerarchia, sopra solo alla transition image
     //VANNO AGGIUNTI INPUT CON MOUSE E TOUCH [Iniziato in IdlePlayer, ma in realtà è meglio cancellarlo e aggiungere 4 bottoni in basso a dx come freccette]
     //LASCIARE IL TASTO BACK NEL SomeoneTurnState? O OBBLIGARE ALL'UTIZILLO DEL BACKBUTTON PRESENTE IN OGNI MENù?
@@ -81,11 +76,13 @@ public class FightUIManager : MonoBehaviour
     /*
         da fare se rimane tempo:
         NB. si potrebbe fare anche FightManager singleton e MovingManager differente per ogni scena, l'unico problema è l'event system che dovrà diventare singleton anche lui
+        - interazioni nello stato di moving, come ad esempio comprare o trovare items
         - suoni
         - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta) (StartFightState description?)
         - salvataggio all'uscita dal gioco (o alla peggio, nel fade out quando finisce un combattimento, o quando si rigenerano i pokemon all'ospedale)
         - se si vuole esagerare, i pokemon mantengono i danni subiti e PP e bisogna farli curare, quindi aggiungere ospedali e rimuovere il Restore da RunClick()
         - aggiungere menù opzioni nel menù di pausa e nel main menu (con volume e full screen mode - si potrebbe mettere anche la velocità di scrittura)
+        - andrebbe gestita anche la fuga, per ora è solo un clicca Run e si torna in fase di moving
      */
 
     #region private API

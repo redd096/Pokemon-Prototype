@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class PokemonModel : IGetName
 {
-    #region variables
+    #region public variables
 
     public PokemonData pokemonData;// { get; private set; }
 
@@ -43,8 +43,12 @@ public class PokemonModel : IGetName
     public List<EffectModel> ActiveEffects = new List<EffectModel>();
     public List<EffectModel> RemovedEffects = new List<EffectModel>();
     [Range(0, 100)] public int CurrentMaxAccuracy;
+    #endregion
+
+    #region private variables
 
     List<SPokemonSkill> skillsLearnedOrRefused = new List<SPokemonSkill>();
+
     #endregion
 
     /// <summary>
@@ -162,6 +166,7 @@ public class PokemonModel : IGetName
 
         //remove effects
         ActiveEffects.Clear();
+        RemovedEffects.Clear();
         CurrentMaxAccuracy = 100;
     }
 

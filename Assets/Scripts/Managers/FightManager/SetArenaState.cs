@@ -47,6 +47,9 @@ public class SetArenaState : FightManagerState
 
         PokemonModel enemyPokemon = fightManager.enemyPokemons[0];
 
+        //reset pokemons who fought
+        fightManager.ResetPokemonsWhoFought();
+
         //set currents pokemon in arena
         fightManager.SetCurrentPlayerPokemon(playerPokemon);
         fightManager.SetCurrentEnemyPokemon(enemyPokemon);

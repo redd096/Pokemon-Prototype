@@ -26,8 +26,7 @@ MonoBehaviour:
   possibleSkills:
   - skill: {fileID: 11400000, guid: 8c0642622b5f3684598cb352edbc7bd6, type: 2}
     level: 0
-    percentage: 100
   experienceOnDeath: 64
   catchRate: 45
-  evolutionLevel: 30
+  evolutionLevel: 6
   pokemonEvolution: {fileID: 11400000, guid: f235e15cc06e31641b442b229d9009b2, type: 2}

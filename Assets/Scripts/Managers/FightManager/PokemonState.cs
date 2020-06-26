@@ -7,6 +7,9 @@ public class PokemonState : FightManagerState
     [Header("Is Player Turn")]
     [SerializeField] bool isPlayer = true;
 
+    [Header("Is Evolving")]
+    [SerializeField] bool isEvolving = false;
+
     [Header("Description")]
     [TextArea()]
     [SerializeField] string description = "Torna {PlayerPokemon}.\nVai {Pokemon}! Scelgo te!";
@@ -94,7 +97,7 @@ public class PokemonState : FightManagerState
     {
         //set new pokemon
         if (isPlayer)
-            fightManager.SetCurrentPlayerPokemon(fightManager.PokemonSelected);
+            fightManager.SetCurrentPlayerPokemon(fightManager.PokemonSelected, isEvolving);
         else
             fightManager.SetCurrentEnemyPokemon(fightManager.PokemonSelected);
 

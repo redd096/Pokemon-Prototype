@@ -148,19 +148,24 @@ public class FightManager : MonoBehaviour
 
     #region others public API
 
-    public void SetCurrentPlayerPokemon(PokemonModel pokemon)
+    public void ResetPokemonsWhoFought()
+    {
+        pokemonsWhoFought = new List<PokemonModel>();
+    }
+
+    public void SetCurrentPlayerPokemon(PokemonModel pokemon, bool isEvolving = false)
     {
         //set player pokemon in arena
         currentPlayerPokemon = pokemon;
 
-        //if first time, reset list
-        if (pokemonsWhoFought == null)
-            pokemonsWhoFought = new List<PokemonModel>();
-
-        //if not alreasy in the list, add 
-        if (pokemonsWhoFought.Contains(pokemon) == false)
-            pokemonsWhoFought.Add(pokemon);
-    } 
+        //add to list only if is new pokemon and not evolution
+        if (isEvolving == false)
+        {
+            //if not alreasy in the list, add 
+            if (pokemonsWhoFought.Contains(pokemon) == false)
+                pokemonsWhoFought.Add(pokemon);
+        }
+    }
 
     public void SetCurrentEnemyPokemon(PokemonModel pokemon)
     {
