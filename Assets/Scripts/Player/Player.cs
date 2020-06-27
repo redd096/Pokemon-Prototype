@@ -85,8 +85,9 @@ public class Player : StateMachine
 
     public void CheckPause()
     {
-        //if press back - pause menu
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
+        //if press back or start Pause/Resume
+        //if press B button only Resume
+        if ( Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7) || (Time.timeScale == 0 && Input.GetKeyDown(KeyCode.Joystick1Button1)) )
         {
             GameManager.instance.PauseResumeGame();
         }

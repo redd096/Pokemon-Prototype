@@ -34,10 +34,51 @@ public class SomeoneTurnState : FightManagerState
     {
         base.OnStateUpdate(animator, stateInfo, layerIndex);
 
-        //if player turn and press back - back to player menu or pause
-        if(isPlayer && Input.GetKeyDown(KeyCode.Escape))
+        //if player turn
+        if(isPlayer)
         {
-            fightManager.BackButton();
+            #region pad
+            //Start for pause and resume
+            if (Input.GetKeyDown(KeyCode.JoystickButton7))
+            {
+                GameManager.instance.PauseResumeGame();
+                return;
+            }
+
+            //B button
+            if(Input.GetKeyDown(KeyCode.Joystick1Button1))
+            {
+                //if paused, Resume
+                if(Time.timeScale == 0)
+                {
+                    GameManager.instance.PauseResumeGame();
+                }
+                //else back to player menu only if pokemon is alive (because pokemon menu is shown also when the player has to replace his dead pokemon)
+                else if (fightManager.currentPlayerPokemon.CurrentHealth > 0)
+                {
+                    fightManager.FightUIManager.BackToPlayerMenu();
+                }
+
+                return;
+            }
+            #endregion
+
+            #region keyboard and phone   
+            //esc on keyboard or back button on smartphone
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                //if paused and press back, resume
+                if (Time.timeScale == 0)
+                {
+                    GameManager.instance.PauseResumeGame();
+                }
+                //else back button
+                else
+                {
+                    fightManager.BackButton();
+                }
+            }
+            #endregion
         }
     }
 
