@@ -79,19 +79,12 @@ public class FightUIManager : MonoBehaviour
     //VANNO AGGIUNTO LE POKEBALL
 
     /*
-        per creare nuove scene:
-        - Level, Fight e Moving managers si spostano 
-     *      moving manager è quello per creare la scena, quindi andrebbe ricreato ogni volta
-     *      fight manager in realtà potrebbe essere singleton (NB che dipende da event system)
-     *      level manager pure singleton, basta metter nell'awake il find degli altri manager e nel SetDefaults() deve far ripartire l'animator per il fade out
-     *      NB che level manager dovrebbe disattivarsi quando non c'è il moving manager (ad esempio nel main menu)
-        - UIManager ed EventSystem pure si spostano
-     *      ui manager potrebbe essere singleton, bisogna però controllare di attivarlo solo se c'è il moving manager (NB che dipende da event system)
-     *      event system credo possa essere singleton, dipende da come lo gestisce unity (assicurarsi che siano singleton fight manager e ui manager, altrimenti è inutile)
-        - Main Camera non è un problema, ci dev'essere comunque in tutte le scene
-        - Player è il reale problema,  non lo si può spostare nella nuova scena, perché non avrebbe pokemon e oggetti salvati
-     *      glieli passo da game manager ?
-     *      se no, indovina un po'... probabilmente anche questo si può fare singleton e attivarlo solo quando c'è il moving manager
+        per fare nuove scene:
+        - o si fa tutto nella stessa scena e si attivano e disattivano vari MovingManager (aggiungere fade In e possibilità di richiamare il fade Out del level manager)
+        - o bisogna gestire i pokemon e gli item del player 
+            1. o gli si passano da game manager
+            2. o si fa singleton 
+            NB. vanno comunque fatti fade in e fade out, e va disattivato il player quando cambia scena (fade in) e riattivato solo se c'è il level manager (fade out state)
      
         da fare se rimane tempo:
         - interazioni nello stato di moving, come ad esempio comprare o trovare items
