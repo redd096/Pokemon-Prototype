@@ -8,31 +8,16 @@ public class StartFightState : FightManagerState
     [TextArea()]
     [SerializeField] string description = "Trovato {EnemyPokemon} selvatico";
 
-    [Header("Player Pokemon")]
-    [SerializeField] float durationAnimation = 1.5f;
-
-    float delta;
-
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         //show description and spawn player pokemon
 
-        //set to 0
-        delta = 0;
-
         ActiveElements();
+        SpawnAnimation();
 
         SetDescription();
-    }
-
-    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        base.OnStateUpdate(animator, stateInfo, layerIndex);
-
-        //pokemon animation spawn
-        PokemonAnimation();
     }
 
     #region enter
@@ -43,6 +28,11 @@ public class StartFightState : FightManagerState
         fightManager.FightUIManager.ActivePokemonImage();
     }
 
+    void SpawnAnimation()
+    {
+        fightManager.FightUIManager.PokemonSpawnAnimation(true, true);
+    }
+
     void SetDescription()
     {
         //set Description letter by letter, then call OnEndDescription
@@ -51,26 +41,11 @@ public class StartFightState : FightManagerState
 
     #endregion
 
-    #region update
-
-    void PokemonAnimation()
-    {
-        if (delta < 1)
-        {
-            delta += Time.deltaTime / durationAnimation;
-
-            //increase size
-            fightManager.FightUIManager.PokemonSpawnAnimation(true, delta);
-        }
-    }
-
-    #endregion
-
     void OnEndDescription()
     {
-        //be sure to complete animation
-        fightManager.FightUIManager.PokemonSpawnAnimation(true, 1);
+        //end description and, if still running, skip spawn animation
         fightManager.FightUIManager.EndDescription();
+        fightManager.FightUIManager.SkipAnimationSpawn();
 
         //change state
         anim.SetTrigger("PlayerRound");

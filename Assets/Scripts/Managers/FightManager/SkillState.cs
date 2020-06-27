@@ -11,12 +11,6 @@ public class SkillState : FightManagerState
     [TextArea()]
     [SerializeField] string description = "{PlayerPokemon} usa {Skill}...";
 
-    [Header("Skill Animation (half attack, half come back)")]
-    [SerializeField] float durationAnimation = 1.0f;
-
-    [Header("Update Health")]
-    [SerializeField] float durationUpdateHealth = 0.7f;
-
     PokemonModel otherPokemon;
 
     float previousHealth;
@@ -55,7 +49,7 @@ public class SkillState : FightManagerState
         fightManager.FightUIManager.EndDescription();
 
         //start animation
-        fightManager.FightUIManager.StartAnimation(AttackAnimation());
+        fightManager.FightUIManager.AttackAnimation(isPlayer, EndAttackAnimation);
     }
 
     void ApplyDamage()
@@ -70,41 +64,10 @@ public class SkillState : FightManagerState
 
     #endregion
 
-    #region animation
-
-    IEnumerator AttackAnimation()
-    {
-        float delta = 0;
-
-        //attack
-        while(delta < 1)
-        {
-            delta += Time.deltaTime / (durationAnimation / 2);
-            fightManager.FightUIManager.AttackAnimation(isPlayer, delta);
-            yield return null;
-        }
-
-        //come back
-        while(delta > 0)
-        {
-            delta -= Time.deltaTime / (durationAnimation / 2);
-            fightManager.FightUIManager.AttackAnimation(isPlayer, delta);
-            yield return null;
-        }
-
-        //be sure to end animation
-        fightManager.FightUIManager.AttackAnimation(isPlayer, 0);
-        fightManager.FightUIManager.EndAnimation();
-
-        EndAttackAnimation();
-    }
-
-    #endregion
-
     void EndAttackAnimation()
     {
         //update health and set description efficiency
-        fightManager.FightUIManager.UpdateHealth(!isPlayer, previousHealth, durationUpdateHealth);  // !isPlayer, because update the health of the other pokemon (who's been attacked)
+        fightManager.FightUIManager.UpdateHealth(!isPlayer, previousHealth);  // !isPlayer, because update the health of the other pokemon (who's been attacked)
         SetDescription_Efficiency();
     }
 

@@ -7,9 +7,6 @@ public class SomeoneTurnState : FightManagerState
     [Header("Is Player Turn")]
     [SerializeField] bool isPlayer = true;
 
-    [Header("Update Health")]
-    [SerializeField] float durationUpdateHealth = 0.7f;
-
     PokemonModel pokemon;
     bool waitDescription;
     float previousHealth;
@@ -139,7 +136,7 @@ public class SomeoneTurnState : FightManagerState
         //if changed health, update UI before go to next effect
         if (pokemon.CurrentHealth != previousHealth)
         {
-            fightManager.FightUIManager.UpdateHealth(isPlayer, previousHealth, durationUpdateHealth, NextEffect);
+            fightManager.FightUIManager.UpdateHealth(isPlayer, previousHealth, NextEffect);
             return;
         }
 

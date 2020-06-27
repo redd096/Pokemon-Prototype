@@ -11,9 +11,6 @@ public class ItemState : FightManagerState
     [TextArea()]
     [SerializeField] string description = "Usi {Item} su {PlayerPokemon}...";
 
-    [Header("Update Health")]
-    [SerializeField] float durationUpdateHealth = 0.7f;
-
     PokemonModel pokemon;
     float previousHealth;
 
@@ -70,7 +67,7 @@ public class ItemState : FightManagerState
         //if changed health, update UI before end turn
         if (pokemon.CurrentHealth != previousHealth)
         {
-            fightManager.FightUIManager.UpdateHealth(isPlayer, previousHealth, durationUpdateHealth, EndTurn);
+            fightManager.FightUIManager.UpdateHealth(isPlayer, previousHealth, EndTurn);
             return;
         }
 

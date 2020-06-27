@@ -14,12 +14,6 @@ public class PokemonState : FightManagerState
     [TextArea()]
     [SerializeField] string description = "Torna {PlayerPokemon}.\nVai {Pokemon}! Scelgo te!";
 
-    [Header("Animation Despawn")]
-    [SerializeField] float durationDespawn = 0.5f;
-
-    [Header("Animation Spawn")]
-    [SerializeField] float durationSpawn = 1.5f;
-
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
@@ -47,48 +41,7 @@ public class PokemonState : FightManagerState
         fightManager.FightUIManager.EndDescription();
 
         //start animation
-        fightManager.FightUIManager.StartAnimation(RemovePokemon());
-    }
-
-    #endregion
-
-    #region animations
-
-    IEnumerator RemovePokemon()
-    {
-        float delta = 1;
-
-        //reduce animation
-        while(delta > 0)
-        {
-            delta -= Time.deltaTime / durationDespawn;
-            fightManager.FightUIManager.PokemonSpawnAnimation(isPlayer, delta);
-            yield return null;
-        }
-
-        //end animation and change pokemon
-        fightManager.FightUIManager.EndAnimation();
-        NextPokemon();
-    }
-
-    IEnumerator SpawnNextPokemon()
-    {
-        float delta = 0;
-
-        //increase animation
-        while (delta < 1)
-        {
-            delta += Time.deltaTime / durationSpawn;
-            fightManager.FightUIManager.PokemonSpawnAnimation(isPlayer, delta);
-            yield return null;
-        }
-
-        //be sure to end animation
-        fightManager.FightUIManager.PokemonSpawnAnimation(isPlayer, 1);
-
-        //end animation and change pokemon
-        fightManager.FightUIManager.EndAnimation();
-        EndTurn();
+        fightManager.FightUIManager.PokemonSpawnAnimation(false, isPlayer, NextPokemon);
     }
 
     #endregion
@@ -109,7 +62,7 @@ public class PokemonState : FightManagerState
             fightManager.FightUIManager.SetSkillsList(fightManager.currentPlayerPokemon);
 
         //start animation
-        fightManager.FightUIManager.StartAnimation(SpawnNextPokemon());
+        fightManager.FightUIManager.PokemonSpawnAnimation(true, isPlayer, EndTurn);
     }
 
     void EndTurn()

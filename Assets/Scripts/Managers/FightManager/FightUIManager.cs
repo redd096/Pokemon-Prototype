@@ -9,6 +9,13 @@ public class FightUIManager : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] Button prefabSimpleButton = default;
 
+    [Header("Time Animations")]
+    [SerializeField] float durationSpawn = 1.5f;
+    [SerializeField] float durationDespawn = 0.5f;
+    [SerializeField] float durationAttackAnimation = 1.0f;
+    [SerializeField] float durationUpdateHealth = 0.7f;
+    [SerializeField] float durationUpdateExperience = 0.7f;
+
     [Header("ArenaPlayer")]
     [SerializeField] Image playerImage = default;
     [SerializeField] Text playerName = default;
@@ -180,16 +187,107 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
+    #region spawn despawn pokemon
+
+    IEnumerator SpawnPokemon(bool isPlayer, System.Action onEnd)
+    {
+        float delta = 0;
+
+        //increase animation
+        while (delta < 1)
+        {
+            delta += Time.deltaTime / durationSpawn;
+            PokemonSpawnAnimation(isPlayer, delta);
+            yield return null;
+        }
+
+        //be sure to end animation
+        PokemonSpawnAnimation(isPlayer, 1);
+
+        //end animation and change pokemon
+        doingAnimation = null;
+        onEnd?.Invoke();
+    }
+
+    IEnumerator DespawnPokemon(bool isPlayer, System.Action onEnd)
+    {
+        float delta = 1;
+
+        //reduce animation
+        while (delta > 0)
+        {
+            delta -= Time.deltaTime / durationDespawn;
+            PokemonSpawnAnimation(isPlayer, delta);
+            yield return null;
+        }
+
+        //end animation and change pokemon
+        doingAnimation = null;
+        onEnd?.Invoke();
+    }
+
+    void PokemonSpawnAnimation(bool isPlayer, float delta)
+    {
+        Transform tr = isPlayer ? playerImage.transform : enemyImage.transform;
+
+        //set size
+        tr.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, delta);
+    }
+
+    #endregion
+
+    #region attack animation
+
+    IEnumerator AttackAnimation_Coroutine(bool isPlayer, System.Action onEnd = null)
+    {
+        float delta = 0;
+
+        //attack
+        while (delta < 1)
+        {
+            delta += Time.deltaTime / (durationAttackAnimation / 2);
+            AttackAnimation(isPlayer, delta);
+            yield return null;
+        }
+
+        //come back
+        while (delta > 0)
+        {
+            delta -= Time.deltaTime / (durationAttackAnimation / 2);
+            AttackAnimation(isPlayer, delta);
+            yield return null;
+        }
+
+        //be sure to end animation
+        AttackAnimation(isPlayer, 0);
+        doingAnimation = null;
+
+        onEnd?.Invoke();
+    }
+
+    void AttackAnimation(bool isPlayer, float delta)
+    {
+        //get what to edit
+        Transform tr = isPlayer ? playerImage.transform : enemyImage.transform;
+        Vector3 startPosition = isPlayer ? playerPosition : enemyPosition;
+        Vector3 endPosition = isPlayer ? enemyPosition : playerPosition;
+
+        //move player to enemy and come back (or viceversa)
+        tr.position = Vector3.Lerp(startPosition, endPosition, delta);
+    }
+
+    #endregion
+
     #region update health
 
-    IEnumerator UpdateHealth_Coroutine(bool isPlayer, float previousValue, float durationUpdate, System.Action onEndUpdate)
+    IEnumerator UpdateHealth_Coroutine(bool isPlayer, float previousValue, System.Action onEndUpdate)
     {
         float delta = 0;
 
         //update bar
         while (delta < 1)
         {
-            delta += Time.deltaTime / durationUpdate;
+            delta += Time.deltaTime / durationUpdateHealth;
             SetHealthUI(isPlayer, previousValue, delta);
             yield return null;
         }
@@ -222,7 +320,7 @@ public class FightUIManager : MonoBehaviour
 
     #region update experience
 
-    IEnumerator UpdateExperience_Coroutine(float previousValue, float durationUpdate, System.Action<float> onEndUpdate)
+    IEnumerator UpdateExperience_Coroutine(float previousValue, System.Action<float> onEndUpdate)
     {
         float delta = 0;
         float updatedExp = 0;
@@ -230,7 +328,7 @@ public class FightUIManager : MonoBehaviour
         //update bar
         while (delta < 1)
         {
-            delta += Time.deltaTime / durationUpdate;
+            delta += Time.deltaTime / durationUpdateExperience;
 
             //if true, break before end update
             if (SetExperienceUI(previousValue, delta, out updatedExp))
@@ -327,6 +425,17 @@ public class FightUIManager : MonoBehaviour
         playerImage.gameObject.SetActive(true);
     }
 
+    public void SkipAnimationSpawn()
+    {
+        if(doingAnimation != null)
+        {
+            StopCoroutine(doingAnimation);
+
+            //be sure to end animation
+            PokemonSpawnAnimation(true, 1);
+        }
+    }
+
     #endregion
 
     #region someone turn state
@@ -340,29 +449,27 @@ public class FightUIManager : MonoBehaviour
 
     #region skill state
 
-    public void AttackAnimation(bool isPlayer, float delta)
+    public void AttackAnimation(bool isPlayer, System.Action onEnd = null)
     {
-        //get what to edit
-        Transform tr = isPlayer ? playerImage.transform : enemyImage.transform;
-        Vector3 startPosition = isPlayer ? playerPosition : enemyPosition;
-        Vector3 endPosition = isPlayer ? enemyPosition : playerPosition;
+        if (doingAnimation != null)
+            StopCoroutine(doingAnimation);
 
-        //move player to enemy and come back (or viceversa)
-        tr.position = Vector3.Lerp(startPosition, endPosition, delta);
+        //attack animation
+        doingAnimation = StartCoroutine(AttackAnimation_Coroutine(isPlayer, onEnd));
     }
 
     #endregion
 
     #region experience player state
 
-    public void UpdateExperience(float previousExp, float durationUpdateExp, System.Action<float> onEndUpdateExp = null)
+    public void UpdateExperience(float previousExp, System.Action<float> onEndUpdateExp = null)
     {
         //stop if already running
         if (updatingBar != null)
             StopCoroutine(updatingBar);
 
         //start coroutine
-        updatingBar = StartCoroutine(UpdateExperience_Coroutine(previousExp, durationUpdateExp, onEndUpdateExp));
+        updatingBar = StartCoroutine(UpdateExperience_Coroutine(previousExp, onEndUpdateExp));
     }
 
     public void UpdateLevel(int level)
@@ -509,14 +616,14 @@ public class FightUIManager : MonoBehaviour
         learnSkillsMenu.SetActive(false);
     }
 
-    public void UpdateHealth(bool isPlayer, float previousHealth, float durationUpdateHealth, System.Action onEndUpdateHealth = null)
+    public void UpdateHealth(bool isPlayer, float previousHealth, System.Action onEndUpdateHealth = null)
     {
         //stop if already running
         if (updatingBar != null)
             StopCoroutine(updatingBar);
 
         //start coroutine
-        updatingBar = StartCoroutine(UpdateHealth_Coroutine(isPlayer, previousHealth, durationUpdateHealth, onEndUpdateHealth));
+        updatingBar = StartCoroutine(UpdateHealth_Coroutine(isPlayer, previousHealth, onEndUpdateHealth));
     }
 
     public void SetSkillsList(PokemonModel pokemon)
@@ -525,12 +632,13 @@ public class FightUIManager : MonoBehaviour
         SetList(skillsPooling, pokemon.CurrentSkills, contentFightMenu, UseSkill);
     }
 
-    public void PokemonSpawnAnimation(bool isPlayer, float delta)
+    public void PokemonSpawnAnimation(bool isSpawn, bool isPlayer, System.Action onEnd = null)
     {
-        Transform tr = isPlayer ? playerImage.transform : enemyImage.transform;
+        if (doingAnimation != null)
+            StopCoroutine(doingAnimation);
 
-        //set size
-        tr.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, delta);
+        //start spawn or despawn
+        doingAnimation = isSpawn ? StartCoroutine(SpawnPokemon(isPlayer, onEnd)) : StartCoroutine(DespawnPokemon(isPlayer, onEnd));
     }
 
     public void SetPokemonInArena(bool isPlayer)

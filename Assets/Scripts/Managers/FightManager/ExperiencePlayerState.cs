@@ -12,9 +12,6 @@ public class ExperiencePlayerState : FightManagerState
     [TextArea()] [SerializeField] string questionSkill = "{PlayerPokemon} vuole imparare {0}";
     [TextArea()] [SerializeField] string refuseSkill = "{PlayerPokemon} non apprende {0}...";
 
-    [Header("Update Experience")]
-    [SerializeField] float durationUpdateExperience = 0.7f;
-
     float previousExp;
     SkillData skillToLearn;
 
@@ -121,7 +118,7 @@ public class ExperiencePlayerState : FightManagerState
         fightManager.FightUIManager.EndDescription();
 
         //update experience bar, then call check level up
-        fightManager.FightUIManager.UpdateExperience(previousExp, durationUpdateExperience, CheckLevelUp);
+        fightManager.FightUIManager.UpdateExperience(previousExp, CheckLevelUp);
     }
 
     #endregion
@@ -139,7 +136,7 @@ public class ExperiencePlayerState : FightManagerState
             fightManager.FightUIManager.UpdateLevel(pokemonGettingExperience.CurrentLevel);
 
             //try update again experience bar, then re-call check level up
-            fightManager.FightUIManager.UpdateExperience(updatedExp, durationUpdateExperience, CheckLevelUp);
+            fightManager.FightUIManager.UpdateExperience(updatedExp, CheckLevelUp);
         }
         //if not level up, we don't need to update experience anymore, so check skills and evolution
         else
