@@ -45,9 +45,6 @@ public class SkillState : FightManagerState
 
     void OnEndDescription()
     {
-        //deactive description
-        fightManager.FightUIManager.EndDescription();
-
         //start animation
         fightManager.FightUIManager.AttackAnimation(isPlayer, EndAttackAnimation);
     }

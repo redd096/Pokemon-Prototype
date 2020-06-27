@@ -115,8 +115,6 @@ public class ExperiencePlayerState : FightManagerState
 
     void OnEndDescription()
     {
-        fightManager.FightUIManager.EndDescription();
-
         //update experience bar, then call check level up
         fightManager.FightUIManager.UpdateExperience(previousExp, CheckLevelUp);
     }
