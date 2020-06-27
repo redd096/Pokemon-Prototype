@@ -155,7 +155,7 @@ public class FightUIManager : MonoBehaviour
 
     #region set lists
 
-    void SetList<T>(Pooling<Button> poolingList, List<T> valueArray, Transform parent, System.Action<Button, T> function) where T : IGetName
+    void SetList<T>(Pooling<Button> poolingList, List<T> valueArray, Transform parent, System.Action<Button, T> function, T valueNotInteractable) where T : IGetName
     {
         //deactive every button
         poolingList.DeactiveAll();
@@ -170,11 +170,11 @@ public class FightUIManager : MonoBehaviour
             Button button = poolingList.Instantiate(prefabSimpleButton, parent, false);
 
             //and set it
-            SetButton(button, value, function);
+            SetButton(button, value, function, valueNotInteractable);
         }
     }
 
-    void SetButton<T>(Button button, T value, System.Action<Button, T> function) where T : IGetName
+    void SetButton<T>(Button button, T value, System.Action<Button, T> function, T valueNotInteractable) where T : IGetName
     {
         //be sure to not have listeners
         button.onClick.RemoveAllListeners();
@@ -184,6 +184,12 @@ public class FightUIManager : MonoBehaviour
 
         //set button name or empty
         button.GetComponentInChildren<Text>().text = value != null ? value.GetButtonName() : "-";
+
+        //set not interactable button
+        if (value is PokemonModel && value as PokemonModel == valueNotInteractable as PokemonModel)
+            button.interactable = false;
+        else
+            button.interactable = true;
     }
 
     #endregion
@@ -392,26 +398,16 @@ public class FightUIManager : MonoBehaviour
 
     public void SetPokemonList(PokemonModel nextPlayerPokemon = null)
     {
-        //get list of player pokemons and pokemon in arena (or next player pokemon)
-        List<PokemonModel> playerPokemons = GameManager.instance.Player.PlayerPokemons;
+        //pokemon in arena or next player pokemon (when change pokemon)
         PokemonModel pokemonInArena = nextPlayerPokemon != null ? nextPlayerPokemon : fightManager.currentPlayerPokemon;
 
-        //foreach pokemon of the player
-        List<PokemonModel> pokemonsUsable = new List<PokemonModel>();
-        for (int i = 0; i < playerPokemons.Count; i++)
-        {
-            //check if it isn't the pokemon in arena, add to the list
-            if (playerPokemons[i] != pokemonInArena)
-                pokemonsUsable.Add(playerPokemons[i]);
-        }
-
         //list of pokemons not in arena
-        SetList(pokemonsPooling, pokemonsUsable, contentPokemonMenu, ChangePokemon);
+        SetList(pokemonsPooling, GameManager.instance.Player.PlayerPokemons, contentPokemonMenu, ChangePokemon, pokemonInArena);
     }
 
     public void SetItemsList()
     {
-        SetList(itemsPooling, GameManager.instance.Player.PlayerItems, contentBagMenu, UseItem);
+        SetList(itemsPooling, GameManager.instance.Player.PlayerItems, contentBagMenu, UseItem, null);
     }
 
     #endregion
@@ -631,7 +627,7 @@ public class FightUIManager : MonoBehaviour
     public void SetSkillsList(PokemonModel pokemon)
     {
         //set list of player skills
-        SetList(skillsPooling, pokemon.CurrentSkills, contentFightMenu, UseSkill);
+        SetList(skillsPooling, pokemon.CurrentSkills, contentFightMenu, UseSkill, null);
     }
 
     public void PokemonSpawnAnimation(bool isSpawn, bool isPlayer, System.Action onEnd = null)
