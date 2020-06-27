@@ -17,5 +17,5 @@ MonoBehaviour:
   pp: 5
   isSpecial: 1
   power: 200
-  accuracy: 50
+  accuracy: 75
   effect: {fileID: 11400000, guid: f1b7efa808a7d414b9773d779ac7e9ef, type: 2}

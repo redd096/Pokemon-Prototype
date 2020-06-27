@@ -17,4 +17,4 @@ MonoBehaviour:
   descriptionOnEnemy: '{EnemyPokemon} non vede chiaramente...'
   descriptionRemoveFromPlayer: "{PlayerPokemon} non \xE8 pi\xF9 accecato."
   descriptionRemoveFromEnemy: "{EnemyPokemon} non \xE8 pi\xF9 accecato."
-  value: 30
+  value: 50
