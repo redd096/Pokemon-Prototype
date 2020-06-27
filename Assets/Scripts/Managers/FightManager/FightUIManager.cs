@@ -135,7 +135,8 @@ public class FightUIManager : MonoBehaviour
         fightManager.ChangePokemon(pokemon);
 
         //move current pokemon in arena to the list of pokemons
-        SetButton(button, fightManager.currentPlayerPokemon, ChangePokemon);
+        SetPokemonList(pokemon);
+        //SetButton(button, fightManager.currentPlayerPokemon, ChangePokemon);
     }
 
     void UseItem(Button button, ItemModel item)
@@ -389,10 +390,11 @@ public class FightUIManager : MonoBehaviour
         enemyPosition = enemyImage.transform.position;
     }
 
-    public void SetPokemonList()
+    public void SetPokemonList(PokemonModel nextPlayerPokemon = null)
     {
+        //get list of player pokemons and pokemon in arena (or next player pokemon)
         List<PokemonModel> playerPokemons = GameManager.instance.Player.PlayerPokemons;
-        PokemonModel pokemonInArena = fightManager.currentPlayerPokemon;
+        PokemonModel pokemonInArena = nextPlayerPokemon != null ? nextPlayerPokemon : fightManager.currentPlayerPokemon;
 
         //foreach pokemon of the player
         List<PokemonModel> pokemonsUsable = new List<PokemonModel>();
