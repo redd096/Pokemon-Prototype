@@ -40,8 +40,16 @@ public class ItemState : FightManagerState
         //deactive description
         fightManager.FightUIManager.EndDescription();
 
-        //add effect to pokemon list
-        AddEffect();
+        if (fightManager.ItemUsed.itemData.IsPokeball == EPokeBall.nothing)
+        {
+            //add effect to pokemon list
+            AddEffect();
+        }
+        else
+        {
+            //else player used a pokeball
+            PlayerUsedPokeball();
+        }
     }
 
     #endregion
@@ -90,5 +98,10 @@ public class ItemState : FightManagerState
             //change state to pokemon dead
             anim.SetTrigger("PokemonDead");
         }
+    }
+
+    void PlayerUsedPokeball()
+    {
+        anim.SetTrigger("Pokeball");
     }
 }

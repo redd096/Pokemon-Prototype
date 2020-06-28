@@ -90,7 +90,7 @@ public class FightUIManager : MonoBehaviour
         da fare se rimane tempo:
         - interazioni nello stato di moving, come ad esempio comprare o trovare items
         - suoni
-        - allenatori sparsi per la mappa con cui parlare (combattimenti con allenatore invece che pokemon selvatici, guarda la formula dell'exp ottenuta) (StartFightState description?)
+        - allenatori sparsi per la mappa con cui parlare (guarda la formula dell'exp ottenuta e check quando lancia la pokeball) (StartFightState description?)
         - salvataggio all'uscita dal gioco (o alla peggio, nel fade out quando finisce un combattimento, o quando si rigenerano i pokemon all'ospedale)
         - se si vuole esagerare, i pokemon mantengono i danni subiti e PP e bisogna farli curare, quindi aggiungere ospedali e rimuovere il Restore da RunClick()
         - aggiungere menù opzioni nel menù di pausa e nel main menu (con volume e full screen mode - si potrebbe mettere anche la velocità di scrittura)
