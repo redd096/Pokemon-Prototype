@@ -436,15 +436,6 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
-    #region someone turn state
-
-    public void ActivePlayerMenu()
-    {
-        playerMenu.SetActive(true);
-    }
-
-    #endregion
-
     #region skill state
 
     public void AttackAnimation(bool isPlayer, System.Action onEnd = null)
@@ -580,9 +571,9 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
-    #region coroutine animations
+    #region coroutine in states
 
-    public void StartAnimation(IEnumerator animation)
+    public void StartCoroutineState(IEnumerator animation)
     {
         //stop if already running
         if (doingAnimation != null)
@@ -592,7 +583,7 @@ public class FightUIManager : MonoBehaviour
         doingAnimation = StartCoroutine(animation);
     }
 
-    public void EndAnimation()
+    public void EndCoroutineState()
     {
         doingAnimation = null;
     }

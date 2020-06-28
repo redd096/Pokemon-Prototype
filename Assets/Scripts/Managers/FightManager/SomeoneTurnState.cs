@@ -84,7 +84,7 @@ public class SomeoneTurnState : FightManagerState
     void CheckEffects()
     {
         //start coroutine
-        fightManager.FightUIManager.StartAnimation(CheckAllEffects());
+        fightManager.FightUIManager.StartCoroutineState(CheckAllEffects());
     }
 
     IEnumerator CheckAllEffects()
@@ -116,7 +116,7 @@ public class SomeoneTurnState : FightManagerState
         }
         
         //end animation
-        fightManager.FightUIManager.EndAnimation();
+        fightManager.FightUIManager.EndCoroutineState();
 
         //if removing old effects, now check every effects applied
         if (removingOldEffects)
@@ -174,7 +174,7 @@ public class SomeoneTurnState : FightManagerState
 
     void ActivePlayerMenu()
     {
-        fightManager.FightUIManager.ActivePlayerMenu();
+        fightManager.FightUIManager.BackToPlayerMenu();
     }
 
     void Fight()

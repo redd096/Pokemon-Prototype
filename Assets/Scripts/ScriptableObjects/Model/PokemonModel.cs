@@ -32,7 +32,7 @@ public class PokemonModel : IGetName
     #region current
 
     [Header("Current")]
-    float currentHealth;
+    [SerializeField] float currentHealth;
     public float CurrentHealth
     { 
         get
@@ -458,7 +458,7 @@ public class PokemonModel : IGetName
 
     #endregion
 
-    #region Individual Values
+    #region Individual Values (IV)
 
     void RandomIV()
     {
@@ -483,7 +483,7 @@ public class PokemonModel : IGetName
 
     #endregion
 
-    #region Effort Values
+    #region Effort Values (EV)
 
     void SetEvolutionEV(PokemonModel previousPokemon)
     {
@@ -499,12 +499,13 @@ public class PokemonModel : IGetName
     void UpdateEV(PokemonModel enemyPokemon)
     {
         //update EV (add enemy base stats)
-        healthEV += enemyPokemon.pokemonData.Health;
-        speedEV += enemyPokemon.pokemonData.Speed;
-        physicsAttackEV += enemyPokemon.pokemonData.PhysicsAttack;
-        physicsDefenseEV += enemyPokemon.pokemonData.PhysicsDefense;
-        specialAttackEV += enemyPokemon.pokemonData.SpecialAttack;
-        specialDefenseEV += enemyPokemon.pokemonData.SpecialDefense;
+        //clamp to 65535
+        healthEV = Mathf.Min(healthEV + enemyPokemon.pokemonData.Health, 65535);
+        speedEV = Mathf.Min(speedEV + enemyPokemon.pokemonData.Speed, 65535);
+        physicsAttackEV = Mathf.Min(physicsAttackEV + enemyPokemon.pokemonData.PhysicsAttack, 65535);
+        physicsDefenseEV = Mathf.Min(physicsDefenseEV + enemyPokemon.pokemonData.PhysicsDefense, 65535);
+        specialAttackEV = Mathf.Min(specialAttackEV + enemyPokemon.pokemonData.SpecialAttack, 65535);
+        specialDefenseEV = Mathf.Min(specialDefenseEV + enemyPokemon.pokemonData.SpecialDefense, 65535);
     }
 
     #endregion
