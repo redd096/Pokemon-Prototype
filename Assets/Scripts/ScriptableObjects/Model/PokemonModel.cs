@@ -9,6 +9,7 @@ public class PokemonModel : IGetName
 
     public PokemonData pokemonData;
 
+    [Header("Level")]
     public int CurrentLevel;
 
     public float CurrentExp;
@@ -18,6 +19,7 @@ public class PokemonModel : IGetName
     //fight
     #region max
 
+    [Header("Max")]
     public float MaxHealth;
     public float MaxSpeed;
     public float MaxPhysicsAttack;
@@ -29,6 +31,7 @@ public class PokemonModel : IGetName
 
     #region current
 
+    [Header("Current")]
     float currentHealth;
     public float CurrentHealth
     { 
@@ -55,6 +58,7 @@ public class PokemonModel : IGetName
 
     #endregion
 
+    [Header("Effects")]
     public List<EffectModel> ActiveEffects = new List<EffectModel>();
     public List<EffectModel> RemovedEffects = new List<EffectModel>();
     [Range(0, 100)] public int CurrentMaxAccuracy;

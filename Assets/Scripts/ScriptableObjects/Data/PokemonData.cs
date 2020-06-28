@@ -38,11 +38,11 @@ public class PokemonData : ScriptableObject
 
     [Header("Attack")]
     [Min(0)] [SerializeField] float health = 100;
-    [SerializeField] float speed = 45;
     [SerializeField] float physicsAttack = 10;
     [SerializeField] float physicsDefense = 10;
     [SerializeField] float specialAttack = 10;
     [SerializeField] float specialDefense = 10;
+    [SerializeField] float speed = 45;
     [SerializeField] SPokemonSkill[] possibleSkills = default;
 
     [Header("Enemy")]
@@ -64,11 +64,11 @@ public class PokemonData : ScriptableObject
 
     //attack
     public float Health => health;
-    public float Speed => speed;
     public float PhysicsAttack => physicsAttack;
     public float PhysicsDefense => physicsDefense;
     public float SpecialAttack => specialAttack;
     public float SpecialDefense => specialDefense;
+    public float Speed => speed;
     public SPokemonSkill[] PossibleSkills => possibleSkills;
 
     //enemy
