@@ -130,8 +130,8 @@ public class ExperiencePlayerState : FightManagerState
 
         if (levelUp)
         {
-            //update level UI
-            fightManager.FightUIManager.UpdateLevel(pokemonGettingExperience.CurrentLevel);
+            //update UI
+            fightManager.FightUIManager.SetPokemonInArena(true);
 
             //try update again experience bar, then re-call check level up
             fightManager.FightUIManager.UpdateExperience(updatedExp, CheckLevelUp);

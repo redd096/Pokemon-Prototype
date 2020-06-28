@@ -7,13 +7,13 @@ public class PokemonModel : IGetName
 {
     #region public variables
 
-    public PokemonData pokemonData;// { get; private set; }
+    public PokemonData pokemonData;
 
-    public int CurrentLevel;// { get; private set; }
+    public int CurrentLevel;
 
-    public float CurrentExp;// { get; private set; }
+    public float CurrentExp;
     public float ExpCurrentLevel;
-    public float ExpNextLevel;// { get; private set; }
+    public float ExpNextLevel;
 
     //fight
     float currentHealth;

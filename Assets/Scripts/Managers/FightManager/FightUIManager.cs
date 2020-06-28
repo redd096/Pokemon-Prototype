@@ -470,11 +470,6 @@ public class FightUIManager : MonoBehaviour
         updatingBar = StartCoroutine(UpdateExperience_Coroutine(previousExp, onEndUpdateExp));
     }
 
-    public void UpdateLevel(int level)
-    {
-        playerLevel.text = playerLevelString + level;
-    }
-
     public void ShowYesNoMenu(System.Action yesFunc, System.Action noFunc)
     {
         //active yes no menu
