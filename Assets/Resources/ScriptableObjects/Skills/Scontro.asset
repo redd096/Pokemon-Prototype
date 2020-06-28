@@ -16,8 +16,6 @@ MonoBehaviour:
   skillType: 0
   pp: 0
   isSpecial: 0
-  power: 100
+  power: 10
   accuracy: 50
-  effect: 0
-  value: 0
-  duration: 0
+  effect: {fileID: 0}

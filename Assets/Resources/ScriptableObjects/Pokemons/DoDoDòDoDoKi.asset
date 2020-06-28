@@ -17,12 +17,12 @@ MonoBehaviour:
   speedExperience: 1
   pokemonFront: {fileID: 21300000, guid: 9d43f548b481d4f4e91f77440745b98b, type: 3}
   pokemonBack: {fileID: 21300000, guid: 58bb6d8acbb006f45a93fe625da6b3d0, type: 3}
-  health: 100
+  health: 45
+  physicsAttack: 49
+  physicsDefense: 49
+  specialAttack: 65
+  specialDefense: 65
   speed: 45
-  physicsAttack: 10
-  physicsDefense: 10
-  specialAttack: 10
-  specialDefense: 10
   possibleSkills:
   - skill: {fileID: 11400000, guid: 8c0642622b5f3684598cb352edbc7bd6, type: 2}
     level: 0
