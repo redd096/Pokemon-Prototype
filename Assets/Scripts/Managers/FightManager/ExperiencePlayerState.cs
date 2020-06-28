@@ -96,7 +96,7 @@ public class ExperiencePlayerState : FightManagerState
         //get experience from every enemy pokemon
         foreach (PokemonModel enemyPokemon in fightManager.enemyPokemons)
         {
-            pokemonGettingExperience.GetExperience(true, enemyPokemon.pokemonData.ExperienceOnDeath, enemyPokemon.CurrentLevel, pokemonsWhoFoughtNotDead);
+            pokemonGettingExperience.GetExperience(true, enemyPokemon, pokemonsWhoFoughtNotDead);
         }
     }
 

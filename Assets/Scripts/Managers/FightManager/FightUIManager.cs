@@ -322,9 +322,9 @@ public class FightUIManager : MonoBehaviour
         float currentHealth = Mathf.Lerp(previousHealth, pokemon.CurrentHealth, delta);
 
         //set slider and text
-        slider.value = currentHealth / pokemon.pokemonData.Health;
-        slider.fillRect.GetComponent<Image>().color = HealthGradient.Evaluate(currentHealth / pokemon.pokemonData.Health);
-        text.text = currentHealth.ToString("F0") + " / " + pokemon.pokemonData.Health.ToString("F0");
+        slider.value = currentHealth / pokemon.MaxHealth;
+        slider.fillRect.GetComponent<Image>().color = HealthGradient.Evaluate(currentHealth / pokemon.MaxHealth);
+        text.text = currentHealth.ToString("F0") + " / " + pokemon.MaxHealth.ToString("F0");
     }
 
     #endregion

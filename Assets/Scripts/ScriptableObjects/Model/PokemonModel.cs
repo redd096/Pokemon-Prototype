@@ -16,6 +16,19 @@ public class PokemonModel : IGetName
     public float ExpNextLevel;
 
     //fight
+    #region max
+
+    public float MaxHealth;
+    public float MaxSpeed;
+    public float MaxPhysicsAttack;
+    public float MaxPhysicsDefense;
+    public float MaxSpecialAttack;
+    public float MaxSpecialDefense;
+
+    #endregion
+
+    #region current
+
     float currentHealth;
     public float CurrentHealth
     { 
@@ -28,9 +41,9 @@ public class PokemonModel : IGetName
             //if value < 1 set to 0, so there are no problems with UI (like when is 0,5 hp and it shows 0 but don't die)
             if (value < 1) 
                 currentHealth = 0; 
-            //clamp 0 (dead) or data.health (full hp)
+            //clamp 0 (dead) or max health (full hp)
             else 
-                currentHealth = Mathf.Clamp(value, 0, pokemonData.Health); 
+                currentHealth = Mathf.Clamp(value, 0, MaxHealth); 
         } 
     }
     public float Speed;
@@ -40,6 +53,8 @@ public class PokemonModel : IGetName
     public float SpecialDefense;
     public List<SkillModel> CurrentSkills = new List<SkillModel>();
 
+    #endregion
+
     public List<EffectModel> ActiveEffects = new List<EffectModel>();
     public List<EffectModel> RemovedEffects = new List<EffectModel>();
     [Range(0, 100)] public int CurrentMaxAccuracy;
@@ -47,6 +62,23 @@ public class PokemonModel : IGetName
 
     #region private variables
 
+    //Individual Values (random between 0 and 15 when create model)
+    int healthIV;
+    int speedIV;
+    int physicsAttackIV;
+    int physicsDefenseIV;
+    int specialAttackIV;
+    int specialDefenseIV;
+
+    //Effort Values (base points, distinct from base stats that are in data)
+    float healthEV;
+    float speedEV;
+    float physicsAttackEV;
+    float physicsDefenseEV;
+    float specialAttackEV;
+    float specialDefenseEV;
+
+    //skills
     List<SPokemonSkill> skillsLearnedOrRefused = new List<SPokemonSkill>();
 
     #endregion
@@ -71,6 +103,13 @@ public class PokemonModel : IGetName
         //random skills based on level
         RandomSkills();
 
+        //generate random IV when create model
+        RandomIV();
+
+        //ev start at 0
+
+        //set max stats and restore
+        SetMaxStats();
         Restore();
     }
 
@@ -96,12 +135,20 @@ public class PokemonModel : IGetName
         CurrentSkills = previousPokemon.CurrentSkills.CreateCopy();
         skillsLearnedOrRefused = previousPokemon.skillsLearnedOrRefused.CreateCopy();
 
+        //get IV
+        GetEvolutionIV(previousPokemon);
+
+        //GET EV
+        SetEvolutionEV(previousPokemon);
+
+        //set max stats and restore
+        SetMaxStats();
         Restore();
     }
 
     public string GetButtonName()
     {
-        return pokemonData.PokemonName + " - " + CurrentHealth.ToString("F0") + "/" + pokemonData.Health.ToString("F0");
+        return pokemonData.PokemonName + " - " + CurrentHealth.ToString("F0") + "/" + MaxHealth.ToString("F0");
     }
 
     public string GetObjectName()
@@ -151,12 +198,12 @@ public class PokemonModel : IGetName
     /// </summary>
     public void Restore()
     {
-        CurrentHealth = pokemonData.Health;
-        Speed = pokemonData.Speed;
-        PhysicsAttack = pokemonData.PhysicsAttack;
-        PhysicsDefense = pokemonData.PhysicsDefense;
-        SpecialAttack = pokemonData.SpecialAttack;
-        SpecialDefense = pokemonData.SpecialDefense;
+        CurrentHealth = MaxHealth;
+        Speed = MaxSpeed;
+        PhysicsAttack = MaxPhysicsAttack;
+        PhysicsDefense = MaxPhysicsDefense;
+        SpecialAttack = MaxSpecialAttack;
+        SpecialDefense = MaxSpecialDefense;
 
         //restore skills
         foreach(SkillModel skill in CurrentSkills)
@@ -232,17 +279,22 @@ public class PokemonModel : IGetName
     /// get experience
     /// </summary>
     /// <param name="isWildPokemon">is the enemy a wild pokemon or a trainer?</param>
-    /// <param name="experience">experienceOnDeath from enemy pokemon data</param>
-    /// <param name="levelEnemyPokemon">enemy pokemon current level</param>
+    /// <param name="enemyPokemon">enemy killed</param>
     /// <param name="numberPokemonsNotDeadInFight">every pokemon who fought but didn't die</param>
-    public void GetExperience(bool isWildPokemon, float experience, int levelEnemyPokemon, int numberPokemonsNotDeadInFight)
+    public void GetExperience(bool isWildPokemon, PokemonModel enemyPokemon, int numberPokemonsNotDeadInFight)
     {
         //is wild pokemon from bool to float multiplier
         float multiplierPokemonTrainer = isWildPokemon ? 1 : 1.5f;
 
+        float experience = enemyPokemon.pokemonData.ExperienceOnDeath;
+        float levelEnemyPokemon = enemyPokemon.CurrentLevel;
+
         //calculate experience and add to CurrentExp
         float experienceToGet = (multiplierPokemonTrainer * experience * levelEnemyPokemon) / (7 * numberPokemonsNotDeadInFight);
         CurrentExp += experienceToGet;
+
+        //update EV (add enemy base stats)
+        UpdateEV(enemyPokemon);
     }
 
     /// <summary>
@@ -348,38 +400,12 @@ public class PokemonModel : IGetName
 
     #region private API
 
-    void LevelUp()
-    {
-        //update level
-        CurrentLevel++;
-
-        //update necessary exp
-        ExpCurrentLevel = NecessaryExpForThisLevel(CurrentLevel);
-        ExpNextLevel = NecessaryExpForThisLevel(CurrentLevel + 1);
-    }
-
-    float NecessaryExpForThisLevel(int level)
-    {
-        //expNextLevel = switch between type of speed experience
-        switch (pokemonData.SpeedExperience)
-        {
-            case ESpeedExperience.fast:
-                return (4f / 5f) * Mathf.Pow(level, 3);
-            case ESpeedExperience.mid_fast:
-                return Mathf.Pow(level, 3);
-            case ESpeedExperience.mid_slow:
-                return (6f / 5f) * Mathf.Pow(level, 3) - (15 * Mathf.Pow(level, 2)) + (100 * level) - 140;
-            case ESpeedExperience.slow:
-                return (5f / 4f) * Mathf.Pow(level, 3);
-            default:
-                return 0;
-        }
-    }
+    #region random skills
 
     void RandomSkills()
     {
         //check every possible skill
-        foreach(SPokemonSkill possibleSkill in pokemonData.PossibleSkills)
+        foreach (SPokemonSkill possibleSkill in pokemonData.PossibleSkills)
         {
             bool reachedLimit = CurrentSkills.Count >= GameManager.instance.MaxSkillForPokemon;
 
@@ -391,7 +417,7 @@ public class PokemonModel : IGetName
             if (TryAddSkill(possibleSkill, reachedLimit))
             {
                 //if reached limit, remove one skill
-                if(reachedLimit)
+                if (reachedLimit)
                 {
                     int randomIndex = Random.Range(0, CurrentSkills.Count);
                     CurrentSkills.RemoveAt(randomIndex);
@@ -424,6 +450,107 @@ public class PokemonModel : IGetName
         }
 
         return false;
+    }
+
+    #endregion
+
+    #region Individual Values
+
+    void RandomIV()
+    {
+        //random between 0 and 15 (16 'cause last one is exclusive)
+        healthIV = Random.Range(0, 16);
+        speedIV = Random.Range(0, 16);
+        physicsAttackIV = Random.Range(0, 16);
+        physicsDefenseIV = Random.Range(0, 16);
+        specialAttackIV = Random.Range(0, 16);
+        specialDefenseIV = Random.Range(0, 16);
+    }
+
+    void GetEvolutionIV(PokemonModel previousPokemon)
+    {
+        healthIV = previousPokemon.healthIV;
+        speedIV = previousPokemon.speedIV;
+        physicsAttackIV = previousPokemon.physicsAttackIV;
+        physicsDefenseIV = previousPokemon.physicsDefenseIV;
+        specialAttackIV = previousPokemon.specialAttackIV;
+        specialDefenseIV = previousPokemon.specialDefenseIV;
+    }
+
+    #endregion
+
+    #region Effort Values
+
+    void SetEvolutionEV(PokemonModel previousPokemon)
+    {
+        //set EV (get ev from previous pokemon)
+        healthEV = previousPokemon.healthEV;
+        speedEV = previousPokemon.speedEV;
+        physicsAttackEV = previousPokemon.physicsAttackEV;
+        physicsDefenseEV = previousPokemon.physicsDefenseEV;
+        specialAttackEV = previousPokemon.specialAttackEV;
+        specialDefenseEV = previousPokemon.specialDefenseEV;
+    }
+
+    void UpdateEV(PokemonModel enemyPokemon)
+    {
+        //update EV (add enemy base stats)
+        healthEV += enemyPokemon.pokemonData.Health;
+        speedEV += enemyPokemon.pokemonData.Speed;
+        physicsAttackEV += enemyPokemon.pokemonData.PhysicsAttack;
+        physicsDefenseEV += enemyPokemon.pokemonData.PhysicsDefense;
+        specialAttackEV += enemyPokemon.pokemonData.SpecialAttack;
+        specialDefenseEV += enemyPokemon.pokemonData.SpecialDefense;
+    }
+
+    #endregion
+
+    #region level up
+
+    void LevelUp()
+    {
+        //update level
+        CurrentLevel++;
+
+        //update necessary exp
+        ExpCurrentLevel = NecessaryExpForThisLevel(CurrentLevel);
+        ExpNextLevel = NecessaryExpForThisLevel(CurrentLevel + 1);
+
+        //update max stats
+        SetMaxStats();
+    }
+
+    float NecessaryExpForThisLevel(int level)
+    {
+        //expNextLevel = switch between type of speed experience
+        switch (pokemonData.SpeedExperience)
+        {
+            case ESpeedExperience.fast:
+                return (4f / 5f) * Mathf.Pow(level, 3);
+            case ESpeedExperience.mid_fast:
+                return Mathf.Pow(level, 3);
+            case ESpeedExperience.mid_slow:
+                return (6f / 5f) * Mathf.Pow(level, 3) - (15 * Mathf.Pow(level, 2)) + (100 * level) - 140;
+            case ESpeedExperience.slow:
+                return (5f / 4f) * Mathf.Pow(level, 3);
+            default:
+                return 0;
+        }
+    }
+
+    #endregion
+
+    void SetMaxStats()
+    {
+        //Health (( (Base Stats + Individual Values) * 2 + ( sqr(Effort Values) / 4 ) * Level ) / 100 ) + Level + 10
+        MaxHealth = (((pokemonData.Health + healthIV) * 2 + (Mathf.Sqrt(healthEV) / 4) * CurrentLevel) / 100) + CurrentLevel + 10;
+
+        //Others (( (Base Stats + Individual Values) * 2 + ( sqr(Effort Values) / 4 ) * Level ) / 100 ) + 5
+        MaxSpeed = (((pokemonData.Speed + speedIV) * 2 + (Mathf.Sqrt(speedIV) / 4) * CurrentLevel) / 100) + 5;
+        MaxPhysicsAttack = (((pokemonData.PhysicsAttack + physicsAttackIV) * 2 + (Mathf.Sqrt(physicsAttackEV) / 4) * CurrentLevel) / 100) + 5;
+        MaxPhysicsDefense = (((pokemonData.PhysicsDefense + physicsDefenseIV) * 2 + (Mathf.Sqrt(physicsDefenseEV) / 4) * CurrentLevel) / 100) + 5;
+        MaxSpecialAttack = (((pokemonData.SpecialAttack + specialAttackIV) * 2 + (Mathf.Sqrt(specialAttackEV) / 4) * CurrentLevel) / 100) + 5;
+        MaxSpecialDefense = (((pokemonData.SpecialDefense + specialDefenseIV) * 2 + (Mathf.Sqrt(specialDefenseEV) / 4) * CurrentLevel) / 100) + 5;
     }
 
     void SetSkillLearnedOrRefused(SkillData skillLearnedOrRefused)
