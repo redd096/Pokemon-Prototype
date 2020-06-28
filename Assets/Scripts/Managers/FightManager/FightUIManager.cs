@@ -77,6 +77,7 @@ public class FightUIManager : MonoBehaviour
     //TODO
     //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
     //VANNO AGGIUNTO LE POKEBALL
+    //VA PULITO QUESTO SCRIPT, SE C'è TEMPO ANCHE UN PO' GLI ALTRI
 
     /*
         per fare nuove scene:
@@ -127,9 +128,18 @@ public class FightUIManager : MonoBehaviour
         //call it in fight manager
         fightManager.ChangePokemon(pokemon);
 
-        //move current pokemon in arena to the list of pokemons
-        SetPokemonList(pokemon);
-        //SetButton(button, fightManager.currentPlayerPokemon, ChangePokemon);
+        //reset interactable of previous button
+        foreach(Button poolButton in pokemonsPooling.PooledObjects)
+        {
+            if(poolButton.interactable == false)
+            {
+                poolButton.interactable = true;
+                break;
+            }
+        }
+
+        //set not interactable this new one
+        button.interactable = false;
     }
 
     void UseItem(Button button, ItemModel item)
@@ -148,7 +158,7 @@ public class FightUIManager : MonoBehaviour
 
     #region set lists
 
-    void SetList<T>(Pooling<Button> poolingList, List<T> valueArray, Transform parent, System.Action<Button, T> function, T valueNotInteractable) where T : IGetName
+    void SetList<T>(Pooling<Button> poolingList, List<T> valueArray, Transform parent, System.Action<Button, T> function) where T : IGetName
     {
         //deactive every button
         poolingList.DeactiveAll();
@@ -163,11 +173,11 @@ public class FightUIManager : MonoBehaviour
             Button button = poolingList.Instantiate(prefabSimpleButton, parent, false);
 
             //and set it
-            SetButton(button, value, function, valueNotInteractable);
+            SetButton(button, value, function);
         }
     }
 
-    void SetButton<T>(Button button, T value, System.Action<Button, T> function, T valueNotInteractable) where T : IGetName
+    void SetButton<T>(Button button, T value, System.Action<Button, T> function) where T : IGetName
     {
         //be sure to not have listeners
         button.onClick.RemoveAllListeners();
@@ -175,13 +185,14 @@ public class FightUIManager : MonoBehaviour
         //add new listener to button
         button.onClick.AddListener(() => function(button, value));
 
-        //set button name or empty
-        button.GetComponentInChildren<Text>().text = value != null ? value.GetButtonName() : "-";
+        //set button name
+        button.GetComponentInChildren<Text>().text = value.GetButtonName();
 
-        //set not interactable button
-        if (value is PokemonModel && value as PokemonModel == valueNotInteractable as PokemonModel)
+        //set not interactable button of pokemon in arena
+        if (value is PokemonModel && value as PokemonModel == fightManager.currentPlayerPokemon)
             button.interactable = false;
-        else
+        //be sure other buttons are interactable, or when start another fight can be a button not interactable from previous battle
+        else if(button.interactable == false)
             button.interactable = true;
     }
 
@@ -389,18 +400,14 @@ public class FightUIManager : MonoBehaviour
         enemyPosition = enemyImage.transform.position;
     }
 
-    public void SetPokemonList(PokemonModel nextPlayerPokemon = null)
+    public void SetPokemonList()
     {
-        //pokemon in arena or next player pokemon (when change pokemon)
-        PokemonModel pokemonInArena = nextPlayerPokemon != null ? nextPlayerPokemon : fightManager.currentPlayerPokemon;
-
-        //list of pokemons not in arena
-        SetList(pokemonsPooling, GameManager.instance.Player.PlayerPokemons, contentPokemonMenu, ChangePokemon, pokemonInArena);
+        SetList(pokemonsPooling, GameManager.instance.Player.PlayerPokemons, contentPokemonMenu, ChangePokemon);
     }
 
     public void SetItemsList()
     {
-        SetList(itemsPooling, GameManager.instance.Player.PlayerItems, contentBagMenu, UseItem, null);
+        SetList(itemsPooling, GameManager.instance.Player.PlayerItems, contentBagMenu, UseItem);
     }
 
     #endregion
@@ -620,7 +627,7 @@ public class FightUIManager : MonoBehaviour
     public void SetSkillsList(PokemonModel pokemon)
     {
         //set list of player skills
-        SetList(skillsPooling, pokemon.CurrentSkills, contentFightMenu, UseSkill, null);
+        SetList(skillsPooling, pokemon.CurrentSkills, contentFightMenu, UseSkill);
     }
 
     public void PokemonSpawnAnimation(bool isSpawn, bool isPlayer, System.Action onEnd = null)
