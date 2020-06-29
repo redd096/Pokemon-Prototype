@@ -14,7 +14,7 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     /// <summary>
     /// When press to skip, accelerate speed
     /// </summary>
-    IEnumerator WriteLetterByLetter_SkipAccelerate_Coroutine(Text textToSet, string value, System.Action onEndWrite, bool canSkip, bool wait)
+    IEnumerator WriteLetterByLetter_SkipAccelerate_Coroutine(Text textToSet, string value, System.Action onEndWrite, float speed, bool canSkip, bool wait)
     {
         textToSet.text = string.Empty;
 
@@ -26,14 +26,16 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
 
             //wait before new char
             float startTime = Time.time;
-            float waitTime = startTime + timeBetweenChar;
+            float speedChar = speed > 0 ? speed : timeBetweenChar;
+            float waitTime = startTime + speedChar;
 
             while (waitTime > Time.time)
             {
                 //if skip, wait skipSpeed instead of timeBetweenChar
                 if (canSkip && Input.anyKey)
                 {
-                    waitTime = startTime + skipSpeed;
+                    float speedSkipChar = speed > 0 ? speed : skipSpeed;
+                    waitTime = startTime + speedSkipChar;
                 }
 
                 yield return null;
@@ -111,12 +113,12 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     /// <summary>
     /// Write a text letter by letter, then wait input. When press to skip, accelerate speed
     /// </summary>
-    public void WriteLetterByLetterAndWait_SkipAccelerate(Text textToSet, string value, System.Action onEndWrite = null, bool canSkip = true)
+    public void WriteLetterByLetterAndWait_SkipAccelerate(Text textToSet, string value, System.Action onEndWrite = null, float speed = 0, bool canSkip = true)
     {
         if (isWriting != null)
             StopCoroutine(isWriting);
 
-        isWriting = StartCoroutine(WriteLetterByLetter_SkipAccelerate_Coroutine(textToSet, value, onEndWrite, canSkip, true));
+        isWriting = StartCoroutine(WriteLetterByLetter_SkipAccelerate_Coroutine(textToSet, value, onEndWrite, speed, canSkip, true));
     }
 
     /// <summary>
@@ -133,12 +135,12 @@ public class UtilityMonoBehaviour : Singleton<UtilityMonoBehaviour>
     /// <summary>
     /// Write a text letter by letter. When press to skip, accelerate speed
     /// </summary>
-    public void WriteLetterByLetter_SkipAccelerate(Text textToSet, string value, System.Action onEndWrite = null, bool canSkip = true)
+    public void WriteLetterByLetter_SkipAccelerate(Text textToSet, string value, System.Action onEndWrite = null, float speed = 0, bool canSkip = true)
     {
         if (isWriting != null)
             StopCoroutine(isWriting);
 
-        isWriting = StartCoroutine(WriteLetterByLetter_SkipAccelerate_Coroutine(textToSet, value, onEndWrite, canSkip, false));
+        isWriting = StartCoroutine(WriteLetterByLetter_SkipAccelerate_Coroutine(textToSet, value, onEndWrite, speed, canSkip, false));
     }
 
     /// <summary>

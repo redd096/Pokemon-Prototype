@@ -29,6 +29,14 @@ public static class Utility
 
         return newArray;
     }
+
+    public static string Parse(string text, string value)
+    {
+        if (text.Contains("{0}"))
+            return text.Replace("{0}", value);
+
+        return text;
+    }
 }
 
 public static class FadeUtility
@@ -94,9 +102,9 @@ public static class TextLetterByLetter
     /// <summary>
     /// Write a text letter by letter, then wait input. When press to skip, accelerate speed
     /// </summary>
-    public static void WriteLetterByLetterAndWait_SkipAccelerate(this Text textToSet, string value, System.Action onEndWrite = null, bool canSkip = true)
+    public static void WriteLetterByLetterAndWait_SkipAccelerate(this Text textToSet, string value, System.Action onEndWrite = null, float speed = 0, bool canSkip = true)
     {
-        UtilityMonoBehaviour.instance.WriteLetterByLetterAndWait_SkipAccelerate(textToSet, value, onEndWrite, canSkip);
+        UtilityMonoBehaviour.instance.WriteLetterByLetterAndWait_SkipAccelerate(textToSet, value, onEndWrite, speed, canSkip);
     }
 
     /// <summary>
@@ -110,9 +118,9 @@ public static class TextLetterByLetter
     /// <summary>
     /// Write a text letter by letter. When press to skip, accelerate speed
     /// </summary>
-    public static void WriteLetterByLetter_SkipAccelerate(this Text textToSet, string value, System.Action onEndWrite = null, bool canSkip = true)
+    public static void WriteLetterByLetter_SkipAccelerate(this Text textToSet, string value, System.Action onEndWrite = null, float speed = 0, bool canSkip = true)
     {
-        UtilityMonoBehaviour.instance.WriteLetterByLetter_SkipAccelerate(textToSet, value, onEndWrite, canSkip);
+        UtilityMonoBehaviour.instance.WriteLetterByLetter_SkipAccelerate(textToSet, value, onEndWrite, speed, canSkip);
     }
 
     /// <summary>

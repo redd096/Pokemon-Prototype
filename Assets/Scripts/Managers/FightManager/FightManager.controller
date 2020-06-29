@@ -437,6 +437,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8664449361546416755}
+  - {fileID: 2356991295328539651}
   m_StateMachineBehaviours:
   - {fileID: 6313991568101501647}
   m_Position: {x: 50, y: 50, z: 0}
@@ -645,7 +646,7 @@ AnimatorStateMachine:
     m_Position: {x: 600, y: 560, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5056891208762794783}
-    m_Position: {x: 600, y: 860, z: 0}
+    m_Position: {x: 270, y: 850, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -2031845600246318799}
@@ -1073,73 +1074,73 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StartFightPhase
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PlayerRound
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Skill
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Pokemon
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Item
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Next
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PokemonDead
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: NoMorePokemons
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: LearnSkill
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Pokeball
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Caught
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -1492,6 +1493,31 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5971052040281593779}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &2356991295328539651
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Pokemon
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -1364586604008583655}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -1944,6 +1970,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c169efd688d12d41a7015e1dff21f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  description: Scegli uno slot per {EnemyPokemon}.
+  confirmDescription: "{EnemyPokemon} ora \xE8 nel tuo team."
+  replacePokemonDescription: "{0} non fa pi\xF9 parte del tuo team..."
+  refuseDescription: "{EnemyPokemon} non far\xE0 parte del tuo team..."
 --- !u!114 &6508110117667471015
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1970,6 +2000,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe77f5c72a69f394486b7dcad80c1727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  description: Provi a catturare {EnemyPokemon} con {Item}...
+  caughtDescription: Sei riuscito a catturare {EnemyPokemon}.
+  failedDescription: "{EnemyPokemon} si \xE8 liberato!"
+  speedCatchDescription: 0.5
+  catchDescrption: '....'
+  timeToClick: 3
 --- !u!114 &6967788652071006014
 MonoBehaviour:
   m_ObjectHideFlags: 1

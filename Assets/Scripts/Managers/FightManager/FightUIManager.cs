@@ -16,7 +16,7 @@ public class FightUIManager : MonoBehaviour
     [SerializeField] float durationUpdateHealth = 0.7f;
     [SerializeField] float durationUpdateExperience = 0.7f;
 
-    [Header("ArenaPlayer")]
+    [Header("Arena Player")]
     [SerializeField] Image playerImage = default;
     [SerializeField] Text playerName = default;
     [SerializeField] Text playerLevel = default;
@@ -25,8 +25,7 @@ public class FightUIManager : MonoBehaviour
     [SerializeField] Gradient HealthGradient = default;
     [SerializeField] Text playerHealth = default;
     [SerializeField] Slider playerExpSlider = default;
-
-    [Header("ArenaEnemy")]
+    [Header("Arena Enemy")]
     [SerializeField] Image enemyImage = default;
     [SerializeField] Text enemyName = default;
     [SerializeField] Text enemyLevel = default;
@@ -35,23 +34,30 @@ public class FightUIManager : MonoBehaviour
     [SerializeField] Text enemyHealth = default;
     [SerializeField] Slider enemyExpSlider = default;
 
-    [Header("InfoBox")]
+    [Header("Info Box")]
     [SerializeField] Text description = default;
     [SerializeField] GameObject playerMenu = default;
     [SerializeField] GameObject fightMenu = default;
     [SerializeField] Transform contentFightMenu = default;
 
-    [Header("Menu")]
+    [Header("Menu Pokemon")]
     [SerializeField] GameObject pokemonMenu = default;
     [SerializeField] Transform contentPokemonMenu = default;
+    [Header("Menu Bag")]
     [SerializeField] GameObject bagMenu = default;
     [SerializeField] Transform contentBagMenu = default;
+    [Header("Menu Yes Nope")]
     [SerializeField] GameObject yesNoMenu = default;
     [SerializeField] Button yesButton = default;
     [SerializeField] Button nopeButton = default;
+    [Header("Menu Learn Skill")]
     [SerializeField] GameObject learnSkillsMenu = default;
     [SerializeField] Transform contentLearnSkillMenu = default;
     [SerializeField] Button refuseSkillButton = default;
+    [Header("Menu Catch Pokemon")]
+    [SerializeField] GameObject catchPokemonMenu = default;
+    [SerializeField] Transform contentCatchPokemonMenu = default;
+    [SerializeField] Button refuseCatchPokemonButton = default;
     #endregion
 
     #region private poolings
@@ -60,6 +66,7 @@ public class FightUIManager : MonoBehaviour
     Pooling<Button> itemsPooling = new Pooling<Button>(false);
 
     Pooling<Button> skillsToReplacePooling = new Pooling<Button>(false);
+    Pooling<Button> pokemonCatchPooling = new Pooling<Button>(false);
     #endregion
 
     #region private variables
@@ -526,11 +533,55 @@ public class FightUIManager : MonoBehaviour
 
     #endregion
 
+    #region caught state
+
+    public void SetCatchPokemonMenu(System.Action<int> confirmFunc, System.Action refuseFunc)
+    {
+        //set refuse pokemon button
+        refuseCatchPokemonButton.onClick.RemoveAllListeners();
+        refuseCatchPokemonButton.onClick.AddListener(() => refuseFunc());
+
+        //deactive every button in the pooling and add if there are not enough buttons in pool
+        pokemonCatchPooling.DeactiveAll();
+        pokemonCatchPooling.InitCycle(prefabSimpleButton, GameManager.instance.MaxPokemonInTeam);
+
+        //get current player pokemons
+        List<PokemonModel> playerPokemons = GameManager.instance.Player.PlayerPokemons;
+
+        for (int i = 0; i < Mathf.Min(playerPokemons.Count + 1, GameManager.instance.MaxPokemonInTeam); i++)
+        {
+            //instantiate button from pool and set parent
+            Button button = pokemonCatchPooling.Instantiate(prefabSimpleButton, contentCatchPokemonMenu, false);
+
+            //be sure to not have listeners
+            button.onClick.RemoveAllListeners();
+
+            //add new listener to button
+            int indexForLambda = i;                                         //for some reason, need to make a copy of anything you want to access for the lambda
+            button.onClick.AddListener(() => confirmFunc(indexForLambda));
+
+            //set text (name of the pokemon or empty)
+            button.GetComponentInChildren<Text>().text = i < playerPokemons.Count ? playerPokemons[i].GetObjectName() : "-";
+        }
+    }
+
+    public void ShowCatchPokemonMenu()
+    {
+        catchPokemonMenu.SetActive(true);
+    }
+
+    public void HideCatchPokemonMenu()
+    {
+        catchPokemonMenu.SetActive(false);
+    }
+
+    #endregion
+
     #region generic functions
 
     #region description
 
-    public void SetDescription(string text, System.Action onEndDescription)
+    public void SetDescription(string text, System.Action onEndDescription, float speed = 0)
     {
         //reset description and active it
         description.text = string.Empty;
@@ -539,7 +590,7 @@ public class FightUIManager : MonoBehaviour
         //write description letter by letter. Then press a button and call OnEndDescription
         string s = Parse(text);
 
-        description.WriteLetterByLetterAndWait_SkipAccelerate(s, onEndDescription);
+        description.WriteLetterByLetterAndWait_SkipAccelerate(s, onEndDescription, speed);
     }
 
     public void EndDescription()
@@ -598,6 +649,7 @@ public class FightUIManager : MonoBehaviour
         bagMenu.SetActive(false);
         yesNoMenu.SetActive(false);
         learnSkillsMenu.SetActive(false);
+        catchPokemonMenu.SetActive(false);
     }
 
     public void UpdateHealth(bool isPlayer, float previousHealth, System.Action onEndUpdateHealth = null)

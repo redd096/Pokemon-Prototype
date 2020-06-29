@@ -5,7 +5,7 @@ using UnityEngine;
 public class LearnSkillState : FightManagerState
 {
     [Header("Description")]
-    [TextArea()] [SerializeField] string description = "Scegli uno slot per {SkillToLearn}";
+    [TextArea()] [SerializeField] string description = "Scegli uno slot per {SkillToLearn}.";
     [TextArea()] [SerializeField] string confirmDescription = "{PlayerPokemon} apprende {SkillToLearn}.";
     [TextArea()] [SerializeField] string forgetSkillDescription = "{PlayerPokemon} dimentica {0}...";
     [TextArea()] [SerializeField] string refuseDescription = "{PlayerPokemon} non apprende {SkillToLearn}...";
@@ -37,14 +37,6 @@ public class LearnSkillState : FightManagerState
 
     #endregion
 
-    string Parse(string text, string value)
-    {
-        if (text.Contains("{0}"))
-            return text.Replace("{0}", value);
-
-        return text;
-    }
-
     void LearnSkill(int index)
     {
         //remove menu
@@ -59,7 +51,7 @@ public class LearnSkillState : FightManagerState
         //if need to forget a skill, show forgetSkillDescription before confirm
         if (skillToForget != null)
         {
-            string s = Parse(forgetSkillDescription, skillToForget.GetObjectName());
+            string s = Utility.Parse(forgetSkillDescription, skillToForget.GetObjectName());
 
             fightManager.FightUIManager.SetDescription(s, ConfirmSkillDescription);
         }
@@ -84,7 +76,7 @@ public class LearnSkillState : FightManagerState
 
     void ConfirmSkillDescription()
     {
-        //set Description letter by letter, then call OnEndDescription
+        //show confirm description
         fightManager.FightUIManager.SetDescription(confirmDescription, ChangeState);
     }
 

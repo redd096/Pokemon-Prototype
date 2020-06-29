@@ -4,6 +4,9 @@ public enum EPokeBall
 {
     nothing,
     masterBall,
+    pokeBall,
+    megaBall,
+    ultraBall,
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "Pokemon Prototype/Item")]

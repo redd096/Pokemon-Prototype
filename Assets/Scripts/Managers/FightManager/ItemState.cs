@@ -21,7 +21,11 @@ public class ItemState : FightManagerState
         //show description using item
         //add item effect
 
-        SetDescription();
+        if (fightManager.ItemUsed.itemData.IsPokeball == EPokeBall.nothing)
+            SetDescription();
+        //else use pokeball (change state)
+        else
+            PlayerUsedPokeball();
     }
 
     #region enter
@@ -40,16 +44,8 @@ public class ItemState : FightManagerState
         //deactive description
         fightManager.FightUIManager.EndDescription();
 
-        if (fightManager.ItemUsed.itemData.IsPokeball == EPokeBall.nothing)
-        {
-            //add effect to pokemon list
-            AddEffect();
-        }
-        else
-        {
-            //else player used a pokeball
-            PlayerUsedPokeball();
-        }
+        //add effect to pokemon list
+        AddEffect();
     }
 
     #endregion

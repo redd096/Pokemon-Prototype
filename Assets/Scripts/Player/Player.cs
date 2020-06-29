@@ -97,7 +97,7 @@ public class Player : StateMachine
 
     #region pokemon
 
-    public void ReplacePokemon(PokemonModel pokemonToReplace, PokemonModel newPokemon)
+    public void PokemonEvolution(PokemonModel pokemonToReplace, PokemonModel evolution)
     {
         //look in the list
         for(int i = 0; i < playerPokemons.Count; i++)
@@ -109,9 +109,29 @@ public class Player : StateMachine
                 playerPokemons.Remove(pokemonToReplace);
 
                 //and add new one in the same position
-                playerPokemons.Insert(i, newPokemon);
+                playerPokemons.Insert(i, evolution);
+
+                break;
             }
         }
+    }
+
+    public void AddPokemon(PokemonModel newPokemon, int index)
+    {
+        if (newPokemon == null)
+            return;
+
+        //replace pokemon
+        if (index < playerPokemons.Count)
+        {
+            //remove old and insert new one
+            playerPokemons.RemoveAt(index);
+            playerPokemons.Insert(index, newPokemon);
+            return;
+        }
+
+        //else simply add to list
+        playerPokemons.Add(newPokemon);
     }
 
     #endregion
