@@ -82,8 +82,6 @@ public class FightUIManager : MonoBehaviour
     #endregion
 
     //TODO
-    //VA MESSO UN CAP AL NUMERO DI POKEMON TRASPORTABILI DAL GIOCATORE
-    //VANNO AGGIUNTO LE POKEBALL
     //VA PULITO QUESTO SCRIPT, SE C'è TEMPO ANCHE UN PO' GLI ALTRI
 
     /*
