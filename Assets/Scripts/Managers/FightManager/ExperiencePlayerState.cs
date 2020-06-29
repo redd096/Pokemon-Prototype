@@ -43,7 +43,6 @@ public class ExperiencePlayerState : FightManagerState
 
             //else check experience
             GetExperience();
-            SetDescription();
         }
         //if already got experience, then we changed state for skill or evolve, so continue to check
         else
@@ -107,6 +106,8 @@ public class ExperiencePlayerState : FightManagerState
         {
             pokemonGettingExperience.GetExperience(true, enemyPokemon, pokemonsWhoFoughtNotDead);
         }
+
+        SetDescription();
     }
 
     void SetDescription()
