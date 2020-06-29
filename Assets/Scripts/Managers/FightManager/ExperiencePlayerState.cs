@@ -56,12 +56,22 @@ public class ExperiencePlayerState : FightManagerState
 
     void GetExperience()
     {
-       int pokemonsWhoFoughtNotDead = fightManager.pokemonsWhoFought.Where(p => p.CurrentHealth > 0).ToArray().Length;
+        PokemonModel lastPokemon = pokemonGettingExperience;
+
+        //get pokemon who fought and not died
+        int pokemonsWhoFoughtNotDead = fightManager.pokemonsWhoFought.Where(p => p.CurrentHealth > 0).ToArray().Length;
 
         //every player pokemon who fought get experience
         foreach (PokemonModel pokemon in fightManager.pokemonsWhoFought)
         {
-            //first get experience the pokemon in arena
+            //do only if in player list (when catch pokemon can replace pokemon who fought)
+            if (GameManager.instance.Player.PlayerPokemons.Contains(pokemon) == false)
+            {
+                pokemonsWhoGotExperience.Add(pokemon);
+                continue;
+            }
+
+            //first get experience the pokemon in arena (if in player list)
             if(pokemonGettingExperience == null)
             {
                 pokemonGettingExperience = fightManager.currentPlayerPokemon;
@@ -80,6 +90,13 @@ public class ExperiencePlayerState : FightManagerState
 
                 break;
             }
+        }
+
+        //if == last pokemon, then there are only pokemon which are no more in player list
+        if (pokemonGettingExperience == lastPokemon)
+        {
+            EndFight();
+            return;
         }
 
         //set previous exp

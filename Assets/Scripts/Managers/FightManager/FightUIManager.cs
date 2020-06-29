@@ -395,6 +395,9 @@ public class FightUIManager : MonoBehaviour
         EndDescription();
 
         DeactiveMenu();
+
+        //be sure enemy pokemon is visible
+        PokemonSpawnAnimation(false, 1);
     }
 
     public void SetArena()
@@ -562,6 +565,13 @@ public class FightUIManager : MonoBehaviour
 
             //set text (name of the pokemon or empty)
             button.GetComponentInChildren<Text>().text = i < playerPokemons.Count ? playerPokemons[i].GetObjectName() : "-";
+
+            //set not interactable button of pokemon in arena
+            if (i < playerPokemons.Count && playerPokemons[i] == fightManager.currentPlayerPokemon)
+                button.interactable = false;
+            //be sure other buttons are interactable, or when start another fight can be a button not interactable from previous battle
+            else if (button.interactable == false)
+                button.interactable = true;
         }
     }
 
