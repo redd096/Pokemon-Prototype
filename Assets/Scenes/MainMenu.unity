@@ -479,6 +479,7 @@ MonoBehaviour:
   timeFadeOut: 1
   timeFadeIn: 1
   nameNewScene: Game
+  musicMainMenu: {fileID: 8300000, guid: f7547fded4a5675499cdefade4cf2330, type: 3}
 --- !u!1001 &1417026708
 PrefabInstance:
   m_ObjectHideFlags: 0

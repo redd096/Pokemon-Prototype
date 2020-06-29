@@ -5,10 +5,16 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    [Header("Fade")]
     [SerializeField] Image imageTransition = default;
     [SerializeField] float timeFadeOut = 1;
     [SerializeField] float timeFadeIn = 1;
+
+    [Header("Start Game")]
     [SerializeField] string nameNewScene = "Game";
+
+    [Header("Music")]
+    [SerializeField] AudioClip musicMainMenu = default;
 
     Coroutine fade;
 
@@ -19,6 +25,9 @@ public class MainMenu : MonoBehaviour
 
         //then start fade out
         fade = StartCoroutine(FadeOut());
+
+        //start music
+        SoundManager.instance.StartBackgroundMusic(musicMainMenu, 0.3f, true, true);
     }
 
     IEnumerator FadeOut()

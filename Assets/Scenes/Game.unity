@@ -4238,6 +4238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingManager: {fileID: 456925491}
   fightManager: {fileID: 401553863}
+  musicMovingPhase: {fileID: 8300000, guid: f7547fded4a5675499cdefade4cf2330, type: 3}
+  musicFightPhase: {fileID: 8300000, guid: b3556a0006e49b94c9d2f57ff9dfc190, type: 3}
 --- !u!4 &1003308209
 Transform:
   m_ObjectHideFlags: 0

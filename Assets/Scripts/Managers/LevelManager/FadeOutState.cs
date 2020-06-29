@@ -17,6 +17,9 @@ public class FadeOutState : StateMachineBehaviour
         levelManager = animator.GetComponent<LevelManager>();
         delta = 0;
         SetManagers();
+
+        //start music
+        SoundManager.instance.StartBackgroundMusic(levelManager.MusicMovingPhase, 0.3f, true, true);
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

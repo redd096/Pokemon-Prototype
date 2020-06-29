@@ -8,8 +8,14 @@ public class LevelManager : MonoBehaviour
     [SerializeField] MovingManager movingManager = default;
     [SerializeField] FightManager fightManager = default;
 
+    [Header("Music")]
+    [SerializeField] AudioClip musicMovingPhase = default;
+    [SerializeField] AudioClip musicFightPhase = default;
+
     public MovingManager MovingManager { get { return movingManager; } }
     public FightManager FightManager { get { return fightManager; } }
+    public AudioClip MusicMovingPhase { get { return musicMovingPhase; } }
+    public AudioClip MusicFightPhase { get { return musicFightPhase; } }
 
     Animator anim;
 

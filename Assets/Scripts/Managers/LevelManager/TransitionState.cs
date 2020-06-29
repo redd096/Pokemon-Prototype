@@ -22,6 +22,10 @@ public class TransitionState : StateMachineBehaviour
 
         //do fade in, then call EndFadeIn
         GameManager.instance.UiManager.FadeIn_Fill(timeToFadeIn, EndFadeIn);
+
+        //start music
+        AudioClip music = startFight ? levelManager.MusicFightPhase : levelManager.MusicMovingPhase;
+        SoundManager.instance.StartBackgroundMusic(music, 0.3f, true, true);
     }
 
     void EndFadeIn()
