@@ -180,6 +180,8 @@ public class FightUIManager : MonoBehaviour
             //and set it
             SetButton(button, value, function);
         }
+
+        poolingList.EndCycle(valueArray.Count);
     }
 
     void SetButton<T>(Button button, T value, System.Action<Button, T> function) where T : IGetName
@@ -504,8 +506,9 @@ public class FightUIManager : MonoBehaviour
 
         //get current skills of the pokemon
         List<SkillModel> currentSkills = fightManager.currentPlayerPokemon.CurrentSkills;
+        int quantity = Mathf.Min(currentSkills.Count + 1, GameManager.instance.MaxSkillForPokemon);
 
-        for (int i = 0; i < Mathf.Min(currentSkills.Count +1, GameManager.instance.MaxSkillForPokemon); i++)
+        for (int i = 0; i < quantity; i++)
         {
             //instantiate button from pool and set parent
             Button button = skillsToReplacePooling.Instantiate(prefabSimpleButton, contentLearnSkillMenu, false);
@@ -520,6 +523,8 @@ public class FightUIManager : MonoBehaviour
             //set text (name of the skill or empty)
             button.GetComponentInChildren<Text>().text = i < currentSkills.Count ? currentSkills[i].GetObjectName() : "-";
         }
+
+        skillsToReplacePooling.EndCycle(quantity);
     }
 
     public void ShowLearnSkillsMenu()
@@ -548,8 +553,9 @@ public class FightUIManager : MonoBehaviour
 
         //get current player pokemons
         List<PokemonModel> playerPokemons = GameManager.instance.Player.PlayerPokemons;
+        int quantity = Mathf.Min(playerPokemons.Count + 1, GameManager.instance.MaxPokemonInTeam);
 
-        for (int i = 0; i < Mathf.Min(playerPokemons.Count + 1, GameManager.instance.MaxPokemonInTeam); i++)
+        for (int i = 0; i < quantity; i++)
         {
             //instantiate button from pool and set parent
             Button button = pokemonCatchPooling.Instantiate(prefabSimpleButton, contentCatchPokemonMenu, false);
@@ -571,6 +577,8 @@ public class FightUIManager : MonoBehaviour
             else if (button.interactable == false)
                 button.interactable = true;
         }
+
+        pokemonCatchPooling.EndCycle(quantity);
     }
 
     public void ShowCatchPokemonMenu()
