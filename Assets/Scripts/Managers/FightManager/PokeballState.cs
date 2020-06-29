@@ -96,7 +96,7 @@ public class PokeballState : FightManagerState
         else
         {
             //show failed description
-            fightManager.FightUIManager.SetDescription(failedDescription, Failed);
+            fightManager.FightUIManager.SetDescription(failedDescription, AnimationFail);
         }
     }
 
@@ -107,16 +107,16 @@ public class PokeballState : FightManagerState
         anim.SetTrigger("Caught");
     }
 
+    void AnimationFail()
+    {
+        //start animation enemy pokemon respawn
+        fightManager.FightUIManager.PokemonSpawnAnimation(true, false, Failed);
+    }
+
     void Failed()
     {
         fightManager.FightUIManager.EndDescription();
 
-        //start animation enemy pokemon respawn
-        fightManager.FightUIManager.PokemonSpawnAnimation(true, false, ChangeState);
-    }
-
-    void ChangeState()
-    {
         anim.SetTrigger("Next");
     }
 }
