@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cea905b527f96d44daf84fa39e9f3aaa, type: 3}
-  m_Name: "DoDoD\xF2DoDoKi"
+  m_Name: DoDoDoDoDoKi
   m_EditorClassIdentifier: 
   pokemonName: "DoDoD\xF2DoDoKi"
   pokemonType: 0

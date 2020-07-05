@@ -4,7 +4,7 @@
 public class EffectAccuracy : EffectData
 {
     [Header("Set Accuracy")]
-    [Min(0)] [SerializeField] int value = 30;
+    [Range(30, 100)] [SerializeField] int value = 30;
 
     public override void ApplyEffect(PokemonModel pokemon)
     {
